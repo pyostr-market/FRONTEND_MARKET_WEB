@@ -1,4 +1,4 @@
-import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage } from 'react-icons/fi';
+import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiChevronDown } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import paths from '../../app/router/paths';
 import styles from './Header.module.css';
@@ -24,8 +24,9 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
               <img src="/logo.png" alt="Marketplace" className={styles.logoImage} />
             </Link>
             <button className={styles.catalogBtn}>
-              <FiGrid size={20} />
+              <FiGrid size={18} />
               <span>Каталог</span>
+              <FiChevronDown size={16} />
             </button>
           </div>
 
@@ -35,26 +36,25 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
                 type="text"
                 placeholder="Поиск товаров"
                 className={styles.searchInput}
-                readOnly
               />
             </div>
           </div>
 
           <div className={styles.headerRight}>
             <button className={styles.headerActionBtn} title="Заказы">
-              <FiPackage size={22} />
+              <FiPackage size={20} />
               <span className={styles.actionLabel}>Заказы</span>
             </button>
             <button className={styles.headerActionBtn} title="Профиль" onClick={onProfileClick}>
-              <FiUser size={22} />
+              <FiUser size={20} />
               <span className={styles.actionLabel}>Профиль</span>
             </button>
             <button className={styles.headerActionBtn} title="Избранное">
-              <FiHeart size={22} />
+              <FiHeart size={20} />
               <span className={styles.actionLabel}>Избранное</span>
             </button>
             <Link to={paths.CART} className={styles.headerActionBtn} title="Корзина">
-              <FiShoppingCart size={22} />
+              <FiShoppingCart size={20} />
               <span className={styles.actionLabel}>Корзина</span>
             </Link>
           </div>
@@ -64,9 +64,9 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
       <div className={styles.categoriesBar}>
         <div className={styles.categoriesContainer}>
           {CATEGORIES.map((category) => (
-            <button key={category} className={styles.categoryItem}>
+            <Link key={category} to={paths.CATALOG} className={styles.categoryItem}>
               {category}
-            </button>
+            </Link>
           ))}
         </div>
       </div>

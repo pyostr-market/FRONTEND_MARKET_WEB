@@ -23,27 +23,15 @@
   padding: 0 16px;
 }
 
-.mobileLogo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.mobileLogoImage {
-  height: 28px;
-  width: auto;
-  object-fit: contain;
-}
-
 .mobileSearchBtn {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
   background-color: var(--surface-muted);
   border: none;
-  border-radius: var(--radius-md);
-  padding: 10px;
+  border-radius: 12px;
+  padding: 10px 14px;
   cursor: pointer;
   color: var(--text-muted);
   transition: background-color 0.2s;
@@ -53,7 +41,18 @@
   background-color: var(--surface-subtle);
 }
 
-.mobileCartBtn {
+.searchPlaceholder {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.mobileActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobileActionBtn {
   background: none;
   border: none;
   color: var(--text);
@@ -63,4 +62,14 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.mobileActionBtn:hover {
+  background-color: var(--surface-muted);
+}
+
+.mobileActionBtn svg {
+  color: var(--text-secondary);
 }

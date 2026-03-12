@@ -1,4 +1,4 @@
-import { FiShoppingCart, FiSearch } from 'react-icons/fi';
+import { FiShoppingCart, FiSearch, FiHeart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import paths from '../../app/router/paths';
 import styles from './MobileHeader.module.css';
@@ -7,15 +7,18 @@ const MobileHeader = ({ onProfileClick }) => {
   return (
     <header className={styles.mobileHeader}>
       <div className={styles.mobileHeaderContainer}>
-        <Link to={paths.HOME} className={styles.mobileLogo}>
-          <img src="/logo.png" alt="Marketplace" className={styles.mobileLogoImage} />
-        </Link>
         <button className={styles.mobileSearchBtn}>
           <FiSearch size={20} />
+          <span className={styles.searchPlaceholder}>Поиск</span>
         </button>
-        <Link to={paths.CART} className={styles.mobileCartBtn}>
-          <FiShoppingCart size={24} />
-        </Link>
+        <div className={styles.mobileActions}>
+          <Link to={paths.WISHLIST} className={styles.mobileActionBtn}>
+            <FiHeart size={22} />
+          </Link>
+          <Link to={paths.CART} className={styles.mobileActionBtn}>
+            <FiShoppingCart size={22} />
+          </Link>
+        </div>
       </div>
     </header>
   );
