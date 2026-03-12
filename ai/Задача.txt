@@ -1,0 +1,287 @@
+Задача: создать начальный фронтенд-каркас Marketplace на React с навигацией и header, визуально и логически похожими на интерфейс маркетплейса Ozon.
+
+Проект должен строго соблюдать архитектуру, описанную в файле architecture.md.
+
+На данном этапе задача — создать полностью рабочий базовый интерфейс приложения с правильной архитектурой, базовыми страницами, desktop header, mobile header, mobile navigation и системой поиска-заглушки.
+
+Используемые технологии
+
+React
+React Router
+React Icons
+
+Использовать функциональные компоненты.
+
+Стили можно реализовать через обычный CSS или CSS modules. Сложная стилизация пока не требуется.
+
+Структура проекта
+
+Создать следующую структуру директорий:
+
+src
+
+app
+app/router
+app/providers
+
+pages
+pages/HomePage
+pages/CatalogPage
+pages/CartPage
+pages/WishlistPage
+
+widgets
+widgets/Header
+widgets/MobileHeader
+widgets/MobileNavbar
+widgets/SearchOverlay
+
+features
+features/search
+
+shared
+shared/ui
+shared/api
+shared/hooks
+shared/constants
+
+Главная точка приложения
+
+Создать App.tsx.
+
+Структура приложения должна быть следующей:
+
+BrowserRouter
+AppProviders
+AppRouter
+
+AppProviders пока может просто возвращать children.
+
+Роутинг
+
+Создать систему маршрутов.
+
+app/router/paths.ts
+
+Там должны быть маршруты:
+
+/
+/catalog
+/cart
+/wishlist
+
+app/router/routes.ts
+
+Там должна быть конфигурация страниц.
+
+app/router/AppRouter.tsx
+
+Использовать React Router.
+
+Страницы
+
+Создать страницы:
+
+HomePage
+CatalogPage
+CartPage
+WishlistPage
+
+Каждая страница пока отображает простой текст:
+
+Home Page
+Catalog Page
+Cart Page
+Wishlist Page
+
+Desktop Header (как у Ozon)
+
+Создать widget Header.
+
+Header должен отображаться на всех страницах.
+
+Header должен содержать:
+
+логотип (текст Marketplace)
+кнопку "Каталог"
+поле поиска
+иконки действий
+
+Иконки действий:
+
+Профиль
+Избранное
+Корзина
+
+Использовать React Icons:
+
+FiUser
+FiHeart
+FiShoppingCart
+
+Поиск должен занимать основную ширину header, как в Ozon.
+
+Кнопка каталог пока ничего не открывает.
+
+Header должен быть виден только на desktop.
+
+Mobile Header
+
+Создать MobileHeader.
+
+MobileHeader должен быть отдельным компонентом.
+
+Он должен отображаться только на мобильных устройствах.
+
+MobileHeader должен содержать:
+
+логотип
+поле поиска
+иконку корзины
+
+Высота header небольшая.
+
+Mobile Navbar (как у Ozon)
+
+Создать MobileNavbar.
+
+Это нижняя навигационная панель.
+
+Она должна:
+
+быть фиксированной
+располагаться внизу экрана
+быть видимой только на мобильных устройствах
+
+Использовать React Icons.
+
+Кнопки навигации:
+
+Главная
+Каталог
+Корзина
+Избранное
+Профиль
+
+Иконки:
+
+FiHome
+FiGrid
+FiShoppingCart
+FiHeart
+FiUser
+
+Поведение кнопок
+
+Главная → HomePage
+Каталог → CatalogPage
+Корзина → CartPage
+Избранное → WishlistPage
+
+Профиль
+
+Кнопка профиль должна открывать модальное окно.
+
+Модальное окно должно содержать:
+
+заголовок
+поле ввода телефона
+
+Пока без API.
+
+Search Overlay
+
+Создать компонент SearchOverlay.
+
+Этот компонент должен открываться когда пользователь:
+
+кликает на поле поиска
+начинает вводить текст
+
+Overlay должен отображаться поверх страницы.
+
+Он должен содержать:
+
+поле поиска
+список популярных товаров
+
+Популярные товары (заглушка):
+
+iPhone 15
+MacBook Pro
+Apple Watch
+AirPods Pro
+
+Поиск
+
+Создать feature:
+
+features/search
+
+Создать функцию:
+
+searchProducts(query)
+
+Файл:
+
+shared/api/searchApi.ts
+
+Функция должна возвращать Promise со списком строк.
+
+Пример списка:
+
+[
+"iPhone 15",
+"Samsung Galaxy S24",
+"MacBook Pro",
+"Apple Watch",
+"AirPods Pro"
+]
+
+При вводе текста список должен фильтроваться.
+
+Результаты должны отображаться в SearchOverlay.
+
+Layout
+
+Создать основной layout приложения.
+
+MainLayout должен:
+
+показывать Header на desktop
+показывать MobileHeader на mobile
+показывать MobileNavbar на mobile
+рендерить страницу
+
+Все страницы должны отображаться внутри layout.
+
+Адаптивность
+
+Desktop:
+
+виден Header
+скрыт MobileHeader
+скрыт MobileNavbar
+
+Mobile:
+
+скрыт Header
+виден MobileHeader
+виден MobileNavbar
+
+Для определения мобильной версии можно использовать media queries.
+
+Итоговое поведение
+
+После реализации:
+
+приложение должно запускаться
+должна существовать базовая архитектура проекта
+должны работать маршруты
+должен отображаться desktop header
+должен отображаться mobile header
+должна работать mobile navigation
+должен открываться search overlay
+должна работать мок-функция поиска
+
+Никакая сложная бизнес логика на данном этапе не требуется.
