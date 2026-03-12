@@ -1,10 +1,11 @@
 .mobileHeader {
   display: block;
-  background-color: #005bff;
+  background-color: var(--surface);
   padding: 8px 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid var(--border);
 }
 
 @media (min-width: 768px) {
@@ -23,35 +24,39 @@
 }
 
 .mobileLogo {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
-.searchTriggerBtn {
+.mobileLogoImage {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.mobileSearchBtn {
   flex: 1;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-muted);
   border: none;
-  color: white;
-  text-align: left;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  padding: 10px;
   cursor: pointer;
+  color: var(--text-muted);
   transition: background-color 0.2s;
 }
 
-.searchTriggerBtn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.mobileSearchBtn:hover {
+  background-color: var(--surface-subtle);
 }
 
 .mobileCartBtn {
   background: none;
   border: none;
-  color: white;
+  color: var(--text);
   cursor: pointer;
   padding: 8px;
   display: flex;

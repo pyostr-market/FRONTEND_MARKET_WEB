@@ -8,10 +8,11 @@ import styles from './MainLayout.module.css';
 
 const MainLayout = ({ children }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const isAuthorized = false;
 
   return (
     <div className={styles.mainLayout}>
-      <Header onProfileClick={() => setIsProfileModalOpen(true)} />
+      <Header onProfileClick={() => setIsProfileModalOpen(true)} isAuthorized={isAuthorized} />
       <MobileHeader onProfileClick={() => setIsProfileModalOpen(true)} />
       <SearchOverlay />
       <main className={styles.mainContent}>
