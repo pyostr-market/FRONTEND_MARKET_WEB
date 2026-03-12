@@ -1,0 +1,61 @@
+.mobileHeader {
+  display: block;
+  background-color: #005bff;
+  padding: 8px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+@media (min-width: 768px) {
+  .mobileHeader {
+    display: none;
+  }
+}
+
+.mobileHeaderContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.mobileLogo {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.searchTriggerBtn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchTriggerBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobileCartBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

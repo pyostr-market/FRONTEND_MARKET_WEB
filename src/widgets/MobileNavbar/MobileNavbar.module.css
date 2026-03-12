@@ -1,0 +1,61 @@
+.mobileNavbar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+@media (max-width: 767px) {
+  .mobileNavbar {
+    display: block;
+  }
+}
+
+.mobileNavbarContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+}
+
+.mobileNavItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #666;
+  font-size: 11px;
+  padding: 4px 8px;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileNavItem svg {
+  color: #666;
+  transition: color 0.2s;
+}
+
+.mobileNavItem.active {
+  color: #005bff;
+}
+
+.mobileNavItem.active svg {
+  color: #005bff;
+}
+
+.mobileNavItem:hover {
+  color: #005bff;
+}
+
+.mobileNavItem:hover svg {
+  color: #005bff;
+}

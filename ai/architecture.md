@@ -403,3 +403,57 @@ useSearch
 подключать новые backend сервисы
 
 без необходимости переписывать существующий код.
+
+Использование CSS Modules
+
+Формат файлов:
+
+Все стили для компонентов должны быть в файлах с расширением .module.css.
+Пример: Header.module.css, MobileNavbar.module.css.
+
+Импорт стилей в компонент:
+
+import styles from './Header.module.css';
+
+function Header() {
+return (
+<header className={styles.header}>
+<h1 className={styles.logo}>Marketplace</h1>
+</header>
+);
+}
+
+styles — объект, где ключи соответствуют именам CSS-классов, а значения автоматически уникализируются на уровне сборки.
+
+Это полностью заменяет глобальные классы и уменьшает риск конфликтов.
+
+Расположение файлов:
+
+Каждый widget/component хранит свои стили рядом с компонентом:
+
+widgets/
+Header/
+Header.jsx
+Header.module.css
+MobileNavbar/
+MobileNavbar.jsx
+MobileNavbar.module.css
+
+Правила именования классов:
+
+Использовать camelCase для классов в CSS Module:
+
+.headerContainer { ... }
+.logoText { ... }
+
+И затем в JSX:
+
+<div className={styles.headerContainer}>
+  <span className={styles.logoText}>Marketplace</span>
+</div>
+
+Дополнительно:
+
+Глобальные стили можно оставлять только для reset.css или variables.css, если нужны CSS-переменные.
+
+Все новые стили для компонентов должны быть локальными через CSS Modules.
