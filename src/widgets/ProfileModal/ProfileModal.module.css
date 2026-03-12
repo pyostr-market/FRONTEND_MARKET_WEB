@@ -4,21 +4,21 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--modal-overlay);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: var(--space-4);
 }
 
 .profileModal {
-  background-color: white;
-  border-radius: 16px;
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
   width: 100%;
   max-width: 400px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .profileModalHeader {
@@ -26,13 +26,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border);
 }
 
 .profileModalHeader h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
+  color: var(--text);
 }
 
 .profileModalClose {
@@ -40,7 +41,7 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666;
+  color: var(--text-muted);
   padding: 4px;
   display: flex;
   align-items: center;
@@ -50,7 +51,7 @@
 }
 
 .profileModalClose:hover {
-  background-color: #f0f0f0;
+  background-color: var(--surface-muted);
 }
 
 .profileModalBody {
@@ -58,7 +59,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .profileIconWrapper {
@@ -68,56 +69,58 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background-color: var(--primary);
+  color: var(--surface);
 }
 
 .profileForm {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .profileFormLabel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .profileFormInput {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid #d0d0d0;
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   font-size: 16px;
   outline: none;
+  background-color: var(--surface);
+  color: var(--text);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .profileFormInput:focus {
-  border-color: #005bff;
-  box-shadow: 0 0 0 3px rgba(0, 91, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .profileSubmitBtn {
   width: 100%;
   padding: 14px;
-  background-color: #005bff;
-  color: white;
+  background-color: var(--primary);
+  color: var(--surface);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .profileSubmitBtn:hover {
-  background-color: #004ed6;
+  background-color: var(--primary-hover);
 }
 
 @media (max-width: 480px) {
@@ -126,6 +129,6 @@
   }
 
   .profileModalBody {
-    padding: 24px 16px;
+    padding: var(--space-6) var(--space-4);
   }
 }

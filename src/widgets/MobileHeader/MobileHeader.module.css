@@ -19,31 +19,14 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-end;
+  gap: var(--space-2);
   padding: 0 16px;
 }
 
-.mobileSearchBtn {
+.mobileSearchWrapper {
   flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--surface-muted);
-  border: none;
-  border-radius: 12px;
-  padding: 10px 14px;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: background-color 0.2s;
-}
-
-.mobileSearchBtn:hover {
-  background-color: var(--surface-subtle);
-}
-
-.searchPlaceholder {
-  font-size: 14px;
-  color: var(--text-muted);
+  max-width: 400px;
 }
 
 .mobileActions {
@@ -62,7 +45,7 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   transition: background-color 0.2s;
 }
 

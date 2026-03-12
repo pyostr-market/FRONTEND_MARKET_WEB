@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Header from '../../../widgets/Header/Header';
 import MobileHeader from '../../../widgets/MobileHeader/MobileHeader';
 import MobileNavbar from '../../../widgets/MobileNavbar/MobileNavbar';
-import SearchOverlay from '../../../widgets/SearchOverlay/SearchOverlay';
 import ProfileModal from '../../../widgets/ProfileModal/ProfileModal';
 import styles from './MainLayout.module.css';
 
@@ -13,8 +12,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className={styles.mainLayout}>
       <Header onProfileClick={() => setIsProfileModalOpen(true)} isAuthorized={isAuthorized} />
-      <MobileHeader onProfileClick={() => setIsProfileModalOpen(true)} />
-      <SearchOverlay />
+      <MobileHeader />
       <main className={styles.mainContent}>
         {children}
       </main>

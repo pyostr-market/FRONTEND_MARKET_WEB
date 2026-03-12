@@ -1,6 +1,7 @@
 import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiChevronDown } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import paths from '../../app/router/paths';
+import SearchOverlay from '../SearchOverlay/SearchOverlay';
 import styles from './Header.module.css';
 
 const CATEGORIES = [
@@ -31,13 +32,7 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
           </div>
 
           <div className={styles.headerCenter}>
-            <div className={styles.searchBar}>
-              <input
-                type="text"
-                placeholder="Поиск товаров"
-                className={styles.searchInput}
-              />
-            </div>
+            <SearchOverlay variant="desktop" />
           </div>
 
           <div className={styles.headerRight}>

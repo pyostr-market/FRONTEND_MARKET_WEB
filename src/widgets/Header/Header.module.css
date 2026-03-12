@@ -1,10 +1,13 @@
+/* ======================
+   Header
+====================== */
 .header {
   display: none;
   position: sticky;
   top: 0;
   z-index: 100;
   background-color: var(--surface);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 @media (min-width: 768px) {
@@ -13,23 +16,28 @@
   }
 }
 
+/* Top border */
 .headerTop {
   border-bottom: 1px solid var(--border);
 }
 
+/* Container */
 .headerContainer {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   padding: 10px 24px;
 }
 
+/* ======================
+   Header Left
+====================== */
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   min-width: 180px;
 }
 
@@ -40,20 +48,21 @@
 }
 
 .logoImage {
-  height: 50px;
+  height: 28px;
   width: auto;
   object-fit: contain;
+  padding-right: 20px;
 }
 
 .catalogBtn {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, #005bff 0%, #004ed6 100%);
+  background-color: var(--primary);
   color: var(--surface);
   border: none;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -62,44 +71,58 @@
 }
 
 .catalogBtn:hover {
-  background: linear-gradient(135deg, #004ed6 0%, #003db3 100%);
-  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.3);
+  background-color: var(--primary-hover);
 }
 
+/* ======================
+   Header Center
+====================== */
 .headerCenter {
   flex: 1;
   display: flex;
   justify-content: center;
   max-width: 550px;
+  position: relative;
+}
+
+.searchWrapper {
+  width: 100%;
+  position: relative;
 }
 
 .searchBar {
   width: 100%;
   display: flex;
-  background: linear-gradient(135deg, #005bff 0%, #004ed6 100%);
-  border-radius: 12px;
+  background-color: var(--primary);
+  border-radius: var(--radius-xl);
   padding: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.searchBar:hover {
+  background-color: var(--primary-hover);
 }
 
 .searchInput {
   flex: 1;
   padding: 11px 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   font-size: 14px;
   outline: none;
   background-color: var(--surface);
   color: var(--text);
+  cursor: pointer;
 }
 
 .searchInput::placeholder {
   color: var(--text-muted);
 }
 
-.searchInput:focus {
-  box-shadow: 0 0 0 2px rgba(0, 91, 255, 0.2);
-}
-
+/* ======================
+   Header Right
+====================== */
 .headerRight {
   display: flex;
   align-items: center;
@@ -118,7 +141,7 @@
   color: var(--text);
   cursor: pointer;
   padding: 6px 8px;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
   transition: background-color 0.2s;
   min-width: 56px;
@@ -144,7 +167,9 @@
   line-height: 1.2;
 }
 
-/* Categories Bar */
+/* ======================
+   Categories Bar
+====================== */
 .categoriesBar {
   background-color: var(--surface);
 }
@@ -164,7 +189,7 @@
   color: var(--text);
   font-size: 13px;
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   white-space: nowrap;
   transition: all 0.2s;
   font-weight: 500;
