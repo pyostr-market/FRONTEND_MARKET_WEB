@@ -19,40 +19,9 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-2);
   padding: 0 16px;
 }
 
 .mobileSearchWrapper {
-  flex: 1;
-  max-width: 400px;
-}
-
-.mobileActions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.mobileActionBtn {
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border-radius: var(--radius-lg);
-  transition: background-color 0.2s;
-}
-
-.mobileActionBtn:hover {
-  background-color: var(--surface-muted);
-}
-
-.mobileActionBtn svg {
-  color: var(--text-secondary);
+  width: 100%;
 }

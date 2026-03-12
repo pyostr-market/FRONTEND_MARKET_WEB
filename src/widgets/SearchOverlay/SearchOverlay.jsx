@@ -62,6 +62,11 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     inputRef.current?.focus();
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    setQuery('');
+  };
+
   const showMobile = variant === 'mobile';
   const showDesktop = variant === 'desktop';
 
@@ -69,7 +74,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     <div className={styles.searchContainer} ref={containerRef}>
       <div className={styles.searchBar}>
         <div className={styles.searchInputWrapper}>
-          <FiSearch size={18} className={styles.searchIcon} />
+          <FiSearch className={styles.searchIcon} strokeWidth={3} />
           <input
             ref={inputRef}
             type="text"
@@ -136,8 +141,8 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
             <div className={styles.mobileDropdown}>
               <div className={styles.mobileHeader}>
                 <span className={styles.mobileTitle}>Поиск</span>
-                <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
-                  Готово
+                <button className={styles.cancelBtn} onClick={handleClose}>
+                  Отмена
                 </button>
               </div>
 
