@@ -23,8 +23,25 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isCatalogOpen]);
 
+  // Блокировка прокрутки фона при открытом каталоге
+  useEffect(() => {
+    if (isCatalogOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCatalogOpen]);
+
   return (
     <header className={styles.header}>
+      {/* Overlay с blur эффектом */}
+      {isCatalogOpen && (
+        <div className={styles.overlay} onClick={() => setIsCatalogOpen(false)} />
+      )}
+      
       <div className={styles.headerTop} ref={catalogRef}>
         <div className={styles.headerContainer}>
           <div className={styles.headerLeft}>
