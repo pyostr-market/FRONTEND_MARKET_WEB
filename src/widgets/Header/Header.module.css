@@ -20,7 +20,7 @@
 
 /* Container */
 .headerContainer {
-  max-width: 1400px;
+  max-width: var(--max-width-header-pc);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -100,20 +100,23 @@
    Header Center
 ====================== */
 .headerCenter {
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 300px;
   display: flex;
   justify-content: center;
-  max-width: 550px;
   position: relative;
 }
 
 .searchWrapper {
   width: 100%;
+  max-width: 100%;
   position: relative;
 }
 
 .searchBar {
   width: 100%;
+  max-width: 100%;
   display: flex;
   background-color: var(--primary);
   border-radius: var(--radius-xl);
@@ -197,7 +200,7 @@
 }
 
 .categoriesContainer {
-  max-width: 1400px;
+  max-width: var(--max-width-header-pc);
   margin: 0 auto;
   display: flex;
   align-items: center;

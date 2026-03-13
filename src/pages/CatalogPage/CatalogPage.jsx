@@ -17,7 +17,7 @@ const CatalogPage = () => {
   }, [searchParams]);
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div>
       <h1>Каталог товаров</h1>
       {productTypeId ? (
         <p>Выбран тип товара: <strong>ID {productTypeId}</strong></p>

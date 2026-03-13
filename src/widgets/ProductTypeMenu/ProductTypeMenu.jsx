@@ -212,6 +212,7 @@ function ProductTypeMenu() {
                                 }}
                             >
                               {child.name}
+
                             </div>
                         ))}
                       </div>
