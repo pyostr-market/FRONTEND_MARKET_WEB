@@ -26,7 +26,6 @@
   gap: 4px;
   padding: 8px 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
   border-radius: 6px;
   background: transparent;
   border: none;
@@ -137,26 +136,10 @@
 }
 
 .skeletonItem {
-  width: 120px;
-  height: 36px;
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 0%,
-    #e0e0e0 50%,
-    #f0f0f0 100%
-  );
-  background-size: 200% 100%;
+  width: 86px;
+  height: 20px;
+  background: #e0e0e0;
   border-radius: 6px;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
 }
 
 /* Scrollbar styling */

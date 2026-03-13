@@ -53,12 +53,12 @@ function ProductTypeMenu() {
       if (result.success) {
         setProductTypes(result.data?.items || []);
       } else {
-        setError("Ошибка загрузки типов товаров");
+        // setError("Ошибка загрузки типов товаров");
         console.error(result.error);
       }
     } catch (err) {
       console.error(err);
-      setError("Ошибка загрузки типов товаров");
+      // setError("Ошибка загрузки типов товаров");
     }
 
     setLoading(false);

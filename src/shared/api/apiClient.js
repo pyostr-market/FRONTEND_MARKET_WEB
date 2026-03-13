@@ -40,6 +40,7 @@ document.addEventListener("keydown", (e) => {
 const BASE_URLS = {
     user: "https://market-user.open-gpt.ru",
     crm: "https://market-product.open-gpt.ru",
+    // crm: "https://0.0.0.0:8000",
 };
 
 
