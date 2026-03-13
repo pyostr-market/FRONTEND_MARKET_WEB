@@ -118,7 +118,13 @@ function ProductTypeMenu() {
   if (loading) {
     return (
         <div className={styles.container}>
-          <div className={styles.loading}>Загрузка...</div>
+          <nav className={styles.menu}>
+            {Array.from({ length: 7 }).map((_, index) => (
+                <div key={index} className={styles.skeleton}>
+                  <div className={styles.skeletonItem}></div>
+                </div>
+            ))}
+          </nav>
         </div>
     );
   }

@@ -124,18 +124,39 @@
 }
 
 /* Loading & Error states */
-.loading {
-  padding: 20px;
-  text-align: center;
-  color: #666;
-  font-size: 14px;
-}
-
 .error {
   padding: 20px;
   text-align: center;
   color: #dc3545;
   font-size: 14px;
+}
+
+/* Skeleton */
+.skeleton {
+  position: relative;
+}
+
+.skeletonItem {
+  width: 120px;
+  height: 36px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Scrollbar styling */
