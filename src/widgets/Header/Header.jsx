@@ -2,18 +2,8 @@ import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiChevronDown } fro
 import { Link } from 'react-router-dom';
 import paths from '../../app/router/paths';
 import SearchOverlay from '../SearchOverlay/SearchOverlay';
+import { ProductTypeMenu } from '../ProductTypeMenu';
 import styles from './Header.module.css';
-
-const CATEGORIES = [
-  'Смартфоны',
-  'Телевизоры',
-  'Планшеты',
-  'Компьютеры',
-  'Ноутбуки',
-  'Бытовая техника',
-  'Одежда',
-  'Детям',
-];
 
 const Header = ({ onProfileClick, isAuthorized = false }) => {
   return (
@@ -58,11 +48,7 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
 
       <div className={styles.categoriesBar}>
         <div className={styles.categoriesContainer}>
-          {CATEGORIES.map((category) => (
-            <Link key={category} to={paths.CATALOG} className={styles.categoryItem}>
-              {category}
-            </Link>
-          ))}
+          <ProductTypeMenu />
         </div>
       </div>
     </header>
