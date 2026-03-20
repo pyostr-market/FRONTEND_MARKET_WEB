@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import useCatalog from '../../shared/hooks/useCatalog';
 import useFilters from '../../shared/hooks/useFilters';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
+import useCategoryName from '../../shared/hooks/useCategoryName';
+import useProductTypeName from '../../shared/hooks/useProductTypeName';
 import { FiltersPanel } from '../../widgets/FiltersPanel';
 import { FiltersModal } from '../../widgets/FiltersModal';
 import { ProductGrid } from '../../widgets/ProductGrid';
@@ -19,6 +21,10 @@ const CatalogPage = () => {
   // Параметры из URL
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
+
+  // Получаем названия
+  const { categoryName } = useCategoryName(categoryId);
+  const { productTypeName } = useProductTypeName(productType);
 
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
@@ -127,14 +133,14 @@ const CatalogPage = () => {
    * Заголовок страницы
    */
   const getPageTitle = useCallback(() => {
-    if (categoryId) {
-      return `Категория ${categoryId}`;
+    if (categoryName) {
+      return categoryName;
     }
-    if (productType) {
-      return `Тип товара ${productType}`;
+    if (productTypeName) {
+      return productTypeName;
     }
     return 'Все товары';
-  }, [categoryId, productType]);
+  }, [categoryName, productTypeName]);
 
   /**
    * Обработчик смены изображения
