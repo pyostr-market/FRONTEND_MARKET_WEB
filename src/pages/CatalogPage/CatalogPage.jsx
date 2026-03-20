@@ -28,6 +28,7 @@ const CatalogPage = () => {
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
   // Сортировка
   const [sortBy, setSortBy] = useState('default');
@@ -42,6 +43,19 @@ const CatalogPage = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Отслеживание скролла для плавающей кнопки фильтра
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      // Показываем кнопку, когда проскроллили больше 100px
+      setShowFloatingFilter(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   // Хук каталога
   const {
@@ -116,14 +130,15 @@ const CatalogPage = () => {
 
   return (
     <div className={styles.catalogPage}>
-      {/* Кнопка фильтров для мобильных */}
+      {/* Верхняя панель для мобильных - сортировка и фильтры */}
       {isMobile && (
-        <div className={styles.mobileFiltersBar}>
+        <div className={styles.mobileTopBar}>
+          <SortDropdown sortBy={sortBy} onSortChange={handleSortChange} />
           <button
             className={styles.mobileFiltersBtn}
             onClick={() => setIsFiltersModalOpen(true)}
           >
-            <FiSliders size={20} />
+            <FiSliders size={18} />
             <span>Фильтры</span>
             {Object.keys(selectedFilters).length > 0 && (
               <span className={styles.filtersBadge}>
@@ -131,8 +146,6 @@ const CatalogPage = () => {
               </span>
             )}
           </button>
-
-          <SortDropdown sortBy={sortBy} onSortChange={handleSortChange} />
         </div>
       )}
 
@@ -186,6 +199,22 @@ const CatalogPage = () => {
           )}
         </div>
       </div>
+
+      {/* Плавающая кнопка фильтров для мобильных (появляется при скролле) */}
+      {isMobile && showFloatingFilter && (
+        <button
+          className={styles.floatingFiltersBtn}
+          onClick={() => setIsFiltersModalOpen(true)}
+        >
+          <FiSliders size={20} />
+          <span>Фильтры</span>
+          {Object.keys(selectedFilters).length > 0 && (
+            <span className={styles.floatingBadge}>
+              {Object.keys(selectedFilters).length}
+            </span>
+          )}
+        </button>
+      )}
 
       {/* Модальное окно фильтров для мобильных */}
       {isMobile && (

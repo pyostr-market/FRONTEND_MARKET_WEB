@@ -13,7 +13,7 @@
 
 @media (max-width: 767px) {
   .mainContent {
-    padding: var(--space-4);
+    /*padding: var(--space-4);*/
     padding-bottom: 80px;
   }
 }

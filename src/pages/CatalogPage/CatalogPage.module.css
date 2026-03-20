@@ -3,9 +3,79 @@
   background-color: #f5f7fa;
 }
 
+/* Mobile top bar - сортировка и фильтры */
+.mobileTopBar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e2e6;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Плавающая кнопка фильтров */
+.floatingFiltersBtn {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  z-index: 90;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.3);
+  transition: all 0.3s ease;
+  animation: slideUp 0.3s ease;
+}
+
+.floatingFiltersBtn:hover {
+  background-color: #004ecc;
+  transform: translateY(-2px);
+}
+
+.floatingFiltersBtn:active {
+  transform: translateY(0);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floatingBadge {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: #ffffff;
+  color: #005bff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Mobile filters bar */
 .mobileFiltersBar {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -81,28 +151,30 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-  padding: 16px 20px;
+  padding: 14px 20px;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f2f5;
 }
 
 .catalogInfo {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: baseline;
+  gap: 12px;
 }
 
 .catalogTitle {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: #1a1a1a;
 }
 
 .productsCount {
   font-size: 14px;
-  color: #666;
+  color: #888;
+  font-weight: 400;
 }
 
 /* Error message */
@@ -117,6 +189,14 @@
 
 /* Адаптив */
 @media (max-width: 768px) {
+  .mobileTopBar {
+    display: flex;
+  }
+
+  .floatingFiltersBtn {
+    display: flex;
+  }
+
   .catalogContent {
     padding: 0;
     gap: 0;
@@ -124,24 +204,27 @@
   }
 
   .catalogMain {
-    padding: 16px;
+    padding: 0;
     overflow: visible;
   }
 
   .catalogHeader {
-    margin-bottom: 12px;
+    margin-bottom: 0;
     border-radius: 0;
     box-shadow: none;
+    border: none;
     padding: 12px 16px;
   }
 
   .catalogTitle {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .productsCount {
+    font-size: 13px;
   }
 
   .mobileFiltersBar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    display: none;
   }
 }

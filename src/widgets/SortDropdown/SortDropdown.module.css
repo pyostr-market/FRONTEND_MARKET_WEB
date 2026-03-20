@@ -7,9 +7,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
-  background-color: #ffffff;
-  border: 1px solid #e0e2e6;
+  padding: 8px 14px;
+  background-color: #f5f7fa;
+  border: 1px solid transparent;
   border-radius: 8px;
   font-size: 14px;
   color: #1a1a1a;
@@ -18,21 +18,24 @@
 }
 
 .sortButton:hover {
-  border-color: #005bff;
-  background-color: #f8f9fa;
+  background-color: #eef0f4;
+  border-color: #d0d4db;
 }
 
 .sortLabel {
-  color: #666;
+  color: #888;
   font-weight: 400;
+  font-size: 13px;
 }
 
 .sortValue {
   font-weight: 500;
+  color: #1a1a1a;
 }
 
 .sortIcon {
   transition: transform 0.2s ease;
+  color: #888;
 }
 
 .sortIconOpen {
@@ -41,22 +44,23 @@
 
 .sortMenu {
   position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  min-width: 200px;
+  top: calc(100% + 6px);
+  right: 0;
+  left: auto;
+  min-width: 220px;
   background-color: #ffffff;
   border: 1px solid #e0e2e6;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   z-index: 100;
-  padding: 4px;
-  animation: fadeIn 0.15s ease;
+  padding: 6px;
+  animation: slideDown 0.2s ease;
 }
 
-@keyframes fadeIn {
+@keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -67,15 +71,15 @@
 .sortOption {
   display: block;
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px 14px;
   background: none;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 14px;
   color: #1a1a1a;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .sortOption:hover {
@@ -83,7 +87,29 @@
 }
 
 .sortOptionActive {
-  background-color: #e8f0fe;
-  color: #005bff;
+  background-color: #005bff;
+  color: #ffffff;
   font-weight: 500;
+}
+
+.sortOptionActive:hover {
+  background-color: #004ecc;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .sortButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .sortLabel {
+    display: none;
+  }
+
+  .sortMenu {
+    right: auto;
+    left: 0;
+    min-width: 180px;
+  }
 }
