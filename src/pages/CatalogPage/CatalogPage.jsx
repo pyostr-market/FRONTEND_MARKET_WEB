@@ -128,6 +128,13 @@ const CatalogPage = () => {
     return 'Все товары';
   }, [categoryId, productType]);
 
+  /**
+   * Обработчик смены изображения
+   */
+  const handleImageChange = useCallback((productId, imageIndex) => {
+    console.log(`Image changed for product ${productId} to index ${imageIndex}`);
+  }, []);
+
   return (
     <div className={styles.catalogPage}>
       {/* Верхняя панель для мобильных - сортировка и фильтры */}
@@ -189,6 +196,7 @@ const CatalogPage = () => {
             loadingMore={loadingMore}
             hasMore={hasMore}
             onLoadMore={loadMore}
+            onImageChange={handleImageChange}
           />
 
           {/* Ошибка */}

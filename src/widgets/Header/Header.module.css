@@ -226,14 +226,16 @@
 ====================== */
 .categoriesBar {
   background-color: transparent;
-  transition: transform 0.3s ease, opacity 0.3s ease, max-height 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
 .categoriesBarHidden {
   transform: translateY(-100%);
   opacity: 0;
-  max-height: 0;
+  position: absolute;
+  pointer-events: none;
 }
 
 .categoriesContainer {

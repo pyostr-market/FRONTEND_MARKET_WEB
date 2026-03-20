@@ -12,7 +12,7 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
   const { getTotalQuantity } = useCart();
   const cartCount = getTotalQuantity();
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isCategoriesVisible, setIsCategoriesVisible] = useState(true);
   const catalogRef = useRef(null);
 
   // Закрытие при клике вне области
@@ -39,13 +39,33 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
     };
   }, [isCatalogOpen]);
 
-  // Отслеживание скролла для скрытия categoriesBar
+  // Отслеживание скролла для скрытия categoriesBar с гистерезисом
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // Скрываем при скролле вниз больше 50px
+          // Показываем при скролле вверх меньше 30px (гистерезис 20px)
+          if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            setIsCategoriesVisible(false);
+          } else if (currentScrollY < lastScrollY && currentScrollY < 30) {
+            setIsCategoriesVisible(true);
+          }
+          
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -106,7 +126,7 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
         )}
       </div>
 
-      <div className={`${styles.categoriesBar} ${isScrolled ? styles.categoriesBarHidden : ''}`}>
+      <div className={`${styles.categoriesBar} ${!isCategoriesVisible ? styles.categoriesBarHidden : ''}`}>
         <div className={styles.categoriesContainer}>
           <ProductTypeMenu />
         </div>

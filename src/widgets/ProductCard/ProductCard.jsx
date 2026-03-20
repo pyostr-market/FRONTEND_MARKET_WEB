@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { AddToCart } from '../../features/add-to-cart';
 import LazyImage from '../../shared/ui/LazyImage';
+import { DEFAULT_IMAGES } from '../../shared/config/appConfig';
 import styles from './ProductCard.module.css';
 
 /**
@@ -12,76 +13,49 @@ import styles from './ProductCard.module.css';
 const ProductCard = ({ product, onImageChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchOffset, setTouchOffset] = useState(0);
 
   const images = useMemo(() => product?.images || [], [product?.images]);
   const hasMultipleImages = !imageError && images.length > 1;
-
-  /**
-   * Получить URL изображения
-   */
-  const getImageUrl = useCallback(() => {
-    if (imageError || !images.length) return null;
-
-    const mainImage = images.find((img) => img.is_main);
-    if (mainImage) return mainImage.image_url;
-
-    return images[currentImageIndex]?.image_url || images[0]?.image_url;
-  }, [images, currentImageIndex, imageError]);
-
-  /**
-   * Переключение на предыдущее изображение
-   */
-  const handlePrevImage = useCallback(() => {
-    if (!hasMultipleImages) return;
-
-    setCurrentImageIndex((prev) => {
-      const newIndex = prev === 0 ? images.length - 1 : prev - 1;
-      onImageChange?.(product.id, newIndex);
-      return newIndex;
-    });
-  }, [hasMultipleImages, images.length, onImageChange, product.id]);
-
-  /**
-   * Переключение на следующее изображение
-   */
-  const handleNextImage = useCallback(() => {
-    if (!hasMultipleImages) return;
-
-    setCurrentImageIndex((prev) => {
-      const newIndex = prev === images.length - 1 ? 0 : prev + 1;
-      onImageChange?.(product.id, newIndex);
-      return newIndex;
-    });
-  }, [hasMultipleImages, images.length, onImageChange, product.id]);
 
   /**
    * Свайп для мобильных
    */
   const handleTouchStart = useCallback((e) => {
     const touch = e.touches[0];
-    e.currentTarget.dataset.startX = touch.clientX;
+    setTouchStartX(touch.clientX);
+    setTouchOffset(0);
   }, []);
 
-  const handleTouchEnd = useCallback(
-    (e) => {
-      const startX = e.currentTarget.dataset.startX;
-      if (!startX) return;
+  const handleTouchMove = useCallback((e) => {
+    if (!touchStartX) return;
+    
+    const touch = e.touches[0];
+    const diff = touch.clientX - touchStartX;
+    setTouchOffset(diff);
+  }, [touchStartX]);
 
-      const endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
+  const handleTouchEnd = useCallback(() => {
+    if (!touchOffset) return;
 
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          handleNextImage();
+    const threshold = 50;
+    
+    if (Math.abs(touchOffset) > threshold) {
+      setCurrentImageIndex((prev) => {
+        if (touchOffset > 0) {
+          // Свайп вправо - предыдущее изображение
+          return prev === 0 ? images.length - 1 : prev - 1;
         } else {
-          handlePrevImage();
+          // Свайп влево - следующее изображение
+          return prev === images.length - 1 ? 0 : prev + 1;
         }
-      }
+      });
+    }
 
-      delete e.currentTarget.dataset.startX;
-    },
-    [handleNextImage, handlePrevImage]
-  );
+    setTouchStartX(0);
+    setTouchOffset(0);
+  }, [touchOffset, images.length]);
 
   /**
    * Форматирование цены
@@ -102,18 +76,45 @@ const ProductCard = ({ product, onImageChange }) => {
       <div
         className={styles.imageContainer}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.imageWrapper}>
-          <LazyImage
-            src={getImageUrl()}
-            alt={product?.name || 'Товар'}
-            className={styles.productImage}
-            observerOptions={{ rootMargin: '200px' }}
-            onError={() => setImageError(true)}
-          />
+          <div 
+            className={styles.carouselTrack} 
+            style={{ 
+              transform: `translateX(calc(-${currentImageIndex * 100}% + ${touchOffset}px))`,
+              transition: touchOffset ? 'none' : 'transform 0.3s ease-out'
+            }}
+          >
+            {images.length === 0 || imageError ? (
+              // Заглушка если нет изображений
+              <div className={styles.carouselSlide}>
+                <img
+                  src={DEFAULT_IMAGES.NOT_FOUND}
+                  alt="Нет изображения"
+                  className={styles.productImage}
+                />
+              </div>
+            ) : (
+              images.map((img, index) => (
+                <div key={img.upload_id || index} className={styles.carouselSlide}>
+                  <LazyImage
+                    src={img.image_url}
+                    alt={product?.name || 'Товар'}
+                    className={styles.productImage}
+                    observerOptions={{ rootMargin: '200px' }}
+                    onError={() => setImageError(true)}
+                  />
+                </div>
+              ))
+            )}
+          </div>
         </div>
+      </div>
 
+      {/* Контент */}
+      <div className={styles.productContent}>
         {/* Индикаторы карусели */}
         {hasMultipleImages && (
           <div className={styles.carouselIndicators}>
@@ -132,10 +133,7 @@ const ProductCard = ({ product, onImageChange }) => {
             ))}
           </div>
         )}
-      </div>
 
-      {/* Контент */}
-      <div className={styles.productContent}>
         {/* Название */}
         <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
 
