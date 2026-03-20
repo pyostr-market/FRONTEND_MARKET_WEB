@@ -21,27 +21,29 @@ const CART_STORAGE_KEY = 'marketplace_cart';
  */
 export const CartProvider = ({ children }) => {
   // Состояние корзины: { [productId]: quantity }
-  const [cartItems, setCartItems] = useState({});
-
-  // Загрузка из localStorage при монтировании
-  useEffect(() => {
+  const [cartItems, setCartItems] = useState(() => {
+    // Загрузка из localStorage при начальном рендере
     try {
       const savedCart = localStorage.getItem(CART_STORAGE_KEY);
       if (savedCart) {
         const parsed = JSON.parse(savedCart);
         if (typeof parsed === 'object' && parsed !== null) {
-          setCartItems(parsed);
+          console.log('Loaded cart from localStorage:', parsed);
+          return parsed;
         }
       }
     } catch (e) {
       console.error('Error loading cart from localStorage:', e);
     }
-  }, []);
+    return {};
+  });
 
   // Сохранение в localStorage при изменении
   useEffect(() => {
     try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+      const serialized = JSON.stringify(cartItems);
+      localStorage.setItem(CART_STORAGE_KEY, serialized);
+      console.log('Saved cart to localStorage:', cartItems);
     } catch (e) {
       console.error('Error saving cart to localStorage:', e);
     }

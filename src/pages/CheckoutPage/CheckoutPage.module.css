@@ -1,0 +1,67 @@
+.checkoutPage {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.checkoutContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: 24px;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: #f0f2f5;
+  border-color: #005bff;
+  color: #005bff;
+}
+
+.checkoutTitle {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.checkoutContent {
+  padding: 60px 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.checkoutText {
+  margin: 0;
+  font-size: 16px;
+  color: #666;
+}
+
+@media (max-width: 576px) {
+  .checkoutPage {
+    padding: 12px;
+  }
+
+  .checkoutTitle {
+    font-size: 22px;
+  }
+
+  .checkoutContent {
+    padding: 40px 20px;
+  }
+}

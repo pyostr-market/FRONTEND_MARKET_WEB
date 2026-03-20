@@ -1,0 +1,395 @@
+.cartPage {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.cartContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cartTitle {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.cartContent {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+
+/* Список товаров */
+.cartItems {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 120px 1fr 140px 140px 48px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease;
+}
+
+.cartItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.itemImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemName {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+.itemPrice {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.itemQuantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantityButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  color: #005bff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quantityButton:hover:not(:disabled) {
+  background-color: #e4e7eb;
+  border-color: #005bff;
+}
+
+.quantityButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityInput {
+  width: 60px;
+  height: 36px;
+  text-align: center;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  -moz-appearance: textfield;
+}
+
+.quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.itemTotal {
+  text-align: right;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.removeButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: #ff3b30;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: #fff5f5;
+}
+
+/* Итоговая панель */
+.cartSummary {
+  position: sticky;
+  top: 20px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  height: fit-content;
+}
+
+.summaryTitle {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.summaryLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.summaryValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-top: 12px;
+  border-top: 2px solid #f0f2f5;
+}
+
+.totalLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.checkoutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkoutButton:hover {
+  background-color: #004ecc;
+}
+
+.checkoutButton:active {
+  background-color: #0040a3;
+}
+
+.clearButton {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  background-color: #f0f2f5;
+  color: #666;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #e4e7eb;
+  color: #ff3b30;
+}
+
+/* Пустая корзина */
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.emptyCartIcon {
+  color: #d0d4db;
+  margin-bottom: 24px;
+}
+
+.emptyCartTitle {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.emptyCartText {
+  margin: 0 0 32px 0;
+  font-size: 16px;
+  color: #666;
+  max-width: 400px;
+}
+
+.emptyCartButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emptyCartButton:hover {
+  background-color: #004ecc;
+}
+
+/* Адаптив */
+@media (max-width: 992px) {
+  .cartContent {
+    grid-template-columns: 1fr;
+  }
+
+  .cartSummary {
+    position: static;
+  }
+
+  .cartItem {
+    grid-template-columns: 80px 1fr 120px 40px;
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+
+  .itemImage {
+    width: 80px;
+    height: 80px;
+    grid-row: 1 / 3;
+  }
+
+  .itemTotal {
+    grid-column: 2;
+    text-align: left;
+    font-size: 16px;
+  }
+
+  .itemQuantity {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .cartPage {
+    padding: 12px;
+  }
+
+  .cartTitle {
+    font-size: 22px;
+  }
+
+  .cartItem {
+    grid-template-columns: 70px 1fr 36px;
+    grid-template-rows: auto auto auto;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .itemImage {
+    width: 70px;
+    height: 70px;
+    grid-row: 1 / 3;
+  }
+
+  .itemName {
+    font-size: 14px;
+  }
+
+  .itemPrice {
+    font-size: 16px;
+  }
+
+  .itemTotal {
+    grid-column: 2 / 4;
+    font-size: 16px;
+  }
+
+  .itemQuantity {
+    grid-column: 2 / 4;
+  }
+
+  .quantityButton {
+    width: 32px;
+    height: 32px;
+  }
+
+  .quantityInput {
+    width: 50px;
+    height: 32px;
+  }
+
+  .summaryTotal {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .totalValue {
+    font-size: 20px;
+  }
+}

@@ -1,6 +1,7 @@
 import HomePage from '../../pages/HomePage/HomePage';
 import CatalogPage from '../../pages/CatalogPage/CatalogPage';
 import CartPage from '../../pages/CartPage/CartPage';
+import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import WishlistPage from '../../pages/WishlistPage/WishlistPage';
 import paths from './paths';
 
@@ -20,6 +21,12 @@ const routes = [
   {
     path: paths.CART,
     component: CartPage,
+    layout: 'main',
+    isPrivate: false,
+  },
+  {
+    path: paths.CHECKOUT,
+    component: CheckoutPage,
     layout: 'main',
     isPrivate: false,
   },
