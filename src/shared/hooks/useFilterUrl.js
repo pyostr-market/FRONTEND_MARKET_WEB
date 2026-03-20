@@ -71,40 +71,46 @@ const useFilterUrl = (filters = []) => {
     const newParams = new URLSearchParams(searchParams);
 
     // Обновляем sort_type
-    if (params.sort_type && params.sort_type !== 'default') {
-      newParams.set('sort_type', params.sort_type);
-    } else {
-      newParams.delete('sort_type');
+    if (params.sort_type) {
+      if (params.sort_type !== 'default') {
+        newParams.set('sort_type', params.sort_type);
+      } else {
+        newParams.delete('sort_type');
+      }
     }
 
     // Обновляем фильтры
-    if (params.filters) {
-      Object.entries(params.filters).forEach(([filterName, values]) => {
-        const paramName = `filter_${filterName}`;
-
-        if (values && values.length > 0) {
-          // Проверяем что фильтр существует
-          if (availableFilterValues[filterName]) {
-            // Валидируем значения
-            const validValues = values.filter((v) =>
-              availableFilterValues[filterName].has(v)
-            );
-
-            if (validValues.length > 0) {
-              newParams.set(
-                paramName,
-                encodeURIComponent(JSON.stringify(validValues))
-              );
-            } else {
-              newParams.delete(paramName);
-            }
-          } else {
-            newParams.delete(paramName);
-          }
-        } else {
-          newParams.delete(paramName);
+    if (params.filters !== undefined) {
+      // Сначала удаляем все filter_* параметры
+      Array.from(newParams.keys()).forEach((key) => {
+        if (key.startsWith('filter_')) {
+          newParams.delete(key);
         }
       });
+
+      // Затем добавляем новые значения
+      if (params.filters && typeof params.filters === 'object') {
+        Object.entries(params.filters).forEach(([filterName, values]) => {
+          const paramName = `filter_${filterName}`;
+
+          if (values && Array.isArray(values) && values.length > 0) {
+            // Проверяем что фильтр существует
+            if (availableFilterValues[filterName]) {
+              // Валидируем значения
+              const validValues = values.filter((v) =>
+                availableFilterValues[filterName].has(v)
+              );
+
+              if (validValues.length > 0) {
+                newParams.set(
+                  paramName,
+                  encodeURIComponent(JSON.stringify(validValues))
+                );
+              }
+            }
+          }
+        });
+      }
     }
 
     setSearchParams(newParams, { replace: true });

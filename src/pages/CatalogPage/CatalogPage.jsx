@@ -12,13 +12,6 @@ import styles from './CatalogPage.module.css';
 
 /**
  * Страница каталога товаров
- * Поддерживает:
- * - Фильтрацию по category и product_type
- * - Фильтры по атрибутам
- * - Infinite scroll
- * - Корзину
- * - Сортировку
- * - Синхронизацию с URL
  */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
@@ -37,7 +30,6 @@ const CatalogPage = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -46,48 +38,34 @@ const CatalogPage = () => {
   // Отслеживание скролла для плавающей кнопки фильтра
   useEffect(() => {
     if (!isMobile) return;
-
     const handleScroll = () => {
-      // Показываем кнопку, когда проскроллили больше 100px
       setShowFloatingFilter(window.scrollY > 100);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // Хук каталога (без sort_type - будет обновлено ниже)
-  const {
-    products,
-    total,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    filters,
-    filtersLoading,
-    applyFilters,
-    resetFilters,
-    loadMore,
-  } = useCatalog({
+  // Параметры каталога
+  const catalogParams = {
     category_id: categoryId ? parseInt(categoryId, 10) : null,
     product_type_id: productType ? parseInt(productType, 10) : null,
-    sort_type: 'default',
     limit: 12,
-  });
+  };
+
+  // Первый хук для получения фильтров (без сортировки)
+  const {
+    filters,
+    filtersLoading,
+    applyFilters: applyCatalogFilters,
+    resetFilters: resetCatalogFilters,
+  } = useCatalog({ ...catalogParams, sort_type: 'default' });
 
   // Хук для работы с URL (должен быть после filters)
   const {
     sort_type: urlSortType,
     filters: urlFilters,
     updateUrl,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   } = useFilterUrl(filters);
-
-  // Обновляем sort_type в useCatalog при изменении URL
-  useEffect(() => {
-    // sort_type обновляется через пересоздание хука useCatalog
-  }, [urlSortType]);
 
   // Хук фильтров - инициализируем из URL
   const {
@@ -96,47 +74,54 @@ const CatalogPage = () => {
     toggleFilterValue,
     applyFilters: applyLocalFilters,
     resetAll,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   } = useFilters(urlFilters);
+
+  // Второй хук для получения товаров с сортировкой
+  const {
+    products,
+    total,
+    loading,
+    loadingMore,
+    error,
+    hasMore,
+    applyFilters: applySortedFilters,
+    resetFilters: sortedResetFilters,
+    loadMore,
+  } = useCatalog({ ...catalogParams, sort_type: urlSortType });
 
   /**
    * Применение фильтров (кнопка "Показать")
    */
   const handleApplyFilters = useCallback(() => {
     const filtersToApply = applyLocalFilters();
-    applyFilters(filtersToApply);
+    applyCatalogFilters(filtersToApply);
+    applySortedFilters(filtersToApply);
     // Обновляем URL
     updateUrl({ filters: filtersToApply });
 
     if (isMobile) {
       setIsFiltersModalOpen(false);
     }
-  }, [applyLocalFilters, applyFilters, isMobile, updateUrl]);
+  }, [applyLocalFilters, applyCatalogFilters, applySortedFilters, isMobile, updateUrl]);
 
   /**
    * Сброс фильтров
    */
   const handleResetFilters = useCallback(() => {
     resetAll();
-    resetFilters();
+    resetCatalogFilters();
+    sortedResetFilters();
     // Очищаем URL
-    updateUrl({ filters: {} });
-  }, [resetAll, resetFilters, updateUrl]);
+    updateUrl({ filters: {}, sort_type: 'default' });
+  }, [resetAll, resetCatalogFilters, sortedResetFilters, updateUrl]);
 
   /**
    * Изменение сортировки
    */
   const handleSortChange = useCallback((value) => {
-    // Обновляем URL
+    // Обновляем URL - useCatalog автоматически перезагрузится
     updateUrl({ sort_type: value });
   }, [updateUrl]);
-
-  /**
-   * Переключение фильтра (для десктопа - без применения)
-   */
-  const handleToggleFilter = useCallback((filterName, value) => {
-    toggleFilterValue(filterName, value);
-  }, [toggleFilterValue]);
 
   /**
    * Заголовок страницы
@@ -185,7 +170,7 @@ const CatalogPage = () => {
           <FiltersPanel
             filters={filters}
             selectedFilters={selectedFilters}
-            onToggleFilter={handleToggleFilter}
+            onToggleFilter={toggleFilterValue}
             onApply={handleApplyFilters}
             onReset={handleResetFilters}
             hasChanges={hasChanges}
