@@ -1,15 +1,18 @@
 import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
+import { useCart } from '../../app/store/cartStore';
 import paths from '../../app/router/paths';
 import styles from './MobileNavbar.module.css';
 
 const MobileNavbar = ({ onProfileClick }) => {
   const location = useLocation();
+  const { getTotalQuantity } = useCart();
+  const cartCount = getTotalQuantity();
 
   const navItems = [
     { path: paths.HOME, icon: FiHome, label: 'Главная' },
     { path: paths.CATALOG, icon: FiGrid, label: 'Каталог' },
-    { path: paths.CART, icon: FiShoppingCart, label: 'Корзина' },
+    { path: paths.CART, icon: FiShoppingCart, label: 'Корзина', badge: cartCount },
     { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное' },
     { icon: FiUser, label: 'Профиль', isModal: true },
   ];
@@ -18,7 +21,7 @@ const MobileNavbar = ({ onProfileClick }) => {
     <nav className={styles.mobileNavbar}>
       <div className={styles.mobileNavbarContainer}>
         {navItems.map((item, index) => {
-          const { path, icon: Icon, label, isModal } = item;
+          const { path, icon: Icon, label, isModal, badge } = item;
 
           if (isModal) {
             return (
@@ -39,7 +42,12 @@ const MobileNavbar = ({ onProfileClick }) => {
               to={path}
               className={`${styles.mobileNavItem} ${location.pathname === path ? styles.active : ''}`}
             >
-              <Icon size={24} />
+              <div className={styles.navItemContent}>
+                <Icon size={24} />
+                {badge > 0 && (
+                  <span className={styles.navBadge}>{badge}</span>
+                )}
+              </div>
               <span>{label}</span>
             </Link>
           );

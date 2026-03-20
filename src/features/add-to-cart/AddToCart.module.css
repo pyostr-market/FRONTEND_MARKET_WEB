@@ -1,0 +1,65 @@
+.addButton {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #004ecc;
+}
+
+.addButton:active {
+  background-color: #0040a3;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.quantityBtn {
+  flex: 1;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #005bff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quantityBtn:hover {
+  background-color: #e4e7eb;
+  border-color: #005bff;
+}
+
+.quantityBtn:active {
+  background-color: #d0d4db;
+}
+
+.quantityBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityValue {
+  min-width: 40px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}

@@ -37,6 +37,31 @@
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+}
+
+.navItemContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  background-color: #ff3b30;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobileNavItem svg {

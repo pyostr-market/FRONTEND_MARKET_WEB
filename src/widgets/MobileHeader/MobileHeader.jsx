@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import paths from '../../app/router/paths';
 import SearchOverlay from '../SearchOverlay/SearchOverlay';
 import styles from './MobileHeader.module.css';
 

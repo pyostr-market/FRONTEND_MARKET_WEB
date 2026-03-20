@@ -1,0 +1,89 @@
+.sortDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.sortButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #ffffff;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sortButton:hover {
+  border-color: #005bff;
+  background-color: #f8f9fa;
+}
+
+.sortLabel {
+  color: #666;
+  font-weight: 400;
+}
+
+.sortValue {
+  font-weight: 500;
+}
+
+.sortIcon {
+  transition: transform 0.2s ease;
+}
+
+.sortIconOpen {
+  transform: rotate(180deg);
+}
+
+.sortMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  padding: 4px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sortOption {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #1a1a1a;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sortOption:hover {
+  background-color: #f5f7fa;
+}
+
+.sortOptionActive {
+  background-color: #e8f0fe;
+  color: #005bff;
+  font-weight: 500;
+}
