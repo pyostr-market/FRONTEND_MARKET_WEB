@@ -49,11 +49,11 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
           
-          // Скрываем при скролле вниз больше 50px
-          // Показываем при скролле вверх меньше 30px (гистерезис 20px)
-          if (currentScrollY > lastScrollY && currentScrollY > 50) {
+          // Скрываем при скролле вниз больше 150px
+          // Показываем при скролле вверх меньше 100px (гистерезис 50px)
+          if (currentScrollY > lastScrollY && currentScrollY > 150) {
             setIsCategoriesVisible(false);
-          } else if (currentScrollY < lastScrollY && currentScrollY < 30) {
+          } else if (currentScrollY < lastScrollY && currentScrollY < 100) {
             setIsCategoriesVisible(true);
           }
           
