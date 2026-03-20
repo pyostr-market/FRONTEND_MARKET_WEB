@@ -2,8 +2,8 @@ import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight } from 'react-icons/fi';
 import { useCart } from '../../app/store/cartStore';
-import LazyImage from '../../shared/ui/LazyImage';
-import { DEFAULT_IMAGES } from '../../shared/config/appConfig';
+import useCartProducts from '../../shared/hooks/useCartProducts';
+import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
 import paths from '../../app/router/paths';
 import styles from './CartPage.module.css';
 
@@ -19,6 +19,18 @@ const CartPage = () => {
     getTotalQuantity,
     MAX_ITEM_QUANTITY,
   } = useCart();
+
+  // Получаем ID товаров из корзины
+  const productIds = useMemo(() => {
+    return Object.keys(cartItems).map((id) => parseInt(id, 10));
+  }, [cartItems]);
+
+  // Загружаем реальные товары по ID
+  const {
+    products,
+    loading,
+    error,
+  } = useCartProducts(productIds);
 
   const totalItems = getTotalQuantity();
 
@@ -54,20 +66,15 @@ const CartPage = () => {
   }, [removeFromCart]);
 
   /**
-   * Товары в корзине (заглушка, пока нет API для получения деталей товаров)
+   * Товары в корзине с количествами
    */
   const cartProducts = useMemo(() => {
-    // Временные данные для демонстрации
-    // В реальности здесь будет запрос к API для получения деталей товаров по ID
-    return Object.entries(cartItems).map(([productId, quantity]) => ({
-      id: parseInt(productId, 10),
-      name: `Товар ${productId}`,
-      price: (1000 + parseInt(productId, 10) * 100).toString(),
-      image: null,
-      quantity,
+    return products.map((product) => ({
+      ...product,
+      quantity: cartItems[product.id] || 1,
       maxQuantity: MAX_ITEM_QUANTITY,
     }));
-  }, [cartItems, MAX_ITEM_QUANTITY]);
+  }, [products, cartItems, MAX_ITEM_QUANTITY]);
 
   /**
    * Общая сумма
@@ -82,6 +89,28 @@ const CartPage = () => {
    * Пустая корзина
    */
   if (cartProducts.length === 0) {
+    if (loading) {
+      return (
+        <div className={styles.cartPage}>
+          <div className={styles.cartContainer}>
+            <h1 className={styles.cartTitle}>Корзина</h1>
+            <div className={styles.loading}>Загрузка товаров...</div>
+          </div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className={styles.cartPage}>
+          <div className={styles.cartContainer}>
+            <h1 className={styles.cartTitle}>Корзина</h1>
+            <div className={styles.error}>Ошибка: {error}</div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.cartPage}>
         <div className={styles.emptyCart}>
@@ -111,12 +140,11 @@ const CartPage = () => {
           <div className={styles.cartItems}>
             {cartProducts.map((item) => (
               <div key={item.id} className={styles.cartItem}>
-                {/* Изображение */}
+                {/* Изображение со слайдером */}
                 <div className={styles.itemImage}>
-                  <LazyImage
-                    src={item.image || DEFAULT_IMAGES.NOT_FOUND}
+                  <ProductCardSlider
+                    images={item.images || []}
                     alt={item.name}
-                    className={styles.itemImage}
                   />
                 </div>
 

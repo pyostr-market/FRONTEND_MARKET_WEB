@@ -1,0 +1,132 @@
+.sliderContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.sliderImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Стрелки */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.arrow:hover {
+  background-color: #ffffff;
+  color: #005bff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.arrowLeft {
+  left: 8px;
+}
+
+.arrowRight {
+  right: 8px;
+}
+
+/* Индикаторы */
+.indicators {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.indicator:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.indicatorActive {
+  background-color: #ffffff;
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* Адаптив для корзины */
+@media (max-width: 992px) {
+  .sliderContainer {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sliderContainer {
+    width: 70px;
+    height: 70px;
+  }
+
+  .arrow {
+    width: 24px;
+    height: 24px;
+  }
+
+  .arrowLeft {
+    left: 4px;
+  }
+
+  .arrowRight {
+    right: 4px;
+  }
+
+  .indicators {
+    bottom: 4px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .indicator {
+    width: 5px;
+    height: 5px;
+  }
+
+  .indicatorActive {
+    width: 14px;
+  }
+}

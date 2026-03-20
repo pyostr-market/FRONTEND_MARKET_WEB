@@ -47,6 +47,35 @@ export const getProducts = async ({
 };
 
 /**
+ * Получить товары по списку ID
+ * @param {Array<number>} product_ids - Массив ID товаров
+ * @param {boolean} [f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {items: Array}, error: any}>}
+ */
+export const getProductsByIds = async (product_ids, f5 = false) => {
+  if (!product_ids || product_ids.length === 0) {
+    return {
+      success: true,
+      data: { items: [] },
+      error: null,
+    };
+  }
+
+  // Создаём params вручную для передачи множественных product_ids
+  const params = new URLSearchParams();
+  product_ids.forEach((id) => {
+    params.append('product_ids', id.toString());
+  });
+
+  return crmApi.request('/product', {
+    params,
+    f5,
+    // Кэш 10 секунд
+    ttl: 10000,
+  });
+};
+
+/**
  * Получить доступные фильтры для категории/типа товара
  * @param {Object} params
  * @param {number} [params.category_id] - ID категории

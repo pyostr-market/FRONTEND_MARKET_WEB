@@ -195,6 +195,89 @@
   font-size: 14px;
 }
 
+/* Секция типов товаров */
+.productTypesSection {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.productTypesTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 16px 0;
+  padding: 0 16px;
+}
+
+.typesLoading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px;
+  font-size: 14px;
+}
+
+.productTypesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 0 12px 16px;
+}
+
+.productTypeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.productTypeCard:hover {
+  background-color: #f0f2f5;
+  border-color: #005bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.15);
+}
+
+.productTypeCard:active {
+  transform: translateY(0);
+}
+
+.typeImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.typeImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.typeName {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 32px;
+}
+
 .popularProducts {
   display: flex;
   flex-direction: column;

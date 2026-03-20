@@ -1,15 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { FiSearch, FiX } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { searchProducts } from '../../features/search/searchProducts';
+import useProductTypes from '../../shared/hooks/useProductTypes';
+import LazyImage from '../../shared/ui/LazyImage';
 import styles from './SearchOverlay.module.css';
 
 const SearchOverlay = ({ variant = 'desktop' }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef(null);
   const containerRef = useRef(null);
+
+  // Загрузка типов товаров
+  const { productTypes, loading: typesLoading } = useProductTypes();
 
   const popularProducts = [
     'iPhone 15',
@@ -56,6 +63,14 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
   const handlePopularClick = (product) => {
     setQuery(product);
   };
+
+  /**
+   * Клик по типу товара
+   */
+  const handleProductTypeClick = useCallback((typeId) => {
+    navigate(`/catalog?product_type=${typeId}`);
+    setIsOpen(false);
+  }, [navigate]);
 
   const handleClear = () => {
     setQuery('');
@@ -169,20 +184,50 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                     <p>Ничего не найдено по запросу "{query}"</p>
                   </div>
                 ) : (
-                  <div className={styles.popularProducts}>
-                    <h3 className={styles.popularTitle}>Популярные товары</h3>
-                    <div className={styles.popularList}>
-                      {popularProducts.map((product, index) => (
-                        <button
-                          key={index}
-                          className={styles.popularItem}
-                          onClick={() => handlePopularClick(product)}
-                        >
-                          {product}
-                        </button>
-                      ))}
+                  <>
+                    {/* Популярные товары */}
+                    <div className={styles.popularProducts}>
+                      <h3 className={styles.popularTitle}>Популярные товары</h3>
+                      <div className={styles.popularList}>
+                        {popularProducts.map((product, index) => (
+                          <button
+                            key={index}
+                            className={styles.popularItem}
+                            onClick={() => handlePopularClick(product)}
+                          >
+                            {product}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+
+                    {/* Типы товаров */}
+                    <div className={styles.productTypesSection}>
+                      <h3 className={styles.productTypesTitle}>Категории</h3>
+                      {typesLoading ? (
+                        <div className={styles.typesLoading}>Загрузка...</div>
+                      ) : (
+                        <div className={styles.productTypesGrid}>
+                          {productTypes.map((type) => (
+                            <button
+                              key={type.id}
+                              className={styles.productTypeCard}
+                              onClick={() => handleProductTypeClick(type.id)}
+                            >
+                              <div className={styles.typeImage}>
+                                <LazyImage
+                                  src={type.image?.image_url || null}
+                                  alt={type.name}
+                                  className={styles.typeImage}
+                                />
+                              </div>
+                              <span className={styles.typeName}>{type.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

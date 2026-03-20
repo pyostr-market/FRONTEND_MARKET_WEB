@@ -60,10 +60,17 @@ const isExpired = (timestamp, ttl) => Date.now() - timestamp > ttl;
 /**
  * Генерация ключа для кэша
  * @param {string} endpoint
- * @param {object} params
+ * @param {object|URLSearchParams} params
  * @returns {string}
  */
-const getCacheKey = (endpoint, params) => `${CACHE_PREFIX}${JSON.stringify({ endpoint, params })}`;
+const getCacheKey = (endpoint, params) => {
+  // Преобразуем URLSearchParams в объект для кэширования
+  let paramsObj = params;
+  if (params instanceof URLSearchParams) {
+    paramsObj = params.toString();
+  }
+  return `${CACHE_PREFIX}${JSON.stringify({ endpoint, params: paramsObj })}`;
+};
 
 /**
  * Получение из memory cache
