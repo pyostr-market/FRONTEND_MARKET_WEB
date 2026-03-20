@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URLS } from "../config/appConfig";
 
 // -------------------- Кэш и версия --------------------
 
@@ -35,14 +36,6 @@ document.addEventListener("keydown", (e) => {
         console.log(`Cache version updated to ${CACHE_VERSION} → old localStorage cleared`);
     }
 });
-
-
-const BASE_URLS = {
-    user: "https://market-user.open-gpt.ru",
-    crm: "https://market-product.open-gpt.ru",
-    // crm: "http://0.0.0.0:8000",
-};
-
 
 // Активные запросы (для deduplication)
 const pendingRequests = {};
@@ -192,7 +185,14 @@ export async function request(
         baseService = "crm",
     } = {}
 ) {
-    const baseUrl = BASE_URLS[baseService] || BASE_URLS.crm;
+    // Маппинг имен сервисов
+    const serviceUrlMap = {
+        user: API_URLS.USER,
+        crm: API_URLS.CRM,
+        pricing: API_URLS.PRICING,
+    };
+    
+    const baseUrl = serviceUrlMap[baseService] || API_URLS.CRM;
     const cacheKey = getCacheKey(endpoint, params);
 
     // Принудительный сброс кэша через функцию

@@ -185,10 +185,17 @@
   cursor: pointer;
   transition: all 0.15s ease;
   background-color: #f8f8f8;
+  border: 1px solid transparent;
 }
 
 .groupItem:hover {
   background-color: #f0f0f0;
+  transform: translateX(4px);
+}
+
+.groupItemActive {
+  background-color: #e8f0fe;
+  border-color: #005bff;
   transform: translateX(4px);
 }
 
@@ -200,6 +207,11 @@
   text-overflow: ellipsis;
   display: block;
   line-height: 1.4;
+}
+
+.groupItemActive .groupItemName {
+  color: #005bff;
+  font-weight: 600;
 }
 
 /* Skeleton loading */

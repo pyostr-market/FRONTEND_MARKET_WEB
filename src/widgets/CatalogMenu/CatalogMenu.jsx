@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import { getCategoryTree, groupCategories } from "../../features/categories";
 import LazyImage from "../../shared/ui/LazyImage";
@@ -7,6 +7,7 @@ import styles from "./CatalogMenu.module.css";
 
 function CatalogMenu({ onClose }) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,21 @@ function CatalogMenu({ onClose }) {
 
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Текущая категория из URL
+  const currentCategoryId = searchParams.get('category');
+
+  /**
+   * Найти родительскую категорию для данной категории
+   */
+  const findParentCategory = useCallback((categoryId, items) => {
+    for (const item of items) {
+      if (item.children && item.children.some(child => child.id === parseInt(categoryId, 10))) {
+        return item.id;
+      }
+    }
+    return null;
+  }, []);
 
   /**
    * Загрузка дерева категорий
@@ -30,12 +46,28 @@ function CatalogMenu({ onClose }) {
       if (result.success) {
         const items = result.data?.items || [];
         setCategories(items);
-        
-        // Открываем первую категорию с детьми по умолчанию
-        const firstWithChildren = items.find(cat => cat.children && cat.children.length > 0);
-        if (firstWithChildren) {
-          setSelectedCategory(firstWithChildren.id);
-          setHoveredCategory(firstWithChildren.id);
+
+        // Если есть текущая категория из URL, находим и открываем её родительскую
+        if (currentCategoryId) {
+          const parentId = findParentCategory(currentCategoryId, items);
+          if (parentId) {
+            setSelectedCategory(parentId);
+            setHoveredCategory(parentId);
+          } else {
+            // Если родитель не найден, проверяем не является ли сама категория родительской
+            const isParent = items.find(cat => cat.id === parseInt(currentCategoryId, 10));
+            if (isParent && isParent.children && isParent.children.length > 0) {
+              setSelectedCategory(isParent.id);
+              setHoveredCategory(isParent.id);
+            }
+          }
+        } else {
+          // Открываем первую категорию с детьми по умолчанию
+          const firstWithChildren = items.find(cat => cat.children && cat.children.length > 0);
+          if (firstWithChildren) {
+            setSelectedCategory(firstWithChildren.id);
+            setHoveredCategory(firstWithChildren.id);
+          }
         }
       } else {
         console.error(result.error);
@@ -45,10 +77,10 @@ function CatalogMenu({ onClose }) {
     }
 
     setLoading(false);
-  }, []);
+  }, [currentCategoryId, findParentCategory]);
 
   /**
-   * Загрузка при монтировании
+   * Загрузка при монтировании и при изменении currentCategoryId
    */
   useEffect(() => {
     loadCategories();
@@ -198,15 +230,18 @@ function CatalogMenu({ onClose }) {
                     <div key={group.groupKey} className={styles.group}>
                       <h4 className={styles.groupTitle}>{group.groupName}</h4>
                       <div className={styles.groupItems}>
-                        {group.items.map((item) => (
-                          <div
-                            key={item.id}
-                            className={styles.groupItem}
-                            onClick={() => handleCategoryClick(item.id)}
-                          >
-                            <span className={styles.groupItemName}>{item.name}</span>
-                          </div>
-                        ))}
+                        {group.items.map((item) => {
+                          const isActive = item.id === parseInt(currentCategoryId, 10);
+                          return (
+                            <div
+                              key={item.id}
+                              className={`${styles.groupItem} ${isActive ? styles.groupItemActive : ''}`}
+                              onClick={() => handleCategoryClick(item.id)}
+                            >
+                              <span className={styles.groupItemName}>{item.name}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

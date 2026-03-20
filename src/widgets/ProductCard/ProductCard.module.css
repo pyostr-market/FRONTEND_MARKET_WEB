@@ -66,6 +66,14 @@
   gap: 4px;
   padding: 8px 0;
   margin-bottom: 4px;
+  min-height: 24px; /* Фиксированная высота для выравнивания */
+  align-items: center;
+}
+
+/* Пустой блок для карточек без слайдера (для выравнивания) */
+.carouselIndicatorsPlaceholder {
+  min-height: 24px;
+  margin-bottom: 4px;
 }
 
 .indicator {

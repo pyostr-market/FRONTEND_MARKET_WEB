@@ -1,11 +1,13 @@
 /**
  * Конфигурация приложения
+ * Все URL берутся из переменных окружения (.env)
  */
 
-// Базовые URL для API
+// Базовые URL для API из переменных окружения
 export const API_URLS = {
-  CRM: 'https://market-product.open-gpt.ru',
-  USER: 'https://market-user.open-gpt.ru',
+  CRM: process.env.REACT_APP_PRODUCT_SERVICE_BASE_URL || 'https://market-product.open-gpt.ru',
+  USER: process.env.REACT_APP_USER_SERVICE_BASE_URL || 'https://market-user.open-gpt.ru',
+  PRICING: process.env.REACT_APP_PRICING_ENGINE_BASE_URL || 'https://pricing-engine.demo-market.ru',
 };
 
 // Изображения по умолчанию

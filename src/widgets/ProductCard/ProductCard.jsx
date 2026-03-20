@@ -115,8 +115,8 @@ const ProductCard = ({ product, onImageChange }) => {
 
       {/* Контент */}
       <div className={styles.productContent}>
-        {/* Индикаторы карусели */}
-        {hasMultipleImages && (
+        {/* Индикаторы карусели или placeholder для выравнивания */}
+        {hasMultipleImages ? (
           <div className={styles.carouselIndicators}>
             {images.map((_, index) => (
               <button
@@ -132,6 +132,8 @@ const ProductCard = ({ product, onImageChange }) => {
               />
             ))}
           </div>
+        ) : (
+          <div className={styles.carouselIndicatorsPlaceholder} />
         )}
 
         {/* Название */}
