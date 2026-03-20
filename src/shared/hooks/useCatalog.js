@@ -30,6 +30,12 @@ const useCatalog = ({
   // Выбранные фильтры (примененные)
   const [appliedFilters, setAppliedFilters] = useState({});
 
+  // Ref для хранения актуальных appliedFilters
+  const appliedFiltersRef = useRef(appliedFilters);
+  useEffect(() => {
+    appliedFiltersRef.current = appliedFilters;
+  }, [appliedFilters]);
+
   // Пагинация
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -41,7 +47,7 @@ const useCatalog = ({
    * Загрузка товаров
    */
   const loadProducts = useCallback(
-    async (isAppend = false, customFilters = {}) => {
+    async (isAppend = false, customFilters = null, useCurrentFilters = false) => {
       if (loadingRef.current) return;
 
       loadingRef.current = true;
@@ -55,11 +61,21 @@ const useCatalog = ({
       try {
         const currentOffset = isAppend ? offset + limit : 0;
 
+        // Используем переданные фильтры или текущие из ref
+        let filtersToUse;
+        if (customFilters !== null) {
+          filtersToUse = customFilters;
+        } else if (useCurrentFilters) {
+          filtersToUse = appliedFiltersRef.current;
+        } else {
+          filtersToUse = {};
+        }
+
         const result = await productApi.getProducts({
           category_id,
           product_type_id,
           device_type_id,
-          attributes: { ...appliedFilters, ...customFilters },
+          attributes: filtersToUse,
           limit,
           offset: currentOffset,
           f5: !isAppend,
@@ -93,7 +109,8 @@ const useCatalog = ({
         loadingRef.current = false;
       }
     },
-    [category_id, product_type_id, device_type_id, appliedFilters, limit, offset]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [category_id, product_type_id, device_type_id, limit, offset]
   );
 
   /**
@@ -135,7 +152,7 @@ const useCatalog = ({
 
       // Загрузка с новыми фильтрами
       setTimeout(() => {
-        loadProducts(false, newFilters);
+        loadProducts(false, newFilters, false);
       }, 0);
     },
     [loadProducts]
@@ -150,7 +167,8 @@ const useCatalog = ({
     setProducts([]);
 
     setTimeout(() => {
-      loadProducts(false, {});
+      // Загружаем с пустыми фильтрами, но с текущей категорией/типом
+      loadProducts(false, {}, false);
     }, 0);
   }, [loadProducts]);
 
@@ -162,7 +180,8 @@ const useCatalog = ({
 
     const newOffset = offset + limit;
     setOffset(newOffset);
-    await loadProducts(true, {});
+    // Загружаем следующую страницу с текущими примененными фильтрами
+    await loadProducts(true, null, true);
   }, [loadingMore, hasMore, offset, limit, loadProducts]);
 
   /**
@@ -174,10 +193,11 @@ const useCatalog = ({
 
   useEffect(() => {
     // Сброс и загрузка товаров при изменении категории/типа
+    // Сбрасываем фильтры при переключении категории
     setProducts([]);
     setOffset(0);
     setAppliedFilters({});
-    loadProducts(false, {});
+    loadProducts(false, {}, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category_id, product_type_id, device_type_id]);
 

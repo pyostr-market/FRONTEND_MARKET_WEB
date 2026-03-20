@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 /**
  * Хук для управления состоянием фильтров
@@ -11,6 +11,12 @@ const useFilters = (initialFilters = {}) => {
 
   // Примененные фильтры
   const [appliedFilters, setAppliedFilters] = useState({});
+
+  // Синхронизация при изменении initialFilters (например, при смене категории)
+  useEffect(() => {
+    setSelectedFilters(initialFilters);
+    setAppliedFilters(initialFilters);
+  }, [initialFilters]);
 
   // Флаг наличия изменений
   const hasChanges = Object.keys(selectedFilters).length > 0 ||
