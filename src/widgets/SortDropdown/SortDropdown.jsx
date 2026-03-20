@@ -15,7 +15,6 @@ const SortDropdown = ({ sortBy, onSortChange }) => {
     { value: 'default', label: 'По умолчанию' },
     { value: 'price_asc', label: 'Сначала дешевле' },
     { value: 'price_desc', label: 'Сначала дороже' },
-    { value: 'popular', label: 'По популярности' },
   ];
 
   const currentOption = sortOptions.find((opt) => opt.value === sortBy) || sortOptions[0];

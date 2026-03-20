@@ -7,6 +7,7 @@ import { productApi } from '../../entities/product';
  * @param {number} [options.category_id] - ID категории
  * @param {number} [options.product_type_id] - ID типа товара
  * @param {number} [options.device_type_id] - ID типа устройства
+ * @param {string} [options.sort_type] - Тип сортировки: default, price_asc, price_desc
  * @param {number} [options.limit=10] - Количество товаров на страницу
  * @returns {Object}
  */
@@ -14,6 +15,7 @@ const useCatalog = ({
   category_id,
   product_type_id,
   device_type_id,
+  sort_type = 'default',
   limit = 10,
 } = {}) => {
   // Состояние товаров
@@ -75,6 +77,7 @@ const useCatalog = ({
           category_id,
           product_type_id,
           device_type_id,
+          sort_type,
           attributes: filtersToUse,
           limit,
           offset: currentOffset,
@@ -110,7 +113,7 @@ const useCatalog = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [category_id, product_type_id, device_type_id, limit, offset]
+    [category_id, product_type_id, device_type_id, sort_type, limit, offset]
   );
 
   /**
@@ -201,6 +204,14 @@ const useCatalog = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category_id, product_type_id, device_type_id]);
 
+  useEffect(() => {
+    // Перезагрузка при изменении сортировки
+    setProducts([]);
+    setOffset(0);
+    loadProducts(false, {}, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort_type]);
+
   return {
     // Товары
     products,
@@ -219,7 +230,7 @@ const useCatalog = ({
     applyFilters,
     resetFilters,
     loadMore,
-    refresh: () => loadProducts(false, appliedFilters),
+    refresh: () => loadProducts(false, null, true),
   };
 };
 

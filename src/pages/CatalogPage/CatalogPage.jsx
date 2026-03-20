@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useCatalog from '../../shared/hooks/useCatalog';
 import useFilters from '../../shared/hooks/useFilters';
+import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import { FiltersPanel } from '../../widgets/FiltersPanel';
 import { FiltersModal } from '../../widgets/FiltersModal';
 import { ProductGrid } from '../../widgets/ProductGrid';
@@ -16,7 +17,8 @@ import styles from './CatalogPage.module.css';
  * - Фильтры по атрибутам
  * - Infinite scroll
  * - Корзину
- * - Сортировку (UI)
+ * - Сортировку
+ * - Синхронизацию с URL
  */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
@@ -29,9 +31,6 @@ const CatalogPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
-
-  // Сортировка
-  const [sortBy, setSortBy] = useState('default');
 
   // Определение мобильного устройства
   useEffect(() => {
@@ -57,7 +56,7 @@ const CatalogPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // Хук каталога
+  // Хук каталога (без sort_type - будет обновлено ниже)
   const {
     products,
     total,
@@ -67,24 +66,38 @@ const CatalogPage = () => {
     hasMore,
     filters,
     filtersLoading,
-    appliedFilters,
     applyFilters,
     resetFilters,
     loadMore,
   } = useCatalog({
     category_id: categoryId ? parseInt(categoryId, 10) : null,
     product_type_id: productType ? parseInt(productType, 10) : null,
+    sort_type: 'default',
     limit: 12,
   });
 
-  // Хук фильтров
+  // Хук для работы с URL (должен быть после filters)
+  const {
+    sort_type: urlSortType,
+    filters: urlFilters,
+    updateUrl,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  } = useFilterUrl(filters);
+
+  // Обновляем sort_type в useCatalog при изменении URL
+  useEffect(() => {
+    // sort_type обновляется через пересоздание хука useCatalog
+  }, [urlSortType]);
+
+  // Хук фильтров - инициализируем из URL
   const {
     selectedFilters,
     hasChanges,
     toggleFilterValue,
     applyFilters: applyLocalFilters,
     resetAll,
-  } = useFilters(appliedFilters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  } = useFilters(urlFilters);
 
   /**
    * Применение фильтров (кнопка "Показать")
@@ -92,11 +105,13 @@ const CatalogPage = () => {
   const handleApplyFilters = useCallback(() => {
     const filtersToApply = applyLocalFilters();
     applyFilters(filtersToApply);
+    // Обновляем URL
+    updateUrl({ filters: filtersToApply });
 
     if (isMobile) {
       setIsFiltersModalOpen(false);
     }
-  }, [applyLocalFilters, applyFilters, isMobile]);
+  }, [applyLocalFilters, applyFilters, isMobile, updateUrl]);
 
   /**
    * Сброс фильтров
@@ -104,16 +119,24 @@ const CatalogPage = () => {
   const handleResetFilters = useCallback(() => {
     resetAll();
     resetFilters();
-  }, [resetAll, resetFilters]);
+    // Очищаем URL
+    updateUrl({ filters: {} });
+  }, [resetAll, resetFilters, updateUrl]);
 
   /**
    * Изменение сортировки
    */
   const handleSortChange = useCallback((value) => {
-    setSortBy(value);
-    // Логика сортировки будет реализована отдельно
-    console.log('Sort by:', value);
-  }, []);
+    // Обновляем URL
+    updateUrl({ sort_type: value });
+  }, [updateUrl]);
+
+  /**
+   * Переключение фильтра (для десктопа - без применения)
+   */
+  const handleToggleFilter = useCallback((filterName, value) => {
+    toggleFilterValue(filterName, value);
+  }, [toggleFilterValue]);
 
   /**
    * Заголовок страницы
@@ -140,7 +163,7 @@ const CatalogPage = () => {
       {/* Верхняя панель для мобильных - сортировка и фильтры */}
       {isMobile && (
         <div className={styles.mobileTopBar}>
-          <SortDropdown sortBy={sortBy} onSortChange={handleSortChange} />
+          <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />
           <button
             className={styles.mobileFiltersBtn}
             onClick={() => setIsFiltersModalOpen(true)}
@@ -162,7 +185,7 @@ const CatalogPage = () => {
           <FiltersPanel
             filters={filters}
             selectedFilters={selectedFilters}
-            onToggleFilter={toggleFilterValue}
+            onToggleFilter={handleToggleFilter}
             onApply={handleApplyFilters}
             onReset={handleResetFilters}
             hasChanges={hasChanges}
@@ -185,7 +208,7 @@ const CatalogPage = () => {
 
             {/* Сортировка для десктопа */}
             {!isMobile && (
-              <SortDropdown sortBy={sortBy} onSortChange={handleSortChange} />
+              <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />
             )}
           </div>
 

@@ -8,6 +8,7 @@ import { crmApi } from './apiClient';
  * @param {number} [params.device_type_id] - ID типа устройства (альтернатива product_type_id)
  * @param {string} [params.name] - Поиск по названию
  * @param {Object} [params.attributes] - Фильтры по атрибутам { RAM: ["8 GB"], Color: ["Black"] }
+ * @param {string} [params.sort_type] - Тип сортировки: default, price_asc, price_desc
  * @param {number} [params.limit=10] - Количество товаров
  * @param {number} [params.offset=0] - Смещение
  * @param {boolean} [params.f5=false] - Принудительный сброс кэша
@@ -19,6 +20,7 @@ export const getProducts = async ({
   device_type_id,
   name,
   attributes,
+  sort_type,
   limit = 10,
   offset = 0,
   f5 = false,
@@ -32,6 +34,7 @@ export const getProducts = async ({
   if (product_type_id) params.product_type_id = product_type_id;
   if (device_type_id) params.device_type_id = device_type_id;
   if (name) params.name = name;
+  if (sort_type) params.sort_type = sort_type;
 
   if (attributes && Object.keys(attributes).length > 0) {
     params.attributes = JSON.stringify(attributes);

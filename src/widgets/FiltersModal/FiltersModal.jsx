@@ -159,9 +159,9 @@ const FiltersModal = ({
                     onClick={() => toggleExpanded(filter.name)}
                   >
                     <span className={styles.filterName}>{filter.name}</span>
-                    <span className={styles.expandIcon}>
-                      {isExpanded ? '−' : '+'}
-                    </span>
+                    {/*<span className={styles.expandIcon}>*/}
+                    {/*  {isExpanded ? '−' : '+'}*/}
+                    {/*</span>*/}
                   </div>
 
                   <div className={styles.filterOptions}>
