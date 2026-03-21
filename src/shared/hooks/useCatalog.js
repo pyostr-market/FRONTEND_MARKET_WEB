@@ -243,13 +243,6 @@ const useCatalog = ({
     // Загружаем с API - используем initialFilters если есть
     // Перезагружаем только если категория изменилась или initialFilters изменились
     if (categoryChanged || filtersChanged) {
-      console.log('[useCatalog] Loading products:', {
-        categoryChanged,
-        filtersChanged,
-        prevFilters: prevFiltersStr,
-        currFilters: currFiltersStr,
-        initialFilters
-      });
       setProducts([]);
       setOffset(0);
       const filtersToUse = Object.keys(initialFilters).length > 0 ? initialFilters : {};

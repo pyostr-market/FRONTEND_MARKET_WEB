@@ -42,7 +42,7 @@ const CatalogPage = () => {
     category_id: categoryIdNum,
     product_type_id: productTypeIdNum,
     limit: 12,
-    enableCache: false, // Отключаем кэш для отладки
+    enableCache: true,
   };
 
   // Определение мобильного устройства
@@ -201,12 +201,10 @@ const CatalogPage = () => {
    * Сброс фильтров
    */
   const handleResetFilters = useCallback(() => {
-    console.log('[CatalogPage] handleResetFilters called');
     setSelectedFilters({});
     selectedFiltersRef.current = {};
     
     // Сбрасываем appliedFilters - это вызовет перезагрузку каталога через useEffect в useCatalog
-    console.log('[CatalogPage] Setting appliedFilters to empty');
     setAppliedFilters({});
     
     // Обновляем URL
@@ -257,13 +255,6 @@ const CatalogPage = () => {
   useEffect(() => {
     didRestoreScroll.current = false;
   }, [categoryId, productType]);
-
-  // Сохранение позиции скролла при уходе со страницы
-  useEffect(() => {
-    return () => {
-      sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
-    };
-  }, []);
 
   return (
     <div className={styles.catalogPage}>

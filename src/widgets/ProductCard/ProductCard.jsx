@@ -26,17 +26,18 @@ const ProductCard = ({ product, onImageChange }) => {
     : '#';
 
   /**
-   * Обработчик клика на товар — сохраняем позицию скролла
-   */
-  const handleProductClick = useCallback(() => {
-    sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
-  }, []);
-
-  /**
    * Обработчик нажатия на ссылку товара
    */
   const handleProductLinkClick = useCallback((e) => {
     // Сохраняем скролл перед переходом
+    sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+  }, []);
+
+  /**
+   * Обработчик нажатия на ссылку товара (для надёжности сохраняем и на mouseDown)
+   */
+  const handleProductLinkMouseDown = useCallback(() => {
+    // Сохраняем скролл при нажатии кнопки мыши
     sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
   }, []);
 
@@ -160,7 +161,12 @@ const ProductCard = ({ product, onImageChange }) => {
         )}
 
         {/* Название - ссылка на товар */}
-        <Link to={productLink} className={styles.productNameLink} onClick={handleProductClick}>
+        <Link 
+          to={productLink} 
+          className={styles.productNameLink} 
+          onClick={handleProductLinkClick}
+          onMouseDown={handleProductLinkMouseDown}
+        >
           <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
         </Link>
 
