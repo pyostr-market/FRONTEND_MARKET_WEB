@@ -70,6 +70,8 @@ const ProductPage = () => {
 
             {/* Основная инфа */}
             <div className={styles.mainInfo}>
+              <div className={styles.price_mobile}>{formatPrice(product.price)}</div>
+
               <h1 className={styles.title}>{product.name}</h1>
 
               <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>

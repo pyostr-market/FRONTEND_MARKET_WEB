@@ -4,7 +4,10 @@
   overflow-x: hidden;
 
 }
+.price_mobile {
+  display: none;
 
+}
 .productContainer {
   max-width: 1400px;
   margin: 0 auto;
@@ -271,6 +274,17 @@
 }
 
 @media (max-width: 768px) {
+  .price_mobile {
+    display: inline-block;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: white;
+    background: #10C44C;
+    padding: 6px 12px;
+    border-radius: 12px;
+
+  }
   .productPage {
     padding: 0;
     padding-bottom: 100px;
