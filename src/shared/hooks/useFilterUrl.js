@@ -34,28 +34,38 @@ const useFilterUrl = (filters = []) => {
       result.sort_type = sortType;
     }
 
-    // Парсим фильтры
-    filters.forEach((filter) => {
-      const paramName = `filter_${filter.name}`;
-      const paramValue = searchParams.get(paramName);
-
-      if (paramValue) {
+    // Парсим фильтры - извлекаем все filter_* параметры
+    // Если filters переданы, валидируем значения, иначе берём все найденные
+    const hasFilterDefinitions = filters && filters.length > 0;
+    
+    // Получаем все параметры из URL
+    searchParams.forEach((value, key) => {
+      if (key.startsWith('filter_')) {
+        const filterName = key.replace('filter_', '');
+        
         try {
-          const values = JSON.parse(decodeURIComponent(paramValue));
+          const values = JSON.parse(decodeURIComponent(value));
 
           if (Array.isArray(values)) {
-            // Валидируем каждое значение
-            const validValues = values.filter(
-              (v) => availableFilterValues[filter.name]?.has(v)
-            );
+            if (hasFilterDefinitions) {
+              // Валидируем каждое значение
+              const validValues = values.filter(
+                (v) => availableFilterValues[filterName]?.has(v)
+              );
 
-            if (validValues.length > 0) {
-              result.filters[filter.name] = validValues;
+              if (validValues.length > 0) {
+                result.filters[filterName] = validValues;
+              }
+            } else {
+              // Если фильтры ещё не загружены, берём все значения
+              if (values.length > 0) {
+                result.filters[filterName] = values;
+              }
             }
           }
         } catch (e) {
           // Игнорируем невалидный JSON
-          console.warn(`Invalid filter value for ${filter.name}:`, paramValue);
+          console.warn(`Invalid filter value for ${filterName}:`, value);
         }
       }
     });
@@ -94,9 +104,8 @@ const useFilterUrl = (filters = []) => {
           const paramName = `filter_${filterName}`;
 
           if (values && Array.isArray(values) && values.length > 0) {
-            // Проверяем что фильтр существует
+            // Если availableFilterValues существует, валидируем значения
             if (availableFilterValues[filterName]) {
-              // Валидируем значения
               const validValues = values.filter((v) =>
                 availableFilterValues[filterName].has(v)
               );
@@ -107,6 +116,12 @@ const useFilterUrl = (filters = []) => {
                   encodeURIComponent(JSON.stringify(validValues))
                 );
               }
+            } else {
+              // Если availableFilterValues ещё нет, добавляем все значения
+              newParams.set(
+                paramName,
+                encodeURIComponent(JSON.stringify(values))
+              );
             }
           }
         });

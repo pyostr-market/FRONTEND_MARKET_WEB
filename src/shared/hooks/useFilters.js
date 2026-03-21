@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 /**
  * Хук для управления состоянием фильтров
@@ -6,16 +6,30 @@ import { useState, useCallback, useEffect } from 'react';
  * @returns {Object}
  */
 const useFilters = (initialFilters = {}) => {
+  // Ref для отслеживания первой инициализации
+  const isInitialized = useRef(false);
+  const prevInitialFiltersRef = useRef(null);
+  
   // Выбранные значения фильтров (до применения)
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   // Примененные фильтры
   const [appliedFilters, setAppliedFilters] = useState({});
 
-  // Синхронизация при изменении initialFilters (например, при смене категории)
+  // Инициализация при первом рендере или при изменении initialFilters
   useEffect(() => {
-    setSelectedFilters(initialFilters);
-    setAppliedFilters(initialFilters);
+    const prevFilters = prevInitialFiltersRef.current;
+    const newFilters = initialFilters || {};
+    
+    // Проверяем, изменились ли initialFilters
+    const filtersChanged = JSON.stringify(prevFilters) !== JSON.stringify(newFilters);
+    
+    if (!isInitialized.current || filtersChanged) {
+      setSelectedFilters(newFilters);
+      setAppliedFilters(newFilters);
+      isInitialized.current = true;
+      prevInitialFiltersRef.current = newFilters;
+    }
   }, [initialFilters]);
 
   // Флаг наличия изменений

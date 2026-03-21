@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
-import useFilters from '../../shared/hooks/useFilters';
+import useCatalog from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
@@ -12,55 +11,39 @@ import { SortDropdown } from '../../widgets/SortDropdown';
 import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
 
+const SCROLL_KEY = 'catalogScroll_v1';
+
 /**
  * Страница каталога товаров
  */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
-  const pageMountedRef = useRef(false);
   const didRestoreScroll = useRef(false);
 
   // Параметры из URL
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
 
-  // Ключ для кэша на основе текущих параметров
-  const cacheKey = `catalog_${categoryId || 'all'}_${productType || 'all'}`;
-  
-  // Ключ для скролла на основе текущих параметров
-  const scrollKey = `catalogScroll_${categoryId || 'all'}_${productType || 'all'}`;
-
   // Получаем названия
   const { categoryName } = useCategoryName(categoryId);
   const { productTypeName } = useProductTypeName(productType);
-
-  // Отмечаем, что страница смонтировалась
-  useEffect(() => {
-    pageMountedRef.current = true;
-    return () => {
-      // Сохраняем позицию скролла при уходе со страницы
-      if (pageMountedRef.current === false) {
-        sessionStorage.setItem(scrollKey, window.scrollY.toString());
-      }
-    };
-  }, [scrollKey]);
-
-  // Восстановление позиции скролла после загрузки товаров
-  useEffect(() => {
-    return () => {
-      // Сохраняем позицию скролла при размонтировании
-      sessionStorage.setItem(scrollKey, window.scrollY.toString());
-    };
-  }, [scrollKey]);
 
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
-  // Получаем categoryId как число для кэша
+  // Получаем categoryId как число
   const categoryIdNum = categoryId ? parseInt(categoryId, 10) : null;
   const productTypeIdNum = productType ? parseInt(productType, 10) : null;
+
+  // Базовые параметры каталога
+  const catalogParamsBase = {
+    category_id: categoryIdNum,
+    product_type_id: productTypeIdNum,
+    limit: 12,
+    enableCache: true,
+  };
 
   // Определение мобильного устройства
   useEffect(() => {
@@ -82,40 +65,47 @@ const CatalogPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // Параметры каталога
-  const catalogParams = {
-    category_id: categoryIdNum,
-    product_type_id: productTypeIdNum,
-    limit: 12,
-    enableCache: true,
-    cacheKeyPrefix: cacheKey,
-  };
-
   // Первый хук для получения фильтров (без сортировки)
   const {
     filters,
     filtersLoading,
     applyFilters: applyCatalogFilters,
     resetFilters: resetCatalogFilters,
-  } = useCatalog({ ...catalogParams, sort_type: 'default' });
+  } = useCatalog({ ...catalogParamsBase, sort_type: 'default' });
 
-  // Хук для работы с URL (должен быть после filters)
+  // Хук для работы с URL - используем загруженные фильтры для парсинга
   const {
     sort_type: urlSortType,
     filters: urlFilters,
     updateUrl,
   } = useFilterUrl(filters);
 
-  // Хук фильтров - инициализируем из URL
-  const {
-    selectedFilters,
-    hasChanges,
-    toggleFilterValue,
-    applyFilters: applyLocalFilters,
-    resetAll,
-  } = useFilters(urlFilters);
+  // Сохраняем initialFilters только при изменении категории
+  const [initialFilters, setInitialFilters] = useState({});
+  const prevCategoryKey = useRef(`${categoryId}-${productType}`);
+  const prevCategoryKeyForSelected = useRef(`${categoryId}-${productType}`);
+  
+  useEffect(() => {
+    const currentKey = `${categoryId}-${productType}`;
+    if (prevCategoryKey.current !== currentKey) {
+      // Категория изменилась - сбрасываем initialFilters (они загрузятся из URL при следующем рендере)
+      setInitialFilters({});
+      prevCategoryKey.current = currentKey;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryId, productType]);
 
-  // Второй хук для получения товаров с сортировкой
+  // Обновляем initialFilters из urlFilters после загрузки фильтров
+  useEffect(() => {
+    const currentKey = `${categoryId}-${productType}`;
+    if (prevCategoryKey.current === currentKey && Object.keys(initialFilters).length === 0 && Object.keys(urlFilters).length > 0) {
+      // Категория не изменилась, но urlFilters загрузились - применяем их
+      setInitialFilters(urlFilters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlFilters]);
+
+  // Второй хук для получения товаров с сортировкой и применением фильтров из URL
   const {
     products,
     total,
@@ -126,33 +116,59 @@ const CatalogPage = () => {
     applyFilters: applySortedFilters,
     resetFilters: sortedResetFilters,
     loadMore,
-  } = useCatalog({ ...catalogParams, sort_type: urlSortType });
+  } = useCatalog({ ...catalogParamsBase, sort_type: urlSortType, initialFilters });
 
-  // Восстановление позиции скролла после загрузки товаров
+  // Локальное состояние для выбранных фильтров - инициализируем из initialFilters
+  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  const selectedFiltersRef = useRef(initialFilters);
+
+  // Обновляем ref при изменении selectedFilters
   useEffect(() => {
-    if (!loading && products.length > 0 && !didRestoreScroll.current) {
-      const savedPosition = sessionStorage.getItem(scrollKey);
-      if (savedPosition) {
-        const position = parseInt(savedPosition, 10);
-        window.scrollTo(0, position);
-        didRestoreScroll.current = true;
-      }
+    selectedFiltersRef.current = selectedFilters;
+  }, [selectedFilters]);
+
+  // Синхронизация selectedFilters с initialFilters только при изменении категории
+  useEffect(() => {
+    const currentKey = `${categoryId}-${productType}`;
+    if (prevCategoryKeyForSelected.current !== currentKey) {
+      // Категория изменилась - синхронизируем selectedFilters с initialFilters
+      setSelectedFilters(initialFilters);
+      selectedFiltersRef.current = initialFilters;
+      prevCategoryKeyForSelected.current = currentKey;
     }
-  }, [loading, products.length, scrollKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialFilters, categoryId, productType]);
 
-  // Сохранение позиции скролла при уходе со страницы
-  useEffect(() => {
-    return () => {
-      // Сохраняем текущую позицию скролла
-      sessionStorage.setItem(scrollKey, window.scrollY.toString());
-    };
-  }, [scrollKey]);
+  // Флаг наличия изменений
+  const hasChanges = Object.keys(selectedFilters).length > 0;
+
+  /**
+   * Переключение значения фильтра
+   */
+  const toggleFilterValue = useCallback((filterName, value) => {
+    setSelectedFilters((prev) => {
+      const currentValues = prev[filterName] || [];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((v) => v !== value)
+        : [...currentValues, value];
+
+      if (newValues.length === 0) {
+        const { [filterName]: _, ...rest } = prev;
+        return rest;
+      }
+
+      return {
+        ...prev,
+        [filterName]: newValues,
+      };
+    });
+  }, []);
 
   /**
    * Применение фильтров (кнопка "Показать")
    */
   const handleApplyFilters = useCallback(() => {
-    const filtersToApply = applyLocalFilters();
+    const filtersToApply = selectedFiltersRef.current;
     applyCatalogFilters(filtersToApply);
     applySortedFilters(filtersToApply);
     updateUrl({ filters: filtersToApply });
@@ -160,28 +176,24 @@ const CatalogPage = () => {
     if (isMobile) {
       setIsFiltersModalOpen(false);
     }
-  }, [applyLocalFilters, applyCatalogFilters, applySortedFilters, isMobile, updateUrl]);
+  }, [applyCatalogFilters, applySortedFilters, isMobile, updateUrl]);
 
   /**
    * Сброс фильтров
    */
   const handleResetFilters = useCallback(() => {
-    resetAll();
+    setSelectedFilters({});
     resetCatalogFilters();
     sortedResetFilters();
     updateUrl({ filters: {}, sort_type: 'default' });
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
-    didRestoreScroll.current = false;
-  }, [resetAll, resetCatalogFilters, sortedResetFilters, updateUrl, categoryIdNum, productTypeIdNum]);
+  }, [resetCatalogFilters, sortedResetFilters, updateUrl]);
 
   /**
    * Изменение сортировки
    */
   const handleSortChange = useCallback((value) => {
     updateUrl({ sort_type: value });
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
-    didRestoreScroll.current = false;
-  }, [updateUrl, categoryIdNum, productTypeIdNum]);
+  }, [updateUrl]);
 
   /**
    * Заголовок страницы
@@ -201,6 +213,26 @@ const CatalogPage = () => {
    */
   const handleImageChange = useCallback((productId, imageIndex) => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);
+  }, []);
+
+  // Восстановление позиции скролла после загрузки товаров
+  useEffect(() => {
+    if (!loading && products.length > 0 && !didRestoreScroll.current) {
+      const savedPosition = sessionStorage.getItem(SCROLL_KEY);
+      if (savedPosition) {
+        const position = parseInt(savedPosition, 10);
+        window.scrollTo(0, position);
+        didRestoreScroll.current = true;
+        sessionStorage.removeItem(SCROLL_KEY);
+      }
+    }
+  }, [loading, products.length]);
+
+  // Сохранение позиции скролла при уходе со страницы
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+    };
   }, []);
 
   return (

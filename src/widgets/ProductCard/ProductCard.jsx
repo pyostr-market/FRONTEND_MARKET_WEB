@@ -6,11 +6,10 @@ import paths from '../../app/router/paths';
 import styles from './ProductCard.module.css';
 import {DEFAULT_IMAGES} from "../../shared/config";
 
+const SCROLL_KEY = 'catalogScroll_v1';
+
 /**
  * Карточка товара
- * @param {Object} props
- * @param {Object} props.product - Данные товара
- * @param {Function} [props.onImageChange] - Callback при смене изображения
  */
 const ProductCard = ({ product, onImageChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -27,6 +26,13 @@ const ProductCard = ({ product, onImageChange }) => {
     : '#';
 
   /**
+   * Обработчик клика на товар — сохраняем позицию скролла
+   */
+  const handleProductClick = useCallback(() => {
+    sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+  }, []);
+
+  /**
    * Свайп для мобильных
    */
   const handleTouchStart = useCallback((e) => {
@@ -37,7 +43,7 @@ const ProductCard = ({ product, onImageChange }) => {
 
   const handleTouchMove = useCallback((e) => {
     if (!touchStartX) return;
-    
+
     const touch = e.touches[0];
     const diff = touch.clientX - touchStartX;
     setTouchOffset(diff);
@@ -47,7 +53,7 @@ const ProductCard = ({ product, onImageChange }) => {
     if (!touchOffset) return;
 
     const threshold = 50;
-    
+
     if (Math.abs(touchOffset) > threshold) {
       setCurrentImageIndex((prev) => {
         if (touchOffset > 0) {
@@ -87,9 +93,9 @@ const ProductCard = ({ product, onImageChange }) => {
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.imageWrapper}>
-          <div 
-            className={styles.carouselTrack} 
-            style={{ 
+          <div
+            className={styles.carouselTrack}
+            style={{
               transform: `translateX(calc(-${currentImageIndex * 100}% + ${touchOffset}px))`,
               transition: touchOffset ? 'none' : 'transform 0.3s ease-out'
             }}
@@ -146,7 +152,7 @@ const ProductCard = ({ product, onImageChange }) => {
         )}
 
         {/* Название - ссылка на товар */}
-        <Link to={productLink} className={styles.productNameLink}>
+        <Link to={productLink} className={styles.productNameLink} onClick={handleProductClick}>
           <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
         </Link>
 

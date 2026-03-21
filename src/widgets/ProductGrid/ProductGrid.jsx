@@ -15,12 +15,6 @@ const ProductGrid = ({
 }) => {
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
-  const productsRef = useRef(products);
-
-  // Сохраняем текущие товары в ref
-  useEffect(() => {
-    productsRef.current = products;
-  }, [products]);
 
   /**
    * Intersection Observer для infinite scroll

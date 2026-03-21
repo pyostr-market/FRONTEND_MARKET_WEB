@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { productApi } from '../../entities/product';
 
+const CATALOG_CACHE_KEY = 'catalogCache_v1';
+
 /**
  * Хук для управления состоянием каталога товаров
- * @param {Object} options
- * @param {string} options.cacheKeyPrefix - Префикс для ключа кэша
  */
 const useCatalog = ({
   category_id,
@@ -13,9 +13,10 @@ const useCatalog = ({
   sort_type = 'default',
   limit = 10,
   enableCache = false,
-  cacheKeyPrefix = 'catalogCache_v1',
+  cacheKeyPrefix = CATALOG_CACHE_KEY,
+  initialFilters = {},
 } = {}) => {
-  // Состояние товаров - всегда пустые изначально
+  // Состояние товаров
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,12 @@ const useCatalog = ({
     appliedFiltersRef.current = appliedFilters;
   }, [appliedFilters]);
 
+  // Ref для хранения initialFilters (чтобы избежать перерендеров)
+  const initialFiltersRef = useRef(initialFilters);
+  useEffect(() => {
+    initialFiltersRef.current = initialFilters;
+  }, [initialFilters]);
+
   // Пагинация
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -42,19 +49,14 @@ const useCatalog = ({
   // Ref для предотвращения дублирующих запросов
   const loadingRef = useRef(false);
 
-  // Ref для отслеживания, был ли уже запрос для текущей категории
-  const fetchKeyRef = useRef(`${category_id}-${product_type_id}-${device_type_id}`);
-  
-  // Обновляем fetchKey при изменении категории
-  useEffect(() => {
-    const newKey = `${category_id}-${product_type_id}-${device_type_id}`;
-    if (fetchKeyRef.current !== newKey) {
-      fetchKeyRef.current = newKey;
-    }
-  }, [category_id, product_type_id, device_type_id]);
-
   // Ref для отслеживания, восстановлен ли кэш
   const cacheRestoredRef = useRef(false);
+
+  // Ref для отслеживания предыдущей категории (для сброса кэша)
+  const prevCategoryRef = useRef(null);
+
+  // Ref для отслеживания предыдущих initialFilters
+  const prevInitialFiltersRef = useRef({});
 
   /**
    * Загрузка товаров
@@ -164,6 +166,7 @@ const useCatalog = ({
       setAppliedFilters(newFilters);
       setOffset(0);
       setProducts([]);
+      setLoading(true);
 
       setTimeout(() => {
         loadProducts(false, newFilters, false);
@@ -204,12 +207,22 @@ const useCatalog = ({
   }, [loadFilters]);
 
   useEffect(() => {
-    // При изменении категории/типа всегда сбрасываем флаг
-    cacheRestoredRef.current = false;
+    const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
+    const categoryChanged = prevCategoryRef.current !== categoryKey;
+    const filtersChanged = JSON.stringify(prevInitialFiltersRef.current) !== JSON.stringify(initialFilters);
     
-    // Восстанавливаем из кэша при изменении категории
-    if (enableCache) {
-      const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
+    // Сбрасываем флаг при изменении категории
+    if (categoryChanged) {
+      cacheRestoredRef.current = false;
+      prevCategoryRef.current = categoryKey;
+    }
+
+    // Сохраняем предыдущие initialFilters
+    prevInitialFiltersRef.current = initialFilters;
+
+    // Восстанавливаем из кэша только если категория изменилась и нет фильтров
+    if (enableCache && categoryChanged && Object.keys(initialFiltersRef.current).length === 0) {
+      const cacheKey = `${cacheKeyPrefix}_${categoryKey}`;
       try {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
@@ -219,8 +232,6 @@ const useCatalog = ({
             setProducts(cache.products || []);
             setTotal(cache.total || 0);
             setOffset(cache.offset || 0);
-            setAppliedFilters(cache.appliedFilters || {});
-            appliedFiltersRef.current = cache.appliedFilters || {};
             setLoading(false);
             setHasMore((cache.offset || 0) + (cache.products || []).length < (cache.total || 0));
             cacheRestoredRef.current = true;
@@ -232,32 +243,18 @@ const useCatalog = ({
       }
     }
 
-    // Сброс и загрузка товаров при изменении категории/типа
-    setProducts([]);
-    setOffset(0);
-    setAppliedFilters({});
-    loadProducts(false, {}, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category_id, product_type_id, device_type_id, enableCache, cacheKeyPrefix]);
-
-  // Сбрасываем флаг восстановления кэша при размонтировании
-  useEffect(() => {
-    return () => {
-      cacheRestoredRef.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    // Перезагрузка при изменении сортировки (только если не default)
-    if (sort_type !== 'default') {
+    // Загружаем с API - используем initialFilters если есть
+    // Перезагружаем только если категория изменилась или initialFilters изменились
+    if (categoryChanged || filtersChanged) {
       setProducts([]);
       setOffset(0);
-      loadProducts(false, {}, false);
+      const filtersToUse = Object.keys(initialFiltersRef.current).length > 0 ? initialFiltersRef.current : {};
+      loadProducts(false, filtersToUse, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sort_type]);
+  }, [category_id, product_type_id, device_type_id, enableCache, cacheKeyPrefix, initialFilters]);
 
-  // Сохранение состояния в кэш при изменениях (только если включен кэш)
+  // Сохранение состояния в кэш при изменениях (только товары, не фильтры!)
   useEffect(() => {
     if (!enableCache || loading || products.length === 0) {
       return;
@@ -268,7 +265,6 @@ const useCatalog = ({
       products,
       total,
       offset,
-      appliedFilters,
       sort_type,
       timestamp: Date.now(),
     };
@@ -277,7 +273,7 @@ const useCatalog = ({
     } catch (e) {
       console.warn('Failed to save catalog cache:', e);
     }
-  }, [enableCache, cacheKeyPrefix, category_id, product_type_id, products, total, offset, appliedFilters, sort_type, loading]);
+  }, [enableCache, cacheKeyPrefix, category_id, product_type_id, products, total, offset, sort_type, loading]);
 
   return {
     products,
@@ -299,17 +295,9 @@ const useCatalog = ({
 /**
  * Очистка кэша
  */
-export const clearCatalogCache = (category_id, product_type_id, cacheKeyPrefix = 'catalogCache_v1') => {
+export const clearCatalogCache = (category_id, product_type_id, cacheKeyPrefix = CATALOG_CACHE_KEY) => {
   const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
   localStorage.removeItem(cacheKey);
-};
-
-/**
- * Очистка всего кэша каталога
- */
-export const clearAllCatalogCache = (cacheKeyPrefix = 'catalogCache_v1') => {
-  const keys = Object.keys(localStorage).filter(k => k.startsWith(cacheKeyPrefix + '_'));
-  keys.forEach(k => localStorage.removeItem(k));
 };
 
 export default useCatalog;
