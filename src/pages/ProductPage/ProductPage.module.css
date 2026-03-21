@@ -9,15 +9,22 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 140px;
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .productContainer {
     padding: 12px;
-    padding-bottom: 100px;
+    padding-bottom: 200px; /* 60px навбар + ~100px кнопка + запас */
     overflow-x: hidden;
+  }
+}
+
+/* Дополнительный отступ для последнего элемента */
+@media (max-width: 768px) {
+  .productContainer > *:last-child {
+    margin-bottom: 80px;
   }
 }
 

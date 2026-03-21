@@ -1,12 +1,12 @@
 .mobileCartBar {
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: 60px; /* Высота MobileNavbar */
   left: 0;
   right: 0;
   background-color: #ffffff;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-  z-index: 90;
+  z-index: 110; /* Выше чем MobileNavbar (100) */
   padding: 12px 16px;
   padding-bottom: env(safe-area-inset-bottom, 0);
   box-sizing: border-box;
@@ -47,6 +47,7 @@
   text-decoration: none;
   margin-right: 12px;
   transition: background-color 0.2s ease;
+  width: 70%;
 }
 
 .cartLink:hover {
@@ -56,6 +57,7 @@
 .cartInfo {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
 }
 
@@ -91,6 +93,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 40%;
+  justify-content: space-between;
 }
 
 .quantityBtn {
@@ -128,6 +132,6 @@
 /* Показываем только на мобильных */
 @media (max-width: 768px) {
   .mobileCartBar {
-    display: block;
+    display: flex;
   }
 }

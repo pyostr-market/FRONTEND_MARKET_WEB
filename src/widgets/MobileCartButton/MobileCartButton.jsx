@@ -80,18 +80,14 @@ const MobileCartButton = ({ productId, price }) => {
 
   // Режим 2: Товар в корзине
   const totalPrice = price * quantity;
-
   return (
     <div className={styles.mobileCartBar}>
       <Link to="/cart" className={styles.cartLink}>
-        <FiShoppingCart size={20} />
         <div className={styles.cartInfo}>
           <span className={styles.cartLabel}>В корзине</span>
           <span className={styles.cartTotal}>{formatPrice(totalPrice)}</span>
         </div>
-        {totalItems > 0 && (
-          <span className={styles.cartBadge}>{totalItems}</span>
-        )}
+
       </Link>
 
       <div className={styles.quantityControl}>
