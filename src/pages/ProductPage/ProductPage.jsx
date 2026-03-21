@@ -3,7 +3,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductAttributes } from '../../widgets/ProductAttributes';
-import { BuyBox } from '../../widgets/BuyBox';
+import { AddToCart } from '../../features/add-to-cart';
 import paths from '../../app/router/paths';
 import styles from './ProductPage.module.css';
 
@@ -135,6 +135,19 @@ const ProductPage = () => {
   }, [selectedAttributes, variants, findVariantByAttributes, product?.id, navigate, searchParams, currentProductAttributes]);
 
   /**
+   * Форматирование цены
+   */
+  const formatPrice = useCallback((price) => {
+    if (!price) return '0 ₽';
+    const numPrice = parseFloat(price);
+    return new Intl.NumberFormat('ru-RU', {
+      style: 'currency',
+      currency: 'RUB',
+      maximumFractionDigits: 0,
+    }).format(numPrice);
+  }, []);
+
+  /**
    * Loading
    */
   if (loading) {
@@ -186,32 +199,37 @@ const ProductPage = () => {
         </nav>
 
         <div className={styles.productContent}>
-          {/* Левая часть - слайдер и атрибуты */}
-          <div className={styles.productMain}>
-            {/* Слайдер */}
-            <div className={styles.sliderSection}>
-              <ProductSlider
-                images={product.images || []}
-                alt={product.name}
-              />
-            </div>
-
-            {/* Атрибуты/фильтры */}
-            <div className={styles.attributesSection}>
-              <ProductAttributes
-                filters={filters}
-                selectedAttributes={selectedAttributes}
-                availableAttributeValues={availableAttributeValues}
-                currentProductAttributes={currentProductAttributes}
-                variants={variants}
-                onAttributeChange={handleAttributeChange}
-              />
-            </div>
+          {/* Левая часть - слайдер */}
+          <div className={styles.sliderSection}>
+            <ProductSlider
+              images={product.images || []}
+              alt={product.name}
+            />
           </div>
 
-          {/* Правая часть - BuyBox */}
+          {/* Средняя часть - атрибуты */}
+          <div className={styles.attributesSection}>
+            <ProductAttributes
+              filters={filters}
+              selectedAttributes={selectedAttributes}
+              availableAttributeValues={availableAttributeValues}
+              currentProductAttributes={currentProductAttributes}
+              variants={variants}
+              onAttributeChange={handleAttributeChange}
+            />
+          </div>
+
+          {/* Правая часть - корзина */}
           <div className={styles.productSidebar}>
-            <BuyBox product={product} />
+            <div className={styles.buyBox}>
+              <div className={styles.priceSection}>
+                <div className={styles.currentPrice}>{formatPrice(product.price)}</div>
+              </div>
+              
+              <div className={styles.addToCartSection}>
+                <AddToCart productId={product.id} />
+              </div>
+            </div>
           </div>
         </div>
 
