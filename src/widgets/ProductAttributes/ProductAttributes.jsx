@@ -89,8 +89,10 @@ const ProductAttributes = ({
    * Проверка выбранности значения
    */
   const isSelected = useCallback((attrName, attrValue) => {
-    return currentProductAttributes[attrName] === attrValue;
-  }, [currentProductAttributes]);
+    // Сначала проверяем selectedAttributes (из URL), затем currentProductAttributes
+    return selectedAttributes[attrName] === attrValue || 
+           (!selectedAttributes[attrName] && currentProductAttributes[attrName] === attrValue);
+  }, [selectedAttributes, currentProductAttributes]);
 
   // Если нет фильтров, не показываем ничего
   if (Object.keys(groupedFilters).length === 0) {

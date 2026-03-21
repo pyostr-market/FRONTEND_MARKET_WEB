@@ -1,10 +1,12 @@
 .productPage {
   min-height: 100vh;
+  background: #f5f5f5;
 }
 
 .productContainer {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 /* Loading / Error */
@@ -41,7 +43,6 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .error button:hover {
@@ -65,7 +66,6 @@
   padding: 4px 8px;
   margin: -4px -8px;
   border-radius: 4px;
-  transition: background-color 0.2s ease;
 }
 
 .crumb:hover {
@@ -76,54 +76,94 @@
   color: #999;
 }
 
-/* Контент товара */
+/* === НОВЫЙ LAYOUT === */
 .productContent {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 360px;
   gap: 24px;
   margin-bottom: 24px;
 }
 
-.sliderSection {
-  flex: 1;
-  min-width: 0;
+/* Галерея */
+.gallery {
+  border-radius: 12px;}
+
+/* Основная инфа */
+.mainInfo {
+  border-radius: 12px;
 }
 
-.attributesSection {
-  width: 280px;
-  flex-shrink: 0;
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #1a1a1a;
 }
 
-.productSidebar {
-  width: 400px;
-  flex-shrink: 0;
+.rating {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Блок покупки */
+.buyBlock {
   position: relative;
 }
 
-/* BuyBox упрощённый */
 .buyBox {
   background-color: #ffffff;
+  border: 1px solid #e3e6e6;
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 20px;
   position: sticky;
   top: 20px;
-  max-width: 300px;
 }
 
-.priceSection {
-  margin-bottom: 20px;
-}
-
-.currentPrice {
-  font-size: 32px;
+.price {
+  font-size: 30px;
   font-weight: 700;
+  margin-bottom: 12px;
   color: #1a1a1a;
-  line-height: 1.2;
+}
+
+.stock {
+  color: #00a046;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.buyNow {
+  width: 100%;
+  padding: 14px;
+  background-color: #ff9900;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s ease;
+}
+
+.buyNow:hover {
+  background-color: #e68a00;
 }
 
 .addToCartSection {
-  margin-top: 16px;
+  margin-top: 10px;
+}
+
+.delivery {
+  font-size: 13px;
+  color: #555;
+  margin-top: 10px;
+}
+
+.features {
+  margin-top: 12px;
+  padding-left: 16px;
+  font-size: 13px;
+  color: #333;
 }
 
 /* Описание */
@@ -132,7 +172,6 @@
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .sectionTitle {
@@ -154,7 +193,6 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .specsTable {
@@ -187,57 +225,32 @@
   font-weight: 500;
 }
 
-/* Адаптив */
+/* === АДАПТИВ === */
 @media (max-width: 1200px) {
   .productContent {
-    flex-wrap: wrap;
+    grid-template-columns: 1fr;
   }
 
-  .sliderSection {
-    flex: 1 1 100%;
-    order: 1;
-  }
-
-  .attributesSection {
-    width: 100%;
-    order: 2;
-  }
-
-  .productSidebar {
-    width: 100%;
-    order: 3;
+  .buyBox {
+    position: static;
   }
 }
 
 @media (max-width: 1024px) {
   .productContent {
-    flex-direction: column;
-  }
-
-  .productSidebar {
-    order: -1;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  .sliderSection {
-    order: 2;
-  }
-
-  .attributesSection {
-    order: 3;
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
   .productPage {
     padding: 0;
-    padding-bottom: 140px;
+    padding-bottom: 100px;
   }
 
   .productContainer {
     max-width: 100%;
+    padding: 0;
   }
 
   .breadcrumbs {
@@ -246,34 +259,31 @@
     padding: 0 12px;
   }
 
-  .sliderSection {
+  .gallery,
+  .mainInfo {
     padding: 16px;
     border-radius: 0;
     box-shadow: none;
   }
 
-  .attributesSection {
-    padding: 16px;
-    border-radius: 0;
-    box-shadow: none;
-    border-top: 1px solid #f0f2f5;
-    border-bottom: 1px solid #f0f2f5;
-  }
-
-  .productSidebar {
-    padding: 16px;
-    border-radius: 0;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  .buyBlock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: #ffffff;
+    padding: 12px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
   }
 
   .buyBox {
     padding: 0;
+    border: none;
     box-shadow: none;
   }
 
-  .currentPrice {
-    font-size: 28px;
+  .price {
+    font-size: 26px;
   }
 
   .sectionTitle {
