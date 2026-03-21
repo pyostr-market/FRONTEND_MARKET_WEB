@@ -76,25 +76,49 @@ export const getProductsByIds = async (product_ids, f5 = false) => {
 };
 
 /**
- * Получить товар по ID
- * @param {number} productId - ID товара
- * @param {boolean} [f5=false] - Принудительный сброс кэша
- * @returns {Promise<{success: boolean, data: {item: Object}, error: any}>}
+ * Получить товар по ID через загрузку категории
+ * @param {Object} params
+ * @param {number} params.product_id - ID товара
+ * @param {number} params.category_id - ID категории
+ * @param {boolean} [params.f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {item: Object|null}, error: any}>}
  */
-export const getProductById = async (productId, f5 = false) => {
-  if (!productId) {
+export const getProductById = async ({ product_id, category_id }, f5 = false) => {
+  if (!product_id || !category_id) {
     return {
       success: false,
       data: null,
-      error: 'Product ID is required',
+      error: 'Product ID and Category ID are required',
     };
   }
 
-  return crmApi.request(`/product/${productId}`, {
-    params: {},
+  // Загружаем все товары категории
+  const result = await crmApi.request('/product', {
+    params: {
+      category_id,
+      limit: 100,
+    },
     f5,
-    ttl: 60000, // 1 минута
+    ttl: 60000,
   });
+
+  if (result.success && result.data?.items?.length > 0) {
+    // Ищем нужный товар по ID
+    const item = result.data.items.find((p) => p.id === product_id);
+    if (item) {
+      return {
+        success: true,
+        data: { item },
+        error: null,
+      };
+    }
+  }
+
+  return {
+    success: true,
+    data: { item: null },
+    error: null,
+  };
 };
 
 /**
@@ -112,7 +136,7 @@ export const getCategoryProducts = async ({
 } = {}) => {
   const params = {
     category_id,
-    limit: 50, // Получаем все товары категории
+    limit: 100,
   };
 
   if (attributes && Object.keys(attributes).length > 0) {

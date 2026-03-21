@@ -21,8 +21,10 @@ const ProductCard = ({ product, onImageChange }) => {
   const images = useMemo(() => product?.images || [], [product?.images]);
   const hasMultipleImages = !imageError && images.length > 1;
 
-  // Ссылка на страницу товара
-  const productLink = product?.id ? paths.PRODUCT(product.id) : '#';
+  // Ссылка на страницу товара с category_id
+  const productLink = product?.id 
+    ? `${paths.PRODUCT(product.id)}?category=${product.category?.id || ''}`
+    : '#';
 
   /**
    * Свайп для мобильных

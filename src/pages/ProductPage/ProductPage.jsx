@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
@@ -14,6 +14,17 @@ const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [categoryId, setCategoryId] = useState(null);
+
+  // Категория из URL
+  const urlCategoryId = searchParams.get('category');
+
+  // Обновляем category_id при загрузке товара
+  useEffect(() => {
+    if (urlCategoryId) {
+      setCategoryId(parseInt(urlCategoryId, 10));
+    }
+  }, [urlCategoryId]);
 
   // Загрузка товара
   const {
@@ -24,7 +35,10 @@ const ProductPage = () => {
     findVariantByAttributes,
     loading,
     error,
-  } = useProduct(id ? parseInt(id, 10) : null);
+  } = useProduct({
+    product_id: id ? parseInt(id, 10) : null,
+    category_id: categoryId,
+  });
 
   // Текущие выбранные атрибуты из URL
   const selectedAttributes = useMemo(() => {

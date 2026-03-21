@@ -3,10 +3,12 @@ import { getProductById, getCategoryProducts, getCatalogFilters } from '../api/c
 
 /**
  * Хук для загрузки товара и его вариантов
- * @param {number} productId - ID товара
+ * @param {Object} params
+ * @param {number} params.product_id - ID товара
+ * @param {number} params.category_id - ID категории
  * @returns {Object}
  */
-const useProduct = (productId) => {
+const useProduct = ({ product_id, category_id }) => {
   const [product, setProduct] = useState(null);
   const [variants, setVariants] = useState([]);
   const [filters, setFilters] = useState([]);
@@ -16,19 +18,21 @@ const useProduct = (productId) => {
   /**
    * Загрузка товара
    */
-  const loadProduct = useCallback(async (id) => {
-    if (!id) return;
+  const loadProduct = useCallback(async (id, catId) => {
+    if (!id || !catId) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const result = await getProductById(id);
+      const result = await getProductById({ product_id: id, category_id: catId });
 
-      if (result.success) {
-        setProduct(result.data?.item || null);
+      if (result.success && result.data?.item) {
+        setProduct(result.data.item);
+      } else if (result.error) {
+        setError(result.error);
       } else {
-        setError(result.error?.message || 'Ошибка загрузки товара');
+        setError('Товар не найден');
       }
     } catch (err) {
       console.error('Error loading product:', err);
@@ -112,14 +116,10 @@ const useProduct = (productId) => {
    * Загрузка при монтировании
    */
   useEffect(() => {
-    if (!productId) return;
+    if (!product_id || !category_id) return;
 
-    const init = async () => {
-      await loadProduct(productId);
-    };
-
-    init();
-  }, [productId, loadProduct]);
+    loadProduct(product_id, category_id);
+  }, [product_id, category_id, loadProduct]);
 
   /**
    * Загрузка вариантов и фильтров при загрузке товара
