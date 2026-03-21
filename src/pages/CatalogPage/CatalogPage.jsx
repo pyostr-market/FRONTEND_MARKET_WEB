@@ -42,7 +42,7 @@ const CatalogPage = () => {
     category_id: categoryIdNum,
     product_type_id: productTypeIdNum,
     limit: 12,
-    enableCache: true,
+    enableCache: false, // Отключаем кэш для отладки
   };
 
   // Определение мобильного устройства
@@ -80,39 +80,31 @@ const CatalogPage = () => {
     updateUrl,
   } = useFilterUrl(filters);
 
-  // Сохраняем initialFilters только при изменении категории
-  const [initialFilters, setInitialFilters] = useState({});
+  // Используем urlFilters напрямую вместо initialFilters
+  // Это обеспечивает синхронизацию фильтров из URL с каталогом
+  const [appliedFilters, setAppliedFilters] = useState(urlFilters);
   const prevCategoryKey = useRef(`${categoryId}-${productType}`);
-  const prevCategoryKeyForSelected = useRef(`${categoryId}-${productType}`);
+  const prevUrlFiltersRef = useRef(urlFilters);
   
+  // Обновляем appliedFilters при изменении категории
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
     if (prevCategoryKey.current !== currentKey) {
-      // Категория изменилась - сбрасываем initialFilters (они загрузятся из URL при следующем рендере)
-      setInitialFilters({});
+      // Категория изменилась - сбрасываем appliedFilters
+      setAppliedFilters({});
       prevCategoryKey.current = currentKey;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, productType]);
-
-  // Обновляем initialFilters из urlFilters после загрузки фильтров
-  // Это нужно для синхронизации при загрузке страницы из URL
+  
+  // Обновляем appliedFilters из urlFilters при их изменении
   useEffect(() => {
-    const currentKey = `${categoryId}-${productType}`;
-    if (prevCategoryKey.current === currentKey) {
-      // Категория не изменилась - проверяем, нужно ли обновить initialFilters
-      const urlFiltersStr = JSON.stringify(urlFilters);
-      const initialFiltersStr = JSON.stringify(initialFilters);
-      
-      // Обновляем initialFilters если urlFilters изменились и initialFilters пуст
-      // ИЛИ если urlFilters отличаются от initialFilters (например, после применения)
-      if ((Object.keys(initialFilters).length === 0 && Object.keys(urlFilters).length > 0) ||
-          (urlFiltersStr !== initialFiltersStr && Object.keys(urlFilters).length > 0)) {
-        console.log('[CatalogPage] Updating initialFilters from urlFilters:', urlFilters);
-        setInitialFilters(urlFilters);
-      }
+    const prevStr = JSON.stringify(prevUrlFiltersRef.current);
+    const currStr = JSON.stringify(urlFilters);
+    if (prevStr !== currStr) {
+      setAppliedFilters(urlFilters);
+      prevUrlFiltersRef.current = urlFilters;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlFilters]);
 
   // Второй хук для получения товаров с сортировкой и применением фильтров из URL
@@ -126,25 +118,38 @@ const CatalogPage = () => {
     applyFilters: applySortedFilters,
     resetFilters: sortedResetFilters,
     loadMore,
-  } = useCatalog({ ...catalogParamsBase, sort_type: urlSortType, initialFilters });
+  } = useCatalog({ ...catalogParamsBase, sort_type: urlSortType, initialFilters: appliedFilters });
 
-  // Локальное состояние для выбранных фильтров - инициализируем из initialFilters
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
-  const selectedFiltersRef = useRef(initialFilters);
+  // Локальное состояние для выбранных фильтров - инициализируем из urlFilters
+  const [selectedFilters, setSelectedFilters] = useState(urlFilters);
+  const selectedFiltersRef = useRef(urlFilters);
 
   // Обновляем ref при изменении selectedFilters
   useEffect(() => {
     selectedFiltersRef.current = selectedFilters;
   }, [selectedFilters]);
 
-  // Синхронизация selectedFilters с initialFilters только при изменении категории
+  // Синхронизация selectedFilters с urlFilters при изменении URL
+  // Это нужно для отображения применённых фильтров в чекбоксах
+  useEffect(() => {
+    const selectedStr = JSON.stringify(selectedFiltersRef.current);
+    const urlStr = JSON.stringify(urlFilters);
+    
+    // Синхронизируем только если фильтры отличаются
+    if (selectedStr !== urlStr) {
+      setSelectedFilters(urlFilters);
+      selectedFiltersRef.current = urlFilters;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlFilters]);
+
+  // Сброс selectedFilters при изменении категории
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
-    if (prevCategoryKeyForSelected.current !== currentKey) {
-      // Категория изменилась - синхронизируем selectedFilters с initialFilters
-      setSelectedFilters(initialFilters);
-      selectedFiltersRef.current = initialFilters;
-      prevCategoryKeyForSelected.current = currentKey;
+    if (prevCategoryKey.current !== currentKey) {
+      // Категория изменилась - сбрасываем selectedFilters
+      setSelectedFilters(urlFilters);
+      selectedFiltersRef.current = urlFilters;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, productType]);
@@ -196,12 +201,17 @@ const CatalogPage = () => {
    * Сброс фильтров
    */
   const handleResetFilters = useCallback(() => {
+    console.log('[CatalogPage] handleResetFilters called');
     setSelectedFilters({});
     selectedFiltersRef.current = {};
-    resetCatalogFilters();
-    sortedResetFilters();
+    
+    // Сбрасываем appliedFilters - это вызовет перезагрузку каталога через useEffect в useCatalog
+    console.log('[CatalogPage] Setting appliedFilters to empty');
+    setAppliedFilters({});
+    
+    // Обновляем URL
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [resetCatalogFilters, sortedResetFilters, updateUrl]);
+  }, [updateUrl]);
 
   /**
    * Изменение сортировки
@@ -242,6 +252,11 @@ const CatalogPage = () => {
       }
     }
   }, [loading, products.length]);
+
+  // Сброс флага восстановления скролла при изменении категории
+  useEffect(() => {
+    didRestoreScroll.current = false;
+  }, [categoryId, productType]);
 
   // Сохранение позиции скролла при уходе со страницы
   useEffect(() => {

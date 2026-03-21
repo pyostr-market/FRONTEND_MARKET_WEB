@@ -176,6 +176,7 @@ const useCatalog = ({
     setAppliedFilters({});
     setOffset(0);
     setProducts([]);
+    setLoading(true);
 
     setTimeout(() => {
       loadProducts(false, {}, false);
@@ -203,7 +204,9 @@ const useCatalog = ({
   useEffect(() => {
     const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
     const categoryChanged = prevCategoryRef.current !== categoryKey;
-    const filtersChanged = JSON.stringify(prevInitialFiltersRef.current) !== JSON.stringify(initialFilters);
+    const prevFiltersStr = JSON.stringify(prevInitialFiltersRef.current);
+    const currFiltersStr = JSON.stringify(initialFilters);
+    const filtersChanged = prevFiltersStr !== currFiltersStr;
     
     // Сбрасываем флаг при изменении категории
     if (categoryChanged) {
@@ -240,10 +243,16 @@ const useCatalog = ({
     // Загружаем с API - используем initialFilters если есть
     // Перезагружаем только если категория изменилась или initialFilters изменились
     if (categoryChanged || filtersChanged) {
+      console.log('[useCatalog] Loading products:', {
+        categoryChanged,
+        filtersChanged,
+        prevFilters: prevFiltersStr,
+        currFilters: currFiltersStr,
+        initialFilters
+      });
       setProducts([]);
       setOffset(0);
       const filtersToUse = Object.keys(initialFilters).length > 0 ? initialFilters : {};
-      console.log('[useCatalog] Loading products with filters:', filtersToUse, 'categoryChanged:', categoryChanged, 'filtersChanged:', filtersChanged);
       loadProducts(false, filtersToUse, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

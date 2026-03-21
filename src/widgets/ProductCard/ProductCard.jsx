@@ -33,6 +33,14 @@ const ProductCard = ({ product, onImageChange }) => {
   }, []);
 
   /**
+   * Обработчик нажатия на ссылку товара
+   */
+  const handleProductLinkClick = useCallback((e) => {
+    // Сохраняем скролл перед переходом
+    sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+  }, []);
+
+  /**
    * Свайп для мобильных
    */
   const handleTouchStart = useCallback((e) => {
