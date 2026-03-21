@@ -1,0 +1,137 @@
+.variantsTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.variantGroup {
+  margin-bottom: 20px;
+}
+
+.variantGroup:last-child {
+  margin-bottom: 0;
+}
+
+.groupName {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.variantList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.variantCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 70px;
+}
+
+.variantCard:hover:not(:disabled) {
+  border-color: #005bff;
+  background-color: #f0f7ff;
+  transform: translateY(-2px);
+}
+
+.variantCardActive {
+  border-color: #005bff;
+  background-color: #e8f0fe;
+}
+
+.variantCard:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.variantImage {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.variantImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 10px;
+  color: #999;
+  text-align: center;
+}
+
+.activeMarker {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: #005bff;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.variantSpecs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.specItem {
+  font-size: 11px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .variantsContainer {
+    padding: 16px;
+  }
+
+  .variantImage {
+    width: 50px;
+    height: 50px;
+  }
+
+  .variantCard {
+    min-width: 60px;
+    padding: 8px;
+  }
+
+  .specItem {
+    font-size: 10px;
+  }
+}

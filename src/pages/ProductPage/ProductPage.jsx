@@ -3,7 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
-import { ProductAttributes } from '../../widgets/ProductAttributes';
+import { ProductVariants } from '../../widgets/ProductVariants';
+import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
 import { AddToCart } from '../../features/add-to-cart';
 import paths from '../../app/router/paths';
 import styles from './ProductPage.module.css';
@@ -25,9 +26,6 @@ const ProductPage = () => {
   const {
     product,
     variants,
-    filters,
-    availableAttributeValues,
-    findVariantByAttributes,
     loading,
     error,
   } = useProduct({
@@ -35,42 +33,11 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
-  const selectedAttributes = useMemo(() => {
-    const attrs = {};
-    searchParams.forEach((value, key) => {
-      if (key.startsWith('attr_')) {
-        const attrName = key.replace('attr_', '');
-        attrs[attrName] = value;
-      }
-    });
-    return attrs;
-  }, [searchParams]);
-
-  // Атрибуты текущего товара
-  const currentProductAttributes = useMemo(() => {
-    if (!product?.attributes) return {};
-    const attrs = {};
-    product.attributes.forEach((attr) => {
-      if (attr.is_filterable) {
-        attrs[attr.name] = attr.value;
-      }
-    });
-    return attrs;
-  }, [product]);
-
-  const handleAttributeChange = useCallback((attrName, attrValue) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set(`attr_${attrName}`, attrValue);
-
-    const newAttrs = { ...selectedAttributes, [attrName]: attrValue };
-    const variant = findVariantByAttributes(newAttrs);
-
-    if (variant) {
-      navigate(`/product/${variant.id}?${newParams.toString()}`, { replace: true });
-    } else {
-      setSearchParams(newParams, { replace: true });
+  const handleVariantSelect = useCallback((variant) => {
+    if (variant.id !== product?.id) {
+      navigate(`/product/${variant.id}?category=${urlCategoryId || variant.category?.id}`, { replace: true });
     }
-  }, [searchParams, selectedAttributes, findVariantByAttributes, navigate, setSearchParams]);
+  }, [product?.id, urlCategoryId, navigate]);
 
   const formatPrice = useCallback((price) => {
     if (!price) return '0 ₽';
@@ -101,14 +68,15 @@ const ProductPage = () => {
 
               <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>
 
-              <ProductAttributes
-                  filters={filters}
-                  selectedAttributes={selectedAttributes}
-                  currentProductAttributes={currentProductAttributes}
-                  availableAttributeValues={availableAttributeValues}
-                  variants={variants}
-                  onAttributeChange={handleAttributeChange}
+              {/* Миниатюры вариантов */}
+              <ProductVariants
+                variants={variants}
+                currentProductId={product.id}
+                onVariantSelect={handleVariantSelect}
               />
+
+              {/* Краткие характеристики */}
+              <ProductShortSpecs attributes={product.attributes} />
             </div>
 
             {/* Покупка */}
