@@ -5,6 +5,8 @@ const CATALOG_CACHE_KEY = 'catalogCache_v1';
 
 /**
  * Хук для управления состоянием каталога товаров
+ * @param {Object} options
+ * @param {string} depsKey - Ключ зависимости для принудительного обновления
  */
 const useCatalog = ({
   category_id,
@@ -13,29 +15,7 @@ const useCatalog = ({
   sort_type = 'default',
   limit = 10,
   enableCache = false,
-} = {}) => {
-  // Ref для кэша
-  const cachedStateRef = useRef(null);
-  
-  // Считываем кэш только при первом рендере
-  useEffect(() => {
-    if (enableCache) {
-      const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-          const state = JSON.parse(cached);
-          // Проверяем актуальность (не старше 5 минут)
-          if (Date.now() - state.timestamp < 5 * 60 * 1000) {
-            cachedStateRef.current = state;
-          }
-        }
-      } catch (e) {
-        console.warn('Failed to read cache:', e);
-      }
-    }
-  }, [enableCache, category_id, product_type_id]);
-
+} = {}, depsKey = '') => {
   // Состояние товаров - всегда пустые изначально
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
@@ -225,22 +205,33 @@ const useCatalog = ({
   }, [loadFilters]);
 
   useEffect(() => {
+    // При изменении категории/типа всегда сбрасываем флаг
+    cacheRestoredRef.current = false;
+    
     // Восстанавливаем из кэша при изменении категории
-    if (enableCache && cachedStateRef.current && !cacheRestoredRef.current) {
-      const cache = cachedStateRef.current;
-      setProducts(cache.products || []);
-      setTotal(cache.total || 0);
-      setOffset(cache.offset || 0);
-      setAppliedFilters(cache.appliedFilters || {});
-      appliedFiltersRef.current = cache.appliedFilters || {};
-      setLoading(false);
-      setHasMore((cache.offset || 0) + (cache.products || []).length < (cache.total || 0));
-      cacheRestoredRef.current = true;
-      return;
+    if (enableCache) {
+      const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const cache = JSON.parse(cached);
+          // Проверяем актуальность (не старше 5 минут)
+          if (Date.now() - cache.timestamp < 5 * 60 * 1000 && cache.products && cache.products.length > 0) {
+            setProducts(cache.products || []);
+            setTotal(cache.total || 0);
+            setOffset(cache.offset || 0);
+            setAppliedFilters(cache.appliedFilters || {});
+            appliedFiltersRef.current = cache.appliedFilters || {};
+            setLoading(false);
+            setHasMore((cache.offset || 0) + (cache.products || []).length < (cache.total || 0));
+            cacheRestoredRef.current = true;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to restore cache:', e);
+      }
     }
-
-    // Если уже было восстановление кэша - не загружаем заново
-    if (cacheRestoredRef.current) return;
 
     // Сброс и загрузка товаров при изменении категории/типа
     setProducts([]);
@@ -248,7 +239,7 @@ const useCatalog = ({
     setAppliedFilters({});
     loadProducts(false, {}, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category_id, product_type_id, device_type_id]);
+  }, [category_id, product_type_id, device_type_id, enableCache, depsKey]);
 
   // Сбрасываем флаг восстановления кэша при размонтировании
   useEffect(() => {
@@ -312,6 +303,14 @@ const useCatalog = ({
 export const clearCatalogCache = (category_id, product_type_id) => {
   const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
   localStorage.removeItem(cacheKey);
+};
+
+/**
+ * Очистка всего кэша каталога
+ */
+export const clearAllCatalogCache = () => {
+  const keys = Object.keys(localStorage).filter(k => k.startsWith(CATALOG_CACHE_KEY + '_'));
+  keys.forEach(k => localStorage.removeItem(k));
 };
 
 export default useCatalog;

@@ -1,14 +1,15 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import routes from './routes';
 import MainLayout from '../../shared/ui/MainLayout/MainLayout';
 
 const AppRouter = () => {
+  const location = useLocation();
   const layouts = {
     main: MainLayout,
   };
 
   return (
-    <Routes>
+    <Routes location={location} key={location.pathname + location.search}>
       {routes.map(({ path, component: Component, layout, isPrivate, showSearch }) => {
         const Layout = layouts[layout] || MainLayout;
 

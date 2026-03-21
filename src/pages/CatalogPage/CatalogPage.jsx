@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
+import useCatalog, { clearCatalogCache, clearAllCatalogCache } from '../../shared/hooks/useCatalog';
 import useFilters from '../../shared/hooks/useFilters';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
@@ -24,6 +24,9 @@ const CatalogPage = () => {
   // Параметры из URL
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
+  
+  // Ключ для принудительного эффекта при изменении параметров
+  const paramsKey = `${categoryId || ''}-${productType || ''}`;
 
   // Получаем названия
   const { categoryName } = useCategoryName(categoryId);
@@ -36,6 +39,12 @@ const CatalogPage = () => {
       pageMountedRef.current = false;
     };
   }, []);
+
+  // Очищаем кэш при изменении категории или product_type
+  useEffect(() => {
+    // Очищаем весь кэш каталога при изменении параметров
+    clearAllCatalogCache();
+  }, [paramsKey]);
 
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
@@ -83,7 +92,7 @@ const CatalogPage = () => {
     filtersLoading,
     applyFilters: applyCatalogFilters,
     resetFilters: resetCatalogFilters,
-  } = useCatalog({ ...catalogParams, sort_type: 'default' });
+  } = useCatalog({ ...catalogParams, sort_type: 'default' }, paramsKey);
 
   // Хук для работы с URL (должен быть после filters)
   const {
@@ -112,7 +121,7 @@ const CatalogPage = () => {
     applyFilters: applySortedFilters,
     resetFilters: sortedResetFilters,
     loadMore,
-  } = useCatalog({ ...catalogParams, sort_type: urlSortType });
+  } = useCatalog({ ...catalogParams, sort_type: urlSortType }, paramsKey);
 
   // Восстановление позиции скролла после загрузки товаров
   useEffect(() => {
