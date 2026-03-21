@@ -199,7 +199,7 @@ const ProductPage = () => {
         </nav>
 
         <div className={styles.productContent}>
-          {/* Левая часть - слайдер */}
+          {/* Слайдер */}
           <div className={styles.sliderSection}>
             <ProductSlider
               images={product.images || []}
@@ -207,7 +207,7 @@ const ProductPage = () => {
             />
           </div>
 
-          {/* Средняя часть - атрибуты */}
+          {/* Атрибуты */}
           <div className={styles.attributesSection}>
             <ProductAttributes
               filters={filters}
@@ -219,7 +219,7 @@ const ProductPage = () => {
             />
           </div>
 
-          {/* Правая часть - корзина */}
+          {/* Корзина */}
           <div className={styles.productSidebar}>
             <div className={styles.buyBox}>
               <div className={styles.priceSection}>

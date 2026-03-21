@@ -1,6 +1,5 @@
 .productPage {
   min-height: 100vh;
-  background-color: #f5f7fa;
 }
 
 .productContainer {
@@ -79,23 +78,25 @@
 
 /* Контент товара */
 .productContent {
-  display: grid;
-  grid-template-columns: 1fr 280px 400px;
+  display: flex;
+  flex-direction: row;
   gap: 24px;
   margin-bottom: 24px;
 }
 
-.productMain {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.sliderSection {
+  flex: 1;
+  min-width: 0;
 }
 
 .attributesSection {
-  border-radius: 12px;
+  width: 280px;
+  flex-shrink: 0;
 }
 
 .productSidebar {
+  width: 400px;
+  flex-shrink: 0;
   position: relative;
 }
 
@@ -107,6 +108,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 20px;
+  max-width: 300px;
 }
 
 .priceSection {
@@ -188,46 +190,50 @@
 /* Адаптив */
 @media (max-width: 1200px) {
   .productContent {
-    grid-template-columns: 1fr 400px;
-  }
-
-  .attributesSection {
-    grid-column: 1 / 2;
-    order: 2;
+    flex-wrap: wrap;
   }
 
   .sliderSection {
-    grid-column: 1 / 2;
+    flex: 1 1 100%;
     order: 1;
   }
 
+  .attributesSection {
+    width: 100%;
+    order: 2;
+  }
+
   .productSidebar {
-    grid-column: 2 / 3;
+    width: 100%;
     order: 3;
   }
 }
 
 @media (max-width: 1024px) {
   .productContent {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .productSidebar {
     order: -1;
-  }
-
-  .attributesSection {
-    order: 2;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   .sliderSection {
+    order: 2;
+  }
+
+  .attributesSection {
     order: 3;
   }
 }
 
 @media (max-width: 768px) {
   .productPage {
-    padding: 12px;
+    padding: 0;
+    padding-bottom: 140px;
   }
 
   .productContainer {
@@ -237,27 +243,55 @@
   .breadcrumbs {
     font-size: 13px;
     margin-bottom: 16px;
+    padding: 0 12px;
   }
 
   .sliderSection {
     padding: 16px;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .attributesSection {
-    order: 2;
+    padding: 16px;
+    border-radius: 0;
+    box-shadow: none;
+    border-top: 1px solid #f0f2f5;
+    border-bottom: 1px solid #f0f2f5;
   }
 
-  .descriptionSection,
-  .specsSection {
+  .productSidebar {
     padding: 16px;
+    border-radius: 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+
+  .buyBox {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .currentPrice {
+    font-size: 28px;
   }
 
   .sectionTitle {
     font-size: 18px;
+    padding: 0 12px;
   }
 
   .description {
     font-size: 14px;
+    padding: 0 12px;
+  }
+
+  .descriptionSection,
+  .specsSection {
+    padding: 16px 12px;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid #f0f2f5;
   }
 
   .specName {
