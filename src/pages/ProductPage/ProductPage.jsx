@@ -46,6 +46,18 @@ const ProductPage = () => {
     return attrs;
   }, [searchParams]);
 
+  // Атрибуты текущего товара
+  const currentProductAttributes = useMemo(() => {
+    if (!product?.attributes) return {};
+    const attrs = {};
+    product.attributes.forEach((attr) => {
+      if (attr.is_filterable) {
+        attrs[attr.name] = attr.value;
+      }
+    });
+    return attrs;
+  }, [product]);
+
   const handleAttributeChange = useCallback((attrName, attrValue) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set(`attr_${attrName}`, attrValue);
@@ -92,6 +104,7 @@ const ProductPage = () => {
               <ProductAttributes
                   filters={filters}
                   selectedAttributes={selectedAttributes}
+                  currentProductAttributes={currentProductAttributes}
                   availableAttributeValues={availableAttributeValues}
                   variants={variants}
                   onAttributeChange={handleAttributeChange}
