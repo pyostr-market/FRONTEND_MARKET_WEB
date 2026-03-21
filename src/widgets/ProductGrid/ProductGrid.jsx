@@ -15,27 +15,18 @@ const ProductGrid = ({
 }) => {
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
-  // Флаг, что пользователь начал скроллить (для предотвращения авто-подгрузки при восстановлении)
-  const userScrolled = useRef(false);
+  const productsRef = useRef(products);
 
-  // Отслеживаем, что пользователь начал скроллить
+  // Сохраняем текущие товары в ref
   useEffect(() => {
-    const handleScroll = () => {
-      userScrolled.current = true;
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    productsRef.current = products;
+  }, [products]);
 
   /**
    * Intersection Observer для infinite scroll
    */
   useEffect(() => {
-    // Не загружаем, если:
-    // - идет загрузка
-    // - нет больше товаров
-    // - пользователь еще не скроллил (защита от авто-подгрузки при восстановлении)
-    if (loading || loadingMore || !hasMore || !userScrolled.current) return;
+    if (loading || loadingMore || !hasMore) return;
 
     observerRef.current = new IntersectionObserver(
       (entries) => {

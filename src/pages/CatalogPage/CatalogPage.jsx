@@ -19,6 +19,7 @@ const SCROLL_POSITION_KEY = 'catalogScroll_v1';
  */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
+  const pageMountedRef = useRef(false);
 
   // Параметры из URL
   const categoryId = searchParams.get('category');
@@ -27,6 +28,14 @@ const CatalogPage = () => {
   // Получаем названия
   const { categoryName } = useCategoryName(categoryId);
   const { productTypeName } = useProductTypeName(productType);
+
+  // Отмечаем, что страница смонтировалась
+  useEffect(() => {
+    pageMountedRef.current = true;
+    return () => {
+      pageMountedRef.current = false;
+    };
+  }, []);
 
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
