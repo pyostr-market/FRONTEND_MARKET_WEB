@@ -26,6 +26,27 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* Горизонтальный скролл для мобильных */
+@media (max-width: 768px) {
+  .variantList {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .variantList::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  .variantCard {
+    flex: 0 0 auto;
+    min-width: 80px;
+  }
 }
 
 .variantCard {

@@ -1,21 +1,23 @@
 // ProductPage.jsx
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
 import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
+import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { AddToCart } from '../../features/add-to-cart';
-import paths from '../../app/router/paths';
 import styles from './ProductPage.module.css';
+import DOMPurify from "dompurify";
 
 const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [categoryId, setCategoryId] = useState(null);
 
-  const urlCategoryId = searchParams.get('category');
+  const urlCategoryId = window.location.search.includes('category=') 
+    ? new URLSearchParams(window.location.search).get('category') 
+    : null;
 
   useEffect(() => {
     if (urlCategoryId) {
@@ -102,10 +104,17 @@ const ProductPage = () => {
 
           </div>
 
+          {/* Мобильная кнопка корзины */}
+          <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
+
           {product.description && (
               <div className={styles.section}>
                 <h2>Описание</h2>
-                <p>{product.description}</p>
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
               </div>
           )}
 

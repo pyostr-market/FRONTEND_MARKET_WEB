@@ -65,11 +65,48 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 6px 14px;
+  background-color: rgba(0, 0, 0, 0.7);
   color: #ffffff;
   font-size: 13px;
   font-weight: 500;
   border-radius: 20px;
   z-index: 10;
+}
+
+/* Точки-индикаторы (мобильные) */
+.mobileIndicators {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.mobileIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobileIndicator:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.mobileIndicatorActive {
+  background-color: #ffffff;
+  width: 10px;
+  height: 10px;
 }
 
 /* Миниатюры */
@@ -136,43 +173,31 @@
 @media (max-width: 768px) {
   .sliderContainer {
     flex-direction: column;
-    gap: 12px;
+    gap: 0;
   }
 
   .mainImageWrapper {
+    width: 100%;
     max-width: 100%;
   }
 
-  .thumbnailsContainer {
-    flex-direction: row;
-    width: 100%;
-    max-height: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 8px 4px;
-  }
-
-  .thumbnail {
-    width: 72px;
-    height: 72px;
-  }
-
+  /* Скрываем стрелки на мобильных */
   .navButton {
-    width: 36px;
-    height: 36px;
+    display: none;
   }
 
-  .navButtonLeft {
-    left: 12px;
-  }
-
-  .navButtonRight {
-    right: 12px;
-  }
-
+  /* Скрываем счётчик на мобильных */
   .imageCounter {
-    bottom: 12px;
-    font-size: 12px;
-    padding: 4px 12px;
+    display: none;
+  }
+
+  /* Показываем точки-индикаторы */
+  .mobileIndicators {
+    display: flex;
+  }
+
+  /* Скрываем миниатюры на мобильных */
+  .thumbnailsContainer {
+    display: none;
   }
 }
