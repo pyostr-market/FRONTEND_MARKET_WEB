@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearCatalogCache, clearAllCatalogCache } from '../../shared/hooks/useCatalog';
+import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
 import useFilters from '../../shared/hooks/useFilters';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
@@ -12,21 +12,23 @@ import { SortDropdown } from '../../widgets/SortDropdown';
 import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
 
-const SCROLL_POSITION_KEY = 'catalogScroll_v1';
-
 /**
  * Страница каталога товаров
  */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
   const pageMountedRef = useRef(false);
+  const didRestoreScroll = useRef(false);
 
   // Параметры из URL
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
+
+  // Ключ для кэша на основе текущих параметров
+  const cacheKey = `catalog_${categoryId || 'all'}_${productType || 'all'}`;
   
-  // Ключ для принудительного эффекта при изменении параметров
-  const paramsKey = `${categoryId || ''}-${productType || ''}`;
+  // Ключ для скролла на основе текущих параметров
+  const scrollKey = `catalogScroll_${categoryId || 'all'}_${productType || 'all'}`;
 
   // Получаем названия
   const { categoryName } = useCategoryName(categoryId);
@@ -36,23 +38,25 @@ const CatalogPage = () => {
   useEffect(() => {
     pageMountedRef.current = true;
     return () => {
-      pageMountedRef.current = false;
+      // Сохраняем позицию скролла при уходе со страницы
+      if (pageMountedRef.current === false) {
+        sessionStorage.setItem(scrollKey, window.scrollY.toString());
+      }
     };
-  }, []);
+  }, [scrollKey]);
 
-  // Очищаем кэш при изменении категории или product_type
+  // Восстановление позиции скролла после загрузки товаров
   useEffect(() => {
-    // Очищаем весь кэш каталога при изменении параметров
-    clearAllCatalogCache();
-  }, [paramsKey]);
+    return () => {
+      // Сохраняем позицию скролла при размонтировании
+      sessionStorage.setItem(scrollKey, window.scrollY.toString());
+    };
+  }, [scrollKey]);
 
   // Мобильная версия
   const [isMobile, setIsMobile] = useState(false);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
-
-  // Флаги для восстановления
-  const didRestoreScroll = useRef(false);
 
   // Получаем categoryId как число для кэша
   const categoryIdNum = categoryId ? parseInt(categoryId, 10) : null;
@@ -84,6 +88,7 @@ const CatalogPage = () => {
     product_type_id: productTypeIdNum,
     limit: 12,
     enableCache: true,
+    cacheKeyPrefix: cacheKey,
   };
 
   // Первый хук для получения фильтров (без сортировки)
@@ -92,7 +97,7 @@ const CatalogPage = () => {
     filtersLoading,
     applyFilters: applyCatalogFilters,
     resetFilters: resetCatalogFilters,
-  } = useCatalog({ ...catalogParams, sort_type: 'default' }, paramsKey);
+  } = useCatalog({ ...catalogParams, sort_type: 'default' });
 
   // Хук для работы с URL (должен быть после filters)
   const {
@@ -121,28 +126,27 @@ const CatalogPage = () => {
     applyFilters: applySortedFilters,
     resetFilters: sortedResetFilters,
     loadMore,
-  } = useCatalog({ ...catalogParams, sort_type: urlSortType }, paramsKey);
+  } = useCatalog({ ...catalogParams, sort_type: urlSortType });
 
   // Восстановление позиции скролла после загрузки товаров
   useEffect(() => {
     if (!loading && products.length > 0 && !didRestoreScroll.current) {
-      const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
+      const savedPosition = sessionStorage.getItem(scrollKey);
       if (savedPosition) {
         const position = parseInt(savedPosition, 10);
         window.scrollTo(0, position);
         didRestoreScroll.current = true;
-        sessionStorage.removeItem(SCROLL_POSITION_KEY);
       }
     }
-  }, [loading, products.length]);
+  }, [loading, products.length, scrollKey]);
 
   // Сохранение позиции скролла при уходе со страницы
   useEffect(() => {
     return () => {
       // Сохраняем текущую позицию скролла
-      sessionStorage.setItem(SCROLL_POSITION_KEY, window.scrollY.toString());
+      sessionStorage.setItem(scrollKey, window.scrollY.toString());
     };
-  }, []);
+  }, [scrollKey]);
 
   /**
    * Применение фильтров (кнопка "Показать")

@@ -1,12 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { productApi } from '../../entities/product';
 
-const CATALOG_CACHE_KEY = 'catalogCache_v1';
-
 /**
  * Хук для управления состоянием каталога товаров
  * @param {Object} options
- * @param {string} depsKey - Ключ зависимости для принудительного обновления
+ * @param {string} options.cacheKeyPrefix - Префикс для ключа кэша
  */
 const useCatalog = ({
   category_id,
@@ -15,7 +13,8 @@ const useCatalog = ({
   sort_type = 'default',
   limit = 10,
   enableCache = false,
-} = {}, depsKey = '') => {
+  cacheKeyPrefix = 'catalogCache_v1',
+} = {}) => {
   // Состояние товаров - всегда пустые изначально
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
@@ -210,7 +209,7 @@ const useCatalog = ({
     
     // Восстанавливаем из кэша при изменении категории
     if (enableCache) {
-      const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+      const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
       try {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
@@ -239,7 +238,7 @@ const useCatalog = ({
     setAppliedFilters({});
     loadProducts(false, {}, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category_id, product_type_id, device_type_id, enableCache, depsKey]);
+  }, [category_id, product_type_id, device_type_id, enableCache, cacheKeyPrefix]);
 
   // Сбрасываем флаг восстановления кэша при размонтировании
   useEffect(() => {
@@ -264,7 +263,7 @@ const useCatalog = ({
       return;
     }
 
-    const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+    const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
     const state = {
       products,
       total,
@@ -278,7 +277,7 @@ const useCatalog = ({
     } catch (e) {
       console.warn('Failed to save catalog cache:', e);
     }
-  }, [enableCache, category_id, product_type_id, products, total, offset, appliedFilters, sort_type, loading]);
+  }, [enableCache, cacheKeyPrefix, category_id, product_type_id, products, total, offset, appliedFilters, sort_type, loading]);
 
   return {
     products,
@@ -300,16 +299,16 @@ const useCatalog = ({
 /**
  * Очистка кэша
  */
-export const clearCatalogCache = (category_id, product_type_id) => {
-  const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+export const clearCatalogCache = (category_id, product_type_id, cacheKeyPrefix = 'catalogCache_v1') => {
+  const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
   localStorage.removeItem(cacheKey);
 };
 
 /**
  * Очистка всего кэша каталога
  */
-export const clearAllCatalogCache = () => {
-  const keys = Object.keys(localStorage).filter(k => k.startsWith(CATALOG_CACHE_KEY + '_'));
+export const clearAllCatalogCache = (cacheKeyPrefix = 'catalogCache_v1') => {
+  const keys = Object.keys(localStorage).filter(k => k.startsWith(cacheKeyPrefix + '_'));
   keys.forEach(k => localStorage.removeItem(k));
 };
 
