@@ -4,13 +4,6 @@ import styles from './ProductGrid.module.css';
 
 /**
  * Сетка товаров с infinite scroll
- * @param {Object} props
- * @param {Array} props.products - Список товаров
- * @param {boolean} props.loading - Загрузка
- * @param {boolean} props.loadingMore - Загрузка следующей страницы
- * @param {boolean} props.hasMore - Есть ли еще товары
- * @param {Function} props.onLoadMore - Загрузка следующей страницы
- * @param {Function} [props.onImageChange] - Callback при смене изображения
  */
 const ProductGrid = ({
   products,
@@ -22,12 +15,27 @@ const ProductGrid = ({
 }) => {
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
+  // Флаг, что пользователь начал скроллить (для предотвращения авто-подгрузки при восстановлении)
+  const userScrolled = useRef(false);
+
+  // Отслеживаем, что пользователь начал скроллить
+  useEffect(() => {
+    const handleScroll = () => {
+      userScrolled.current = true;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   /**
    * Intersection Observer для infinite scroll
    */
   useEffect(() => {
-    if (loading || loadingMore || !hasMore) return;
+    // Не загружаем, если:
+    // - идет загрузка
+    // - нет больше товаров
+    // - пользователь еще не скроллил (защита от авто-подгрузки при восстановлении)
+    if (loading || loadingMore || !hasMore || !userScrolled.current) return;
 
     observerRef.current = new IntersectionObserver(
       (entries) => {

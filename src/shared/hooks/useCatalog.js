@@ -1,15 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { productApi } from '../../entities/product';
 
+const CATALOG_CACHE_KEY = 'catalogCache_v1';
+
 /**
  * Хук для управления состоянием каталога товаров
- * @param {Object} options
- * @param {number} [options.category_id] - ID категории
- * @param {number} [options.product_type_id] - ID типа товара
- * @param {number} [options.device_type_id] - ID типа устройства
- * @param {string} [options.sort_type] - Тип сортировки: default, price_asc, price_desc
- * @param {number} [options.limit=10] - Количество товаров на страницу
- * @returns {Object}
  */
 const useCatalog = ({
   category_id,
@@ -17,11 +12,37 @@ const useCatalog = ({
   device_type_id,
   sort_type = 'default',
   limit = 10,
+  enableCache = false,
 } = {}) => {
+  // Получаем кэш сразу при инициализации
+  const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+  const cachedState = useRef(null);
+  
+  if (enableCache) {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const state = JSON.parse(cached);
+        // Проверяем актуальность (не старше 5 минут)
+        if (Date.now() - state.timestamp < 5 * 60 * 1000) {
+          cachedState.current = state;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to read cache:', e);
+    }
+  }
+
+  // Инициализируем состояние из кэша, если есть
+  const initialProducts = cachedState.current?.products || [];
+  const initialTotal = cachedState.current?.total || 0;
+  const initialOffset = cachedState.current?.offset || 0;
+  const initialAppliedFilters = cachedState.current?.appliedFilters || {};
+
   // Состояние товаров
-  const [products, setProducts] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(initialProducts);
+  const [total, setTotal] = useState(initialTotal);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
@@ -30,7 +51,7 @@ const useCatalog = ({
   const [filtersLoading, setFiltersLoading] = useState(true);
 
   // Выбранные фильтры (примененные)
-  const [appliedFilters, setAppliedFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState(initialAppliedFilters);
 
   // Ref для хранения актуальных appliedFilters
   const appliedFiltersRef = useRef(appliedFilters);
@@ -39,11 +60,16 @@ const useCatalog = ({
   }, [appliedFilters]);
 
   // Пагинация
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(initialOffset);
+  const [hasMore, setHasMore] = useState(
+    initialProducts.length > 0 ? initialOffset + initialProducts.length < initialTotal : true
+  );
 
   // Ref для предотвращения дублирующих запросов
   const loadingRef = useRef(false);
+
+  // Ref для отслеживания, был ли уже запрос
+  const didFetch = useRef(initialProducts.length > 0);
 
   /**
    * Загрузка товаров
@@ -95,7 +121,9 @@ const useCatalog = ({
           }
 
           setTotal(totalItems);
-          setHasMore(items.length > 0 && currentOffset + items.length < totalItems);
+          // Правильный расчет hasMore
+          const loadedCount = isAppend ? products.length + items.length : items.length;
+          setHasMore(loadedCount < totalItems);
 
           if (!isAppend) {
             setOffset(currentOffset);
@@ -145,7 +173,6 @@ const useCatalog = ({
 
   /**
    * Применение фильтров
-   * @param {Object} newFilters - { RAM: ["8 GB"], Color: ["Black"] }
    */
   const applyFilters = useCallback(
     (newFilters) => {
@@ -153,7 +180,6 @@ const useCatalog = ({
       setOffset(0);
       setProducts([]);
 
-      // Загрузка с новыми фильтрами
       setTimeout(() => {
         loadProducts(false, newFilters, false);
       }, 0);
@@ -170,7 +196,6 @@ const useCatalog = ({
     setProducts([]);
 
     setTimeout(() => {
-      // Загружаем с пустыми фильтрами, но с текущей категорией/типом
       loadProducts(false, {}, false);
     }, 0);
   }, [loadProducts]);
@@ -179,11 +204,10 @@ const useCatalog = ({
    * Загрузка следующей страницы (infinite scroll)
    */
   const loadMore = useCallback(async () => {
-    if (loadingMore || !hasMore) return;
+    if (loadingRef.current || loadingMore || !hasMore) return;
 
     const newOffset = offset + limit;
     setOffset(newOffset);
-    // Загружаем следующую страницу с текущими примененными фильтрами
     await loadProducts(true, null, true);
   }, [loadingMore, hasMore, offset, limit, loadProducts]);
 
@@ -195,16 +219,22 @@ const useCatalog = ({
   }, [loadFilters]);
 
   useEffect(() => {
+    // Если уже есть кэшированные товары - не загружаем заново
+    if (didFetch.current) return;
+
     // Сброс и загрузка товаров при изменении категории/типа
-    // Сбрасываем фильтры при переключении категории
     setProducts([]);
     setOffset(0);
     setAppliedFilters({});
     loadProducts(false, {}, false);
+    didFetch.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category_id, product_type_id, device_type_id]);
 
   useEffect(() => {
+    // Если уже есть кэшированные товары - не перезагружаем при изменении сортировки
+    if (didFetch.current && initialProducts.length > 0 && sort_type === 'default') return;
+
     // Перезагрузка при изменении сортировки
     setProducts([]);
     setOffset(0);
@@ -212,26 +242,71 @@ const useCatalog = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort_type]);
 
+  // Сохранение состояния в кэш при изменениях (только если включен кэш)
+  useEffect(() => {
+    if (!enableCache || loading || products.length === 0) {
+      return;
+    }
+
+    const state = {
+      products,
+      total,
+      offset,
+      appliedFilters,
+      sort_type,
+      timestamp: Date.now(),
+    };
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(state));
+    } catch (e) {
+      console.warn('Failed to save catalog cache:', e);
+    }
+  }, [enableCache, cacheKey, products, total, offset, appliedFilters, sort_type, loading]);
+
   return {
-    // Товары
     products,
     total,
     loading,
     loadingMore,
     error,
     hasMore,
-
-    // Фильтры
     filters,
     filtersLoading,
     appliedFilters,
-
-    // Действия
     applyFilters,
     resetFilters,
     loadMore,
     refresh: () => loadProducts(false, null, true),
   };
+};
+
+/**
+ * Получение закэшированного состояния
+ */
+export const getCachedCatalogState = (category_id, product_type_id) => {
+  const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const state = JSON.parse(cached);
+      // Проверяем актуальность (не старше 5 минут)
+      if (Date.now() - state.timestamp < 5 * 60 * 1000) {
+        return state;
+      }
+      localStorage.removeItem(cacheKey);
+    }
+  } catch (e) {
+    console.warn('Failed to get catalog cache:', e);
+  }
+  return null;
+};
+
+/**
+ * Очистка кэша
+ */
+export const clearCatalogCache = (category_id, product_type_id) => {
+  const cacheKey = `${CATALOG_CACHE_KEY}_${category_id || 'all'}_${product_type_id || 'all'}`;
+  localStorage.removeItem(cacheKey);
 };
 
 export default useCatalog;

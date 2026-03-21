@@ -22,7 +22,7 @@ const ProductCard = ({ product, onImageChange }) => {
   const hasMultipleImages = !imageError && images.length > 1;
 
   // Ссылка на страницу товара с category_id
-  const productLink = product?.id 
+  const productLink = product?.id
     ? `${paths.PRODUCT(product.id)}?category=${product.category?.id || ''}`
     : '#';
 

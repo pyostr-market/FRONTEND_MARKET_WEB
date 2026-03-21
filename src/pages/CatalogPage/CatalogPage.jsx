@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog from '../../shared/hooks/useCatalog';
+import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
 import useFilters from '../../shared/hooks/useFilters';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
@@ -11,6 +11,8 @@ import { ProductGrid } from '../../widgets/ProductGrid';
 import { SortDropdown } from '../../widgets/SortDropdown';
 import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
+
+const SCROLL_POSITION_KEY = 'catalogScroll_v1';
 
 /**
  * Страница каталога товаров
@@ -30,6 +32,13 @@ const CatalogPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
+
+  // Флаги для восстановления
+  const didRestoreScroll = useRef(false);
+
+  // Получаем categoryId как число для кэша
+  const categoryIdNum = categoryId ? parseInt(categoryId, 10) : null;
+  const productTypeIdNum = productType ? parseInt(productType, 10) : null;
 
   // Определение мобильного устройства
   useEffect(() => {
@@ -53,9 +62,10 @@ const CatalogPage = () => {
 
   // Параметры каталога
   const catalogParams = {
-    category_id: categoryId ? parseInt(categoryId, 10) : null,
-    product_type_id: productType ? parseInt(productType, 10) : null,
+    category_id: categoryIdNum,
+    product_type_id: productTypeIdNum,
     limit: 12,
+    enableCache: true,
   };
 
   // Первый хук для получения фильтров (без сортировки)
@@ -95,6 +105,27 @@ const CatalogPage = () => {
     loadMore,
   } = useCatalog({ ...catalogParams, sort_type: urlSortType });
 
+  // Восстановление позиции скролла после загрузки товаров
+  useEffect(() => {
+    if (!loading && products.length > 0 && !didRestoreScroll.current) {
+      const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
+      if (savedPosition) {
+        const position = parseInt(savedPosition, 10);
+        window.scrollTo(0, position);
+        didRestoreScroll.current = true;
+        sessionStorage.removeItem(SCROLL_POSITION_KEY);
+      }
+    }
+  }, [loading, products.length]);
+
+  // Сохранение позиции скролла при уходе со страницы
+  useEffect(() => {
+    return () => {
+      // Сохраняем текущую позицию скролла
+      sessionStorage.setItem(SCROLL_POSITION_KEY, window.scrollY.toString());
+    };
+  }, []);
+
   /**
    * Применение фильтров (кнопка "Показать")
    */
@@ -102,7 +133,6 @@ const CatalogPage = () => {
     const filtersToApply = applyLocalFilters();
     applyCatalogFilters(filtersToApply);
     applySortedFilters(filtersToApply);
-    // Обновляем URL
     updateUrl({ filters: filtersToApply });
 
     if (isMobile) {
@@ -117,17 +147,19 @@ const CatalogPage = () => {
     resetAll();
     resetCatalogFilters();
     sortedResetFilters();
-    // Очищаем URL
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [resetAll, resetCatalogFilters, sortedResetFilters, updateUrl]);
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
+    didRestoreScroll.current = false;
+  }, [resetAll, resetCatalogFilters, sortedResetFilters, updateUrl, categoryIdNum, productTypeIdNum]);
 
   /**
    * Изменение сортировки
    */
   const handleSortChange = useCallback((value) => {
-    // Обновляем URL - useCatalog автоматически перезагрузится
     updateUrl({ sort_type: value });
-  }, [updateUrl]);
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
+    didRestoreScroll.current = false;
+  }, [updateUrl, categoryIdNum, productTypeIdNum]);
 
   /**
    * Заголовок страницы
@@ -222,7 +254,7 @@ const CatalogPage = () => {
         </div>
       </div>
 
-      {/* Плавающая кнопка фильтров для мобильных (появляется при скролле) */}
+      {/* Плавающая кнопка фильтров для мобильных */}
       {isMobile && showFloatingFilter && (
         <button
           className={styles.floatingFiltersBtn}
