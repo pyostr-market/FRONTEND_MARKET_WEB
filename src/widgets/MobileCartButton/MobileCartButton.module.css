@@ -1,15 +1,24 @@
 .mobileCartBar {
   display: none;
   position: fixed;
-  bottom: 60px; /* Высота MobileNavbar */
+  bottom: 60px;
   left: 0;
   right: 0;
   background-color: #ffffff;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-  z-index: 110; /* Выше чем MobileNavbar (100) */
+  z-index: 110;
   padding: 12px 16px;
   padding-bottom: env(safe-area-inset-bottom, 0);
   box-sizing: border-box;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Показываем только на мобильных */
+@media (max-width: 768px) {
+  .mobileCartBar {
+    display: flex;
+  }
 }
 
 /* Режим 1: Кнопка "Добавить" */
@@ -38,16 +47,17 @@
 .cartLink {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   flex: 1;
   padding: 12px 16px;
-  background-color: #f0f2f5;
-  color: #1a1a1a;
+  background: #10C44C;
   border-radius: 12px;
   text-decoration: none;
   margin-right: 12px;
   transition: background-color 0.2s ease;
-  width: 70%;
+  width: 100%;
+  max-width: calc(100% - 140px);
 }
 
 .cartLink:hover {
@@ -60,17 +70,21 @@
   align-items: center;
   gap: 2px;
   text-align: center;
+
 }
 
 .cartLabel {
-  font-size: 12px;
-  color: #666;
+  font-size: 16px;
+  color: white;
+  font-weight: 700;
+
+
 }
 
 .cartTotal {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #f8f8f8;
 }
 
 .cartBadge {
