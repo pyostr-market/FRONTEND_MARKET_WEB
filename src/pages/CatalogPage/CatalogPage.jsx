@@ -42,7 +42,7 @@ const CatalogPage = () => {
     category_id: categoryIdNum,
     product_type_id: productTypeIdNum,
     limit: 12,
-    enableCache: true,
+    enableCache: false, // Отключаем кэш
   };
 
   // Определение мобильного устройства

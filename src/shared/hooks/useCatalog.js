@@ -217,6 +217,15 @@ const useCatalog = ({
     // Сохраняем предыдущие initialFilters
     prevInitialFiltersRef.current = initialFilters;
 
+    console.log('[useCatalog] useEffect:', {
+      categoryChanged,
+      filtersChanged,
+      prevFilters: prevFiltersStr,
+      currFilters: currFiltersStr,
+      initialFilters,
+      willLoad: categoryChanged || filtersChanged
+    });
+
     // Восстанавливаем из кэша только если категория изменилась и нет фильтров
     if (enableCache && categoryChanged && Object.keys(initialFilters).length === 0) {
       const cacheKey = `${cacheKeyPrefix}_${categoryKey}`;
@@ -246,6 +255,7 @@ const useCatalog = ({
       setProducts([]);
       setOffset(0);
       const filtersToUse = Object.keys(initialFilters).length > 0 ? initialFilters : {};
+      console.log('[useCatalog] Calling loadProducts with filters:', filtersToUse);
       loadProducts(false, filtersToUse, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
