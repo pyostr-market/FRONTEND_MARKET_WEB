@@ -24,6 +24,7 @@ const routes = [
     component: ProductPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
   },
   {
     path: paths.CART,

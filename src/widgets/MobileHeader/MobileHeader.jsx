@@ -1,7 +1,11 @@
 import SearchOverlay from '../SearchOverlay/SearchOverlay';
 import styles from './MobileHeader.module.css';
 
-const MobileHeader = () => {
+const MobileHeader = ({ showSearch = true }) => {
+  if (!showSearch) {
+    return null;
+  }
+  
   return (
     <header className={styles.mobileHeader}>
       <div className={styles.mobileHeaderContainer}>

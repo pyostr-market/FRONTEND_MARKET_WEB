@@ -9,7 +9,7 @@ const AppRouter = () => {
 
   return (
     <Routes>
-      {routes.map(({ path, component: Component, layout, isPrivate }) => {
+      {routes.map(({ path, component: Component, layout, isPrivate, showSearch }) => {
         const Layout = layouts[layout] || MainLayout;
 
         return (
@@ -17,7 +17,7 @@ const AppRouter = () => {
             key={path}
             path={path}
             element={
-              <Layout>
+              <Layout showSearch={showSearch}>
                 <Component />
               </Layout>
             }

@@ -5,14 +5,14 @@ import MobileNavbar from '../../../widgets/MobileNavbar/MobileNavbar';
 import ProfileModal from '../../../widgets/ProfileModal/ProfileModal';
 import styles from './MainLayout.module.css';
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, showSearch = true }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const isAuthorized = false;
 
   return (
     <div className={styles.mainLayout}>
       <Header onProfileClick={() => setIsProfileModalOpen(true)} isAuthorized={isAuthorized} />
-      <MobileHeader />
+      <MobileHeader showSearch={showSearch} />
       <main className={styles.mainContent}>
         {children}
       </main>

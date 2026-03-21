@@ -50,11 +50,10 @@
   justify-content: center;
   gap: 12px;
   flex: 1;
-  padding: 12px 16px;
+  padding: 12px 8px;
   background: #10C44C;
   border-radius: 12px;
   text-decoration: none;
-  margin-right: 12px;
   transition: background-color 0.2s ease;
   width: 100%;
   max-width: calc(100% - 140px);
