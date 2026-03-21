@@ -101,7 +101,9 @@ const CatalogPage = () => {
   useEffect(() => {
     const prevStr = JSON.stringify(prevUrlFiltersRef.current);
     const currStr = JSON.stringify(urlFilters);
+    console.log('[CatalogPage] urlFilters changed:', { prev: prevStr, curr: currStr });
     if (prevStr !== currStr) {
+      console.log('[CatalogPage] Setting appliedFilters to:', urlFilters);
       setAppliedFilters(urlFilters);
       prevUrlFiltersRef.current = urlFilters;
     }
@@ -204,10 +206,10 @@ const CatalogPage = () => {
     setSelectedFilters({});
     selectedFiltersRef.current = {};
     
-    // Сбрасываем appliedFilters - это вызовет перезагрузку каталога через useEffect в useCatalog
+    // Сначала сбрасываем appliedFilters
     setAppliedFilters({});
     
-    // Обновляем URL
+    // Затем обновляем URL
     updateUrl({ filters: {}, sort_type: 'default' });
   }, [updateUrl]);
 
