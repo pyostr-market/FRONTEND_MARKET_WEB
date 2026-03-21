@@ -104,9 +104,6 @@ const ProductPage = () => {
 
           </div>
 
-          {/* Мобильная кнопка корзины */}
-          <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
-
           {product.description && (
               <div className={styles.section}>
                 <h2>Описание</h2>
@@ -119,6 +116,9 @@ const ProductPage = () => {
           )}
 
         </div>
+
+        {/* Мобильная кнопка корзины - вне контейнера */}
+        <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
       </div>
   );
 };
