@@ -7,12 +7,16 @@ import styles from './ProductAttributes.module.css';
  * @param {Array} props.filters - Список фильтров (атрибутов)
  * @param {Object} props.selectedAttributes - Выбранные атрибуты { RAM: "256 GB", Color: "Black" }
  * @param {Object} props.availableAttributeValues - Доступные значения атрибутов
+ * @param {Object} props.currentProductAttributes - Атрибуты текущего товара
+ * @param {Array} props.variants - Варианты товара
  * @param {Function} props.onAttributeChange - Callback при изменении атрибута
  */
 const ProductAttributes = ({
   filters = [],
   selectedAttributes = {},
   availableAttributeValues = {},
+  currentProductAttributes = {},
+  variants = [],
   onAttributeChange,
 }) => {
   /**
@@ -40,6 +44,41 @@ const ProductAttributes = ({
   }, [filters]);
 
   /**
+   * Проверка доступности значения атрибута с учётом выбранных
+   */
+  const isAttributeValueAvailable = useCallback((attrName, attrValue) => {
+    // Проверяем, есть ли такое значение вообще
+    if (!availableAttributeValues[attrName]?.has(attrValue)) {
+      return false;
+    }
+
+    // Если других атрибутов не выбрано, значение доступно
+    const otherSelectedAttrs = Object.entries(selectedAttributes)
+      .filter(([name]) => name !== attrName);
+    
+    if (otherSelectedAttrs.length === 0) {
+      return true;
+    }
+
+    // Проверяем, есть ли товар с такой комбинацией
+    const hasVariant = variants.some((variant) => {
+      // Проверяем, есть ли у варианта проверяемое значение
+      const hasAttrValue = variant.attributes?.some(
+        (a) => a.name === attrName && a.value === attrValue
+      );
+      
+      if (!hasAttrValue) return false;
+      
+      // Проверяем остальные выбранные атрибуты
+      return otherSelectedAttrs.every(([name, value]) => {
+        return variant.attributes?.some((a) => a.name === name && a.value === value);
+      });
+    });
+
+    return hasVariant;
+  }, [selectedAttributes, availableAttributeValues, variants]);
+
+  /**
    * Обработчик выбора значения атрибута
    */
   const handleAttributeSelect = useCallback((attrName, attrValue) => {
@@ -47,18 +86,11 @@ const ProductAttributes = ({
   }, [onAttributeChange]);
 
   /**
-   * Проверка доступности значения атрибута
-   */
-  const isAttributeValueAvailable = useCallback((attrName, attrValue) => {
-    return availableAttributeValues[attrName]?.has(attrValue) || false;
-  }, [availableAttributeValues]);
-
-  /**
    * Проверка выбранности значения
    */
   const isSelected = useCallback((attrName, attrValue) => {
-    return selectedAttributes[attrName] === attrValue;
-  }, [selectedAttributes]);
+    return currentProductAttributes[attrName] === attrValue;
+  }, [currentProductAttributes]);
 
   // Если нет фильтров, не показываем ничего
   if (Object.keys(groupedFilters).length === 0) {
@@ -75,8 +107,8 @@ const ProductAttributes = ({
 
           <div className={styles.attributeValues}>
             {Array.from(group.values).map((value) => {
-              const available = isAttributeValueAvailable(attrName, value);
               const selected = isSelected(attrName, value);
+              const available = isAttributeValueAvailable(attrName, value);
 
               return (
                 <button
@@ -86,7 +118,7 @@ const ProductAttributes = ({
                     ${selected ? styles.attributeValueSelected : ''}
                     ${!available ? styles.attributeValueUnavailable : ''}
                   `}
-                  onClick={() => available && handleAttributeSelect(attrName, value)}
+                  onClick={() => handleAttributeSelect(attrName, value)}
                   disabled={!available}
                   aria-label={`${attrName}: ${value}`}
                   aria-pressed={selected}

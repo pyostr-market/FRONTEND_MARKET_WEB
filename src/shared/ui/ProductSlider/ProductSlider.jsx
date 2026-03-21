@@ -105,28 +105,28 @@ const ProductSlider = ({ images = [], alt = '' }) => {
           </div>
         )}
       </div>
-
       {/* Миниатюры */}
       {hasMultipleImages && (
-        <div className={styles.thumbnailsContainer}>
-          {displayImages.map((img, index) => (
-            <button
-              key={img.upload_id || index}
-              className={`${styles.thumbnail} ${
-                index === currentIndex ? styles.thumbnailActive : ''
-              }`}
-              onClick={() => handleThumbnailClick(index)}
-              aria-label={`Изображение ${index + 1}`}
-            >
-              <LazyImage
-                src={img.image_url}
-                alt={`${alt} - изображение ${index + 1}`}
-                className={styles.thumbnailImage}
-              />
-            </button>
-          ))}
-        </div>
+          <div className={styles.thumbnailsContainer}>
+            {displayImages.map((img, index) => (
+                <button
+                    key={img.upload_id || index}
+                    className={`${styles.thumbnail} ${
+                        index === currentIndex ? styles.thumbnailActive : ''
+                    }`}
+                    onClick={() => handleThumbnailClick(index)}
+                    aria-label={`Изображение ${index + 1}`}
+                >
+                  <LazyImage
+                      src={img.image_url}
+                      alt={`${alt} - изображение ${index + 1}`}
+                      className={styles.thumbnailImage}
+                  />
+                </button>
+            ))}
+          </div>
       )}
+
     </div>
   );
 };

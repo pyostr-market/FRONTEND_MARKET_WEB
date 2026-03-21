@@ -40,7 +40,7 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
-  // Текущие выбранные атрибуты из URL
+  // Текущие выбранные атрибуты из URL или из товара
   const selectedAttributes = useMemo(() => {
     const attrs = {};
     searchParams.forEach((value, key) => {
@@ -52,27 +52,87 @@ const ProductPage = () => {
     return attrs;
   }, [searchParams]);
 
+  // Атрибуты текущего товара
+  const currentProductAttributes = useMemo(() => {
+    if (!product?.attributes) return {};
+    
+    const attrs = {};
+    product.attributes.forEach((attr) => {
+      if (attr.is_filterable) {
+        attrs[attr.name] = attr.value;
+      }
+    });
+    return attrs;
+  }, [product]);
+
   /**
    * Обработчик изменения атрибута
    */
   const handleAttributeChange = useCallback((attrName, attrValue) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set(`attr_${attrName}`, attrValue);
-    setSearchParams(newParams, { replace: true });
-  }, [searchParams, setSearchParams]);
+    
+    // Проверяем, есть ли товар с такими атрибутами
+    const newAttrs = { ...selectedAttributes, [attrName]: attrValue };
+    const variant = findVariantByAttributes(newAttrs);
+    
+    if (variant) {
+      // Если товар найден, переходим на него
+      navigate(`/product/${variant.id}?${newParams.toString()}`, { replace: true });
+    } else {
+      // Если товара нет, пробуем найти совместимый вариант
+      // Удаляем атрибут, который не совместим
+      const compatibleVariant = variants.find((v) => {
+        const testAttrs = { ...newAttrs };
+        delete testAttrs[attrName];
+        
+        return Object.entries(testAttrs).every(([name, value]) => {
+          return v.attributes?.some((a) => a.name === name && a.value === value);
+        });
+      });
+      
+      if (compatibleVariant) {
+        // Переходим на совместимый вариант
+        navigate(`/product/${compatibleVariant.id}?${newParams.toString()}`, { replace: true });
+      } else {
+        // Просто обновляем URL
+        setSearchParams(newParams, { replace: true });
+      }
+    }
+  }, [searchParams, selectedAttributes, findVariantByAttributes, variants, navigate, setSearchParams]);
 
   /**
    * Найти и переключиться на вариант с выбранными атрибутами
    */
   useEffect(() => {
+    // Если нет выбранных атрибутов из URL, используем атрибуты текущего товара
+    if (Object.keys(selectedAttributes).length === 0 && Object.keys(currentProductAttributes).length > 0) {
+      // Атрибуты уже выбраны (текущий товар)
+      return;
+    }
+    
     if (Object.keys(selectedAttributes).length === 0 || variants.length === 0) return;
 
     const variant = findVariantByAttributes(selectedAttributes);
     if (variant && variant.id !== product?.id) {
       // Переходим на страницу варианта
       navigate(`/product/${variant.id}?${searchParams.toString()}`, { replace: true });
+    } else if (!variant) {
+      // Если товар не найден с такими атрибутами, пробуем найти совместимый
+      const compatibleVariant = variants.find((v) => {
+        // Ищем товар, у которого есть хотя бы часть атрибутов
+        const matchCount = Object.entries(selectedAttributes).filter(([name, value]) => {
+          return v.attributes?.some((a) => a.name === name && a.value === value);
+        }).length;
+        
+        return matchCount > 0;
+      });
+      
+      if (compatibleVariant) {
+        navigate(`/product/${compatibleVariant.id}?${searchParams.toString()}`, { replace: true });
+      }
     }
-  }, [selectedAttributes, variants, findVariantByAttributes, product?.id, navigate, searchParams]);
+  }, [selectedAttributes, variants, findVariantByAttributes, product?.id, navigate, searchParams, currentProductAttributes]);
 
   /**
    * Loading
@@ -142,6 +202,8 @@ const ProductPage = () => {
                 filters={filters}
                 selectedAttributes={selectedAttributes}
                 availableAttributeValues={availableAttributeValues}
+                currentProductAttributes={currentProductAttributes}
+                variants={variants}
                 onAttributeChange={handleAttributeChange}
               />
             </div>
