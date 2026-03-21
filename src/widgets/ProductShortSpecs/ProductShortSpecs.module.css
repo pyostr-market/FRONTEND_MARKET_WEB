@@ -1,8 +1,5 @@
 .specsContainer {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-top: 8px;
 }
 
 .specsTitle {

@@ -87,7 +87,7 @@
 /* === НОВЫЙ LAYOUT === */
 .productContent {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 360px;
+  grid-template-columns: 1.2fr 400px 360px;
   gap: 24px;
   margin-bottom: 24px;
 }
