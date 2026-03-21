@@ -76,7 +76,8 @@ const useFilterUrl = (filters = []) => {
    * @param {Object} params - { sort_type, filters }
    */
   const updateUrl = (params) => {
-    const newParams = new URLSearchParams(searchParams);
+    // Используем текущие параметры из URL напрямую
+    const newParams = new URLSearchParams(window.location.search);
 
     // Обновляем sort_type
     if (params.sort_type) {

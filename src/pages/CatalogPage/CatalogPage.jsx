@@ -80,11 +80,10 @@ const CatalogPage = () => {
     updateUrl,
   } = useFilterUrl(filters);
 
-  // Используем urlFilters напрямую вместо initialFilters
-  // Это обеспечивает синхронизацию фильтров из URL с каталогом
+  // Используем urlFilters для initialFilters при загрузке страницы
+  // appliedFilters хранит применённые фильтры (после нажатия "Показать")
   const [appliedFilters, setAppliedFilters] = useState(urlFilters);
   const prevCategoryKey = useRef(`${categoryId}-${productType}`);
-  const prevUrlFiltersRef = useRef(urlFilters);
   
   // Обновляем appliedFilters при изменении категории
   useEffect(() => {
@@ -96,18 +95,6 @@ const CatalogPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, productType]);
-  
-  // Обновляем appliedFilters из urlFilters при их изменении
-  useEffect(() => {
-    const prevStr = JSON.stringify(prevUrlFiltersRef.current);
-    const currStr = JSON.stringify(urlFilters);
-    console.log('[CatalogPage] urlFilters changed:', { prev: prevStr, curr: currStr });
-    if (prevStr !== currStr) {
-      console.log('[CatalogPage] Setting appliedFilters to:', urlFilters);
-      setAppliedFilters(urlFilters);
-      prevUrlFiltersRef.current = urlFilters;
-    }
-  }, [urlFilters]);
 
   // Второй хук для получения товаров с сортировкой и применением фильтров из URL
   const {
@@ -186,6 +173,10 @@ const CatalogPage = () => {
    */
   const handleApplyFilters = useCallback(() => {
     const filtersToApply = selectedFiltersRef.current;
+    
+    // Обновляем appliedFilters - это вызовет перезагрузку каталога
+    setAppliedFilters(filtersToApply);
+    
     applyCatalogFilters(filtersToApply);
     applySortedFilters(filtersToApply);
     updateUrl({ filters: filtersToApply });
@@ -206,10 +197,10 @@ const CatalogPage = () => {
     setSelectedFilters({});
     selectedFiltersRef.current = {};
     
-    // Сначала сбрасываем appliedFilters
+    // Сбрасываем appliedFilters - это вызовет перезагрузку каталога
     setAppliedFilters({});
     
-    // Затем обновляем URL
+    // Обновляем URL
     updateUrl({ filters: {}, sort_type: 'default' });
   }, [updateUrl]);
 
