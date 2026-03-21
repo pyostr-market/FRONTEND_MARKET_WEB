@@ -1,8 +1,10 @@
 import { useState, useCallback, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { AddToCart } from '../../features/add-to-cart';
 import LazyImage from '../../shared/ui/LazyImage';
-import { DEFAULT_IMAGES } from '../../shared/config/appConfig';
+import paths from '../../app/router/paths';
 import styles from './ProductCard.module.css';
+import {DEFAULT_IMAGES} from "../../shared/config";
 
 /**
  * Карточка товара
@@ -18,6 +20,9 @@ const ProductCard = ({ product, onImageChange }) => {
 
   const images = useMemo(() => product?.images || [], [product?.images]);
   const hasMultipleImages = !imageError && images.length > 1;
+
+  // Ссылка на страницу товара
+  const productLink = product?.id ? paths.PRODUCT(product.id) : '#';
 
   /**
    * Свайп для мобильных
@@ -124,7 +129,9 @@ const ProductCard = ({ product, onImageChange }) => {
                 className={`${styles.indicator} ${
                   index === currentImageIndex ? styles.indicatorActive : ''
                 }`}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   setCurrentImageIndex(index);
                   onImageChange?.(product.id, index);
                 }}
@@ -136,8 +143,10 @@ const ProductCard = ({ product, onImageChange }) => {
           <div className={styles.carouselIndicatorsPlaceholder} />
         )}
 
-        {/* Название */}
-        <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
+        {/* Название - ссылка на товар */}
+        <Link to={productLink} className={styles.productNameLink}>
+          <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
+        </Link>
 
         {/* Цена */}
         <div className={styles.productPrice}>{formatPrice(product?.price)}</div>

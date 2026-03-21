@@ -76,6 +76,57 @@ export const getProductsByIds = async (product_ids, f5 = false) => {
 };
 
 /**
+ * Получить товар по ID
+ * @param {number} productId - ID товара
+ * @param {boolean} [f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {item: Object}, error: any}>}
+ */
+export const getProductById = async (productId, f5 = false) => {
+  if (!productId) {
+    return {
+      success: false,
+      data: null,
+      error: 'Product ID is required',
+    };
+  }
+
+  return crmApi.request(`/product/${productId}`, {
+    params: {},
+    f5,
+    ttl: 60000, // 1 минута
+  });
+};
+
+/**
+ * Получить товары категории (для вариантов товара)
+ * @param {Object} params
+ * @param {number} params.category_id - ID категории
+ * @param {Object} [params.attributes] - Фильтры по атрибутам
+ * @param {boolean} [params.f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {items: Array}, error: any}>}
+ */
+export const getCategoryProducts = async ({
+  category_id,
+  attributes,
+  f5 = false,
+} = {}) => {
+  const params = {
+    category_id,
+    limit: 50, // Получаем все товары категории
+  };
+
+  if (attributes && Object.keys(attributes).length > 0) {
+    params.attributes = JSON.stringify(attributes);
+  }
+
+  return crmApi.request('/product', {
+    params,
+    f5,
+    ttl: 30000, // 30 секунд
+  });
+};
+
+/**
  * Получить доступные фильтры для категории/типа товара
  * @param {Object} params
  * @param {number} [params.category_id] - ID категории

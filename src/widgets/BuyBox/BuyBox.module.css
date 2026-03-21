@@ -1,0 +1,280 @@
+.buyBox {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 20px;
+}
+
+/* Цена */
+.priceSection {
+  margin-bottom: 16px;
+}
+
+.currentPrice {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.oldPrice {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+  margin-top: 4px;
+}
+
+/* Наличие */
+.availability {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.inStock {
+  font-size: 14px;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.seller {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Количество */
+.quantitySection {
+  margin-bottom: 20px;
+}
+
+.quantityLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantityBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #005bff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quantityBtn:hover:not(:disabled) {
+  background-color: #e4e7eb;
+  border-color: #005bff;
+}
+
+.quantityBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityInput {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  -moz-appearance: textfield;
+}
+
+.quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Итоговая сумма */
+.totalSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-bottom: 20px;
+  border-top: 2px solid #f0f2f5;
+}
+
+.totalLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+}
+
+.totalPrice {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Кнопки действий */
+.actionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.addToCartBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addToCartBtn:hover:not(:disabled) {
+  background-color: #004ecc;
+}
+
+.addToCartBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buyNowBtn {
+  width: 100%;
+  padding: 16px;
+  background-color: #27ae60;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buyNowBtn:hover {
+  background-color: #219a52;
+}
+
+/* Дополнительные действия */
+.extraActions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.extraBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: none;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.extraBtn:hover {
+  background-color: #f8f9fa;
+  border-color: #005bff;
+  color: #005bff;
+}
+
+/* Доставка */
+.deliveryInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.deliveryItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.deliveryIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.deliveryTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.deliveryText {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .buyBox {
+    position: static;
+    padding: 16px;
+  }
+
+  .currentPrice {
+    font-size: 28px;
+  }
+
+  .quantityBtn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .quantityInput {
+    width: 50px;
+    height: 36px;
+  }
+
+  .totalPrice {
+    font-size: 20px;
+  }
+
+  .extraActions {
+    flex-wrap: wrap;
+  }
+
+  .extraBtn {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }
+}

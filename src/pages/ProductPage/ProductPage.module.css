@@ -1,0 +1,227 @@
+.productPage {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.productContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Loading / Error */
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+}
+
+.loading {
+  font-size: 18px;
+  color: #666;
+}
+
+.error h1 {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.error button {
+  padding: 12px 24px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.error button:hover {
+  background-color: #004ecc;
+}
+
+/* Хлебные крошки */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.crumb {
+  background: none;
+  border: none;
+  color: #005bff;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.crumb:hover {
+  background-color: #e8f0fe;
+}
+
+.crumbSeparator {
+  color: #999;
+}
+
+/* Контент товара */
+.productContent {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.productMain {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sliderSection {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.attributesSection {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.productSidebar {
+  position: relative;
+}
+
+/* Описание */
+.descriptionSection {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* Характеристики */
+.specsSection {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.specsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.specsTable tr {
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.specsTable tr:last-child {
+  border-bottom: none;
+}
+
+.specsTable td {
+  padding: 12px 0;
+}
+
+.specName {
+  font-size: 14px;
+  color: #666;
+  width: 40%;
+  font-weight: 500;
+}
+
+.specValue {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+  .productContent {
+    grid-template-columns: 1fr;
+  }
+
+  .productSidebar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .productPage {
+    padding: 12px;
+  }
+
+  .productContainer {
+    max-width: 100%;
+  }
+
+  .breadcrumbs {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .sliderSection {
+    padding: 16px;
+  }
+
+  .attributesSection {
+    order: 2;
+  }
+
+  .descriptionSection,
+  .specsSection {
+    padding: 16px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .specName {
+    width: 50%;
+    font-size: 13px;
+  }
+
+  .specValue {
+    font-size: 13px;
+  }
+}

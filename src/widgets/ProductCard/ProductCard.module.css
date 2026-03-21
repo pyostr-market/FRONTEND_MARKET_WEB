@@ -99,7 +99,7 @@
 }
 
 .productName {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 14px;
   font-weight: 500;
   color: #1a1a1a;
@@ -109,6 +109,18 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 40px;
+  transition: color 0.2s ease;
+}
+
+.productNameLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.productNameLink:hover .productName {
+  color: #005bff;
 }
 
 .productPrice {
