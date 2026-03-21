@@ -36,12 +36,6 @@ const useCatalog = ({
     appliedFiltersRef.current = appliedFilters;
   }, [appliedFilters]);
 
-  // Ref для хранения initialFilters (чтобы избежать перерендеров)
-  const initialFiltersRef = useRef(initialFilters);
-  useEffect(() => {
-    initialFiltersRef.current = initialFilters;
-  }, [initialFilters]);
-
   // Пагинация
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -221,7 +215,7 @@ const useCatalog = ({
     prevInitialFiltersRef.current = initialFilters;
 
     // Восстанавливаем из кэша только если категория изменилась и нет фильтров
-    if (enableCache && categoryChanged && Object.keys(initialFiltersRef.current).length === 0) {
+    if (enableCache && categoryChanged && Object.keys(initialFilters).length === 0) {
       const cacheKey = `${cacheKeyPrefix}_${categoryKey}`;
       try {
         const cached = localStorage.getItem(cacheKey);
@@ -248,7 +242,8 @@ const useCatalog = ({
     if (categoryChanged || filtersChanged) {
       setProducts([]);
       setOffset(0);
-      const filtersToUse = Object.keys(initialFiltersRef.current).length > 0 ? initialFiltersRef.current : {};
+      const filtersToUse = Object.keys(initialFilters).length > 0 ? initialFilters : {};
+      console.log('[useCatalog] Loading products with filters:', filtersToUse, 'categoryChanged:', categoryChanged, 'filtersChanged:', filtersChanged);
       loadProducts(false, filtersToUse, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

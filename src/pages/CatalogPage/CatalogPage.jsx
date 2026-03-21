@@ -96,11 +96,21 @@ const CatalogPage = () => {
   }, [categoryId, productType]);
 
   // Обновляем initialFilters из urlFilters после загрузки фильтров
+  // Это нужно для синхронизации при загрузке страницы из URL
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
-    if (prevCategoryKey.current === currentKey && Object.keys(initialFilters).length === 0 && Object.keys(urlFilters).length > 0) {
-      // Категория не изменилась, но urlFilters загрузились - применяем их
-      setInitialFilters(urlFilters);
+    if (prevCategoryKey.current === currentKey) {
+      // Категория не изменилась - проверяем, нужно ли обновить initialFilters
+      const urlFiltersStr = JSON.stringify(urlFilters);
+      const initialFiltersStr = JSON.stringify(initialFilters);
+      
+      // Обновляем initialFilters если urlFilters изменились и initialFilters пуст
+      // ИЛИ если urlFilters отличаются от initialFilters (например, после применения)
+      if ((Object.keys(initialFilters).length === 0 && Object.keys(urlFilters).length > 0) ||
+          (urlFiltersStr !== initialFiltersStr && Object.keys(urlFilters).length > 0)) {
+        console.log('[CatalogPage] Updating initialFilters from urlFilters:', urlFilters);
+        setInitialFilters(urlFilters);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlFilters]);
@@ -137,7 +147,7 @@ const CatalogPage = () => {
       prevCategoryKeyForSelected.current = currentKey;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialFilters, categoryId, productType]);
+  }, [categoryId, productType]);
 
   // Флаг наличия изменений
   const hasChanges = Object.keys(selectedFilters).length > 0;
@@ -173,6 +183,10 @@ const CatalogPage = () => {
     applySortedFilters(filtersToApply);
     updateUrl({ filters: filtersToApply });
 
+    // Синхронизируем selectedFilters с применёнными
+    setSelectedFilters(filtersToApply);
+    selectedFiltersRef.current = filtersToApply;
+
     if (isMobile) {
       setIsFiltersModalOpen(false);
     }
@@ -183,6 +197,7 @@ const CatalogPage = () => {
    */
   const handleResetFilters = useCallback(() => {
     setSelectedFilters({});
+    selectedFiltersRef.current = {};
     resetCatalogFilters();
     sortedResetFilters();
     updateUrl({ filters: {}, sort_type: 'default' });

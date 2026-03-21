@@ -37,16 +37,16 @@ const useFilterUrl = (filters = []) => {
     // Парсим фильтры - извлекаем все filter_* параметры
     // Если filters переданы, валидируем значения, иначе берём все найденные
     const hasFilterDefinitions = filters && filters.length > 0;
-    
+
     // Получаем все параметры из URL
     searchParams.forEach((value, key) => {
       if (key.startsWith('filter_')) {
         const filterName = key.replace('filter_', '');
-        
+
         try {
           const values = JSON.parse(decodeURIComponent(value));
 
-          if (Array.isArray(values)) {
+          if (Array.isArray(values) && values.length > 0) {
             if (hasFilterDefinitions) {
               // Валидируем каждое значение
               const validValues = values.filter(
@@ -58,9 +58,7 @@ const useFilterUrl = (filters = []) => {
               }
             } else {
               // Если фильтры ещё не загружены, берём все значения
-              if (values.length > 0) {
-                result.filters[filterName] = values;
-              }
+              result.filters[filterName] = values;
             }
           }
         } catch (e) {
