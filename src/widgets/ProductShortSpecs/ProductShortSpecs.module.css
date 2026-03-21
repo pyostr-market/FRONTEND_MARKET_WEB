@@ -46,7 +46,7 @@
 /* Адаптив */
 @media (max-width: 768px) {
   .specsContainer {
-    padding: 16px;
+    margin-top: 8px;
   }
 
   .specsTitle {

@@ -94,33 +94,33 @@ const ProductSlider = ({ images = [], alt = '' }) => {
           className={styles.mainImage}
         />
 
-        {/* Стрелки навигации (только десктоп) */}
-        {hasMultipleImages && (
-          <>
-            <button
-              className={`${styles.navButton} ${styles.navButtonLeft}`}
-              onClick={handlePrev}
-              aria-label="Предыдущее изображение"
-            >
-              <FiChevronLeft size={24} />
-            </button>
+        {/*/!* Стрелки навигации (только десктоп) *!/*/}
+        {/*{hasMultipleImages && (*/}
+        {/*  <>*/}
+        {/*    <button*/}
+        {/*      className={`${styles.navButton} ${styles.navButtonLeft}`}*/}
+        {/*      onClick={handlePrev}*/}
+        {/*      aria-label="Предыдущее изображение"*/}
+        {/*    >*/}
+        {/*      <FiChevronLeft size={24} />*/}
+        {/*    </button>*/}
 
-            <button
-              className={`${styles.navButton} ${styles.navButtonRight}`}
-              onClick={handleNext}
-              aria-label="Следующее изображение"
-            >
-              <FiChevronRight size={24} />
-            </button>
-          </>
-        )}
+        {/*    <button*/}
+        {/*      className={`${styles.navButton} ${styles.navButtonRight}`}*/}
+        {/*      onClick={handleNext}*/}
+        {/*      aria-label="Следующее изображение"*/}
+        {/*    >*/}
+        {/*      <FiChevronRight size={24} />*/}
+        {/*    </button>*/}
+        {/*  </>*/}
+        {/*)}*/}
 
-        {/* Счётчик изображений (десктоп) */}
-        {hasMultipleImages && (
-          <div className={styles.imageCounter}>
-            {currentIndex + 1} / {displayImages.length}
-          </div>
-        )}
+        {/*/!* Счётчик изображений (десктоп) *!/*/}
+        {/*{hasMultipleImages && (*/}
+        {/*  <div className={styles.imageCounter}>*/}
+        {/*    {currentIndex + 1} / {displayImages.length}*/}
+        {/*  </div>*/}
+        {/*)}*/}
 
         {/* Точки-индикаторы (мобильные) */}
         {hasMultipleImages && (

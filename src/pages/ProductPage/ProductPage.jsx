@@ -1,6 +1,5 @@
-// ProductPage.jsx
 import { useCallback, useEffect, useState } from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
@@ -15,9 +14,9 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
 
-  const urlCategoryId = window.location.search.includes('category=') 
-    ? new URLSearchParams(window.location.search).get('category') 
-    : null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlCategoryId = urlParams.get('category');
+  const urlVariantsExpanded = urlParams.get('variants') === 'expanded';
 
   useEffect(() => {
     if (urlCategoryId) {
@@ -35,11 +34,16 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
+  const [variantExpanded, setVariantExpanded] = useState(urlVariantsExpanded);
+
   const handleVariantSelect = useCallback((variant) => {
     if (variant.id !== product?.id) {
-      navigate(`/product/${variant.id}?category=${urlCategoryId || variant.category?.id}`, { replace: true });
+      const params = new URLSearchParams();
+      if (urlCategoryId) params.set('category', urlCategoryId);
+      if (variantExpanded) params.set('variants', 'expanded'); // сохраняем состояние
+      navigate(`/product/${variant.id}?${params.toString()}`, { replace: true });
     }
-  }, [product?.id, urlCategoryId, navigate]);
+  }, [product?.id, urlCategoryId, navigate, variantExpanded]);
 
   const formatPrice = useCallback((price) => {
     if (!price) return '0 ₽';
@@ -72,16 +76,18 @@ const ProductPage = () => {
 
               {/* Миниатюры вариантов */}
               <ProductVariants
-                variants={variants}
-                currentProductId={product.id}
-                onVariantSelect={handleVariantSelect}
+                  variants={variants}
+                  currentProductId={product.id}
+                  onVariantSelect={handleVariantSelect}
+                  expanded={variantExpanded}
+                  setExpanded={setVariantExpanded}
               />
 
               {/* Краткие характеристики */}
               <ProductShortSpecs attributes={product.attributes} />
             </div>
 
-            {/* Покупка */}
+            {/* Блок покупки */}
             <div className={styles.buyBlock}>
               <div className={styles.buyBox}>
                 <div className={styles.price}>{formatPrice(product.price)}</div>
@@ -117,11 +123,12 @@ const ProductPage = () => {
 
         </div>
 
-        {/* Мобильная кнопка корзины - вне контейнера */}
-        <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
+        {/* Мобильная кнопка корзины */}
+        {product && (
+            <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
+        )}
       </div>
   );
 };
 
 export default ProductPage;
-
