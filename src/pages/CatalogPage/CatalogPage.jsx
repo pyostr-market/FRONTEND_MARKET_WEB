@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useCatalog from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
@@ -11,348 +11,231 @@ import { SortDropdown } from '../../widgets/SortDropdown';
 import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
 
-const SCROLL_KEY = 'catalogScroll_v1';
+const SCROLL_KEY = 'catalogScroll_v2';
 
-/**
- * Страница каталога товаров
- */
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
-  const didRestoreScroll = useRef(false);
-
-  // Параметры из URL
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
+  const didRestoreScroll = useRef(false);
 
-  // Получаем названия
   const { categoryName } = useCategoryName(categoryId);
   const { productTypeName } = useProductTypeName(productType);
 
-  // Мобильная версия
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [showFloatingFilter, setShowFloatingFilter] = useState(false);
 
-  // Получаем categoryId как число
   const categoryIdNum = categoryId ? parseInt(categoryId, 10) : null;
   const productTypeIdNum = productType ? parseInt(productType, 10) : null;
 
-  // Базовые параметры каталога
-  const catalogParamsBase = {
-    category_id: categoryIdNum,
-    product_type_id: productTypeIdNum,
-    limit: 12,
-    enableCache: false, // Отключаем кэш
-  };
+  const catalogParamsBase = { category_id: categoryIdNum, product_type_id: productTypeIdNum, limit: 12, enableCache: true };
 
-  // Определение мобильного устройства
+  // Мобильное определение
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Отслеживание скролла для плавающей кнопки фильтра
+  // Плавающая кнопка фильтров
   useEffect(() => {
     if (!isMobile) return;
-    const handleScroll = () => {
-      setShowFloatingFilter(window.scrollY > 100);
-    };
+    const handleScroll = () => setShowFloatingFilter(window.scrollY > 100);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // Первый хук для получения фильтров (без сортировки)
-  const {
-    filters,
-    filtersLoading,
-    applyFilters: applyCatalogFilters,
-    resetFilters: resetCatalogFilters,
-  } = useCatalog({ ...catalogParamsBase, sort_type: 'default' });
+  const { filters, filtersLoading, applyFilters: applyCatalogFilters } = useCatalog({
+    ...catalogParamsBase,
+    sort_type: 'default',
+  });
 
-  // Хук для работы с URL - используем загруженные фильтры для парсинга
-  const {
-    sort_type: urlSortType,
-    filters: urlFilters,
-    updateUrl,
-  } = useFilterUrl(filters);
-
-  // Используем urlFilters для initialFilters при загрузке страницы
-  // appliedFilters хранит применённые фильтры (после нажатия "Показать")
+  const { sort_type: urlSortType, filters: urlFilters, updateUrl } = useFilterUrl(filters);
   const [appliedFilters, setAppliedFilters] = useState(urlFilters);
   const prevCategoryKey = useRef(`${categoryId}-${productType}`);
-  
-  // Обновляем appliedFilters при изменении категории
+
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
     if (prevCategoryKey.current !== currentKey) {
-      // Категория изменилась - сбрасываем appliedFilters
       setAppliedFilters({});
       prevCategoryKey.current = currentKey;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, productType]);
 
-  // Второй хук для получения товаров с сортировкой и применением фильтров из URL
-  const {
-    products,
-    total,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    applyFilters: applySortedFilters,
-    resetFilters: sortedResetFilters,
-    loadMore,
-  } = useCatalog({ ...catalogParamsBase, sort_type: urlSortType, initialFilters: appliedFilters });
+  const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, loadMore } = useCatalog({
+    ...catalogParamsBase,
+    sort_type: urlSortType,
+    initialFilters: appliedFilters,
+    preserveProducts: true,
+  });
 
-  // Локальное состояние для выбранных фильтров - инициализируем из urlFilters
   const [selectedFilters, setSelectedFilters] = useState(urlFilters);
   const selectedFiltersRef = useRef(urlFilters);
+  useEffect(() => { selectedFiltersRef.current = selectedFilters; }, [selectedFilters]);
 
-  // Обновляем ref при изменении selectedFilters
+  // Сохранение scroll и количества товаров при уходе
   useEffect(() => {
-    selectedFiltersRef.current = selectedFilters;
-  }, [selectedFilters]);
+    return () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        scrollPos: window.scrollY,
+        productsCount: products.length
+      }));
+    };
+  }, [products.length]);
 
-  // Синхронизация selectedFilters с urlFilters при изменении URL
-  // Это нужно для отображения применённых фильтров в чекбоксах
-  useEffect(() => {
-    const selectedStr = JSON.stringify(selectedFiltersRef.current);
-    const urlStr = JSON.stringify(urlFilters);
-    
-    // Синхронизируем только если фильтры отличаются
-    if (selectedStr !== urlStr) {
-      setSelectedFilters(urlFilters);
-      selectedFiltersRef.current = urlFilters;
+  // Восстановление scroll
+  useLayoutEffect(() => {
+    const saved = sessionStorage.getItem(SCROLL_KEY);
+    if (!saved || didRestoreScroll.current) return;
+
+    const { scrollPos, productsCount } = JSON.parse(saved);
+
+    const tryScroll = () => {
+      const gridEl = document.querySelector(`.${styles.catalogMain}`);
+      if (!gridEl) return;
+
+      const imgs = Array.from(gridEl.querySelectorAll('img'));
+      const allLoaded = imgs.every(img => img.complete);
+
+      // Проверяем, что все товары отрендерены и картинки загружены
+      if (products.length >= productsCount && allLoaded) {
+        window.scrollTo(0, scrollPos);
+        sessionStorage.removeItem(SCROLL_KEY);
+        didRestoreScroll.current = true;
+        return true;
+      }
+      return false;
+    };
+
+    if (!tryScroll()) {
+      // Проверяем каждые 50ms
+      const interval = setInterval(() => {
+        if (tryScroll()) clearInterval(interval);
+      }, 50);
+      return () => clearInterval(interval);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlFilters]);
+  }, [products.length]);
 
-  // Сброс selectedFilters при изменении категории
-  useEffect(() => {
-    const currentKey = `${categoryId}-${productType}`;
-    if (prevCategoryKey.current !== currentKey) {
-      // Категория изменилась - сбрасываем selectedFilters
-      setSelectedFilters(urlFilters);
-      selectedFiltersRef.current = urlFilters;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, productType]);
-
-  // Флаг наличия изменений
   const hasChanges = Object.keys(selectedFilters).length > 0;
-
-  /**
-   * Переключение значения фильтра
-   */
-  const toggleFilterValue = useCallback((filterName, value) => {
-    setSelectedFilters((prev) => {
-      const currentValues = prev[filterName] || [];
-      const newValues = currentValues.includes(value)
-        ? currentValues.filter((v) => v !== value)
-        : [...currentValues, value];
-
+  const toggleFilterValue = useCallback((name, value) => {
+    setSelectedFilters(prev => {
+      const current = prev[name] || [];
+      const newValues = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
       if (newValues.length === 0) {
-        const { [filterName]: _, ...rest } = prev;
+        const { [name]: _, ...rest } = prev;
         return rest;
       }
-
-      return {
-        ...prev,
-        [filterName]: newValues,
-      };
+      return { ...prev, [name]: newValues };
     });
   }, []);
 
-  /**
-   * Применение фильтров (кнопка "Показать")
-   */
   const handleApplyFilters = useCallback(() => {
     const filtersToApply = selectedFiltersRef.current;
-    
-    // Обновляем appliedFilters - это вызовет перезагрузку каталога
     setAppliedFilters(filtersToApply);
-    
     applyCatalogFilters(filtersToApply);
     applySortedFilters(filtersToApply);
     updateUrl({ filters: filtersToApply });
-
-    // Синхронизируем selectedFilters с применёнными
     setSelectedFilters(filtersToApply);
     selectedFiltersRef.current = filtersToApply;
+    if (isMobile) setIsFiltersModalOpen(false);
+  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile]);
 
-    if (isMobile) {
-      setIsFiltersModalOpen(false);
-    }
-  }, [applyCatalogFilters, applySortedFilters, isMobile, updateUrl]);
-
-  /**
-   * Сброс фильтров
-   */
   const handleResetFilters = useCallback(() => {
     setSelectedFilters({});
     selectedFiltersRef.current = {};
-    
-    // Сбрасываем appliedFilters - это вызовет перезагрузку каталога
     setAppliedFilters({});
-    
-    // Обновляем URL
+    applyCatalogFilters({});
+    applySortedFilters({});
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [updateUrl]);
+  }, [applyCatalogFilters, applySortedFilters, updateUrl]);
 
-  /**
-   * Изменение сортировки
-   */
   const handleSortChange = useCallback((value) => {
     updateUrl({ sort_type: value });
   }, [updateUrl]);
 
-  /**
-   * Заголовок страницы
-   */
   const getPageTitle = useCallback(() => {
-    if (categoryName) {
-      return categoryName;
-    }
-    if (productTypeName) {
-      return productTypeName;
-    }
+    if (categoryName) return categoryName;
+    if (productTypeName) return productTypeName;
     return 'Все товары';
   }, [categoryName, productTypeName]);
 
-  /**
-   * Обработчик смены изображения
-   */
   const handleImageChange = useCallback((productId, imageIndex) => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);
   }, []);
 
-  // Восстановление позиции скролла после загрузки товаров
-  useEffect(() => {
-    if (!loading && products.length > 0 && !didRestoreScroll.current) {
-      const savedPosition = sessionStorage.getItem(SCROLL_KEY);
-      if (savedPosition) {
-        const position = parseInt(savedPosition, 10);
-        window.scrollTo(0, position);
-        didRestoreScroll.current = true;
-        sessionStorage.removeItem(SCROLL_KEY);
-      }
-    }
-  }, [loading, products.length]);
-
-  // Сброс флага восстановления скролла при изменении категории
-  useEffect(() => {
-    didRestoreScroll.current = false;
-  }, [categoryId, productType]);
-
   return (
-    <div className={styles.catalogPage}>
-      {/* Верхняя панель для мобильных - сортировка и фильтры */}
-      {isMobile && (
-        <div className={styles.mobileTopBar}>
-          <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />
-          <button
-            className={styles.mobileFiltersBtn}
-            onClick={() => setIsFiltersModalOpen(true)}
-          >
-            <FiSliders size={18} />
-            <span>Фильтры</span>
-            {Object.keys(selectedFilters).length > 0 && (
-              <span className={styles.filtersBadge}>
-                {Object.keys(selectedFilters).length}
-              </span>
-            )}
-          </button>
-        </div>
-      )}
-
-      <div className={styles.catalogContent}>
-        {/* Панель фильтров для десктопа */}
-        {!isMobile && (
-          <FiltersPanel
-            filters={filters}
-            selectedFilters={selectedFilters}
-            onToggleFilter={toggleFilterValue}
-            onApply={handleApplyFilters}
-            onReset={handleResetFilters}
-            hasChanges={hasChanges}
-            loading={filtersLoading}
-          />
+      <div className={styles.catalogPage}>
+        {isMobile && (
+            <div className={styles.mobileTopBar}>
+              <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />
+              <button className={styles.mobileFiltersBtn} onClick={() => setIsFiltersModalOpen(true)}>
+                <FiSliders size={18} /><span>Фильтры</span>
+                {hasChanges && <span className={styles.filtersBadge}>{Object.keys(selectedFilters).length}</span>}
+              </button>
+            </div>
         )}
 
-        {/* Контент каталога */}
-        <div className={styles.catalogMain}>
-          {/* Верхняя панель */}
-          <div className={styles.catalogHeader}>
-            <div className={styles.catalogInfo}>
-              <h1 className={styles.catalogTitle}>{getPageTitle()}</h1>
-              {!loading && products.length > 0 && (
-                <span className={styles.productsCount}>
+        <div className={styles.catalogContent}>
+          {!isMobile && (
+              <FiltersPanel
+                  filters={filters}
+                  selectedFilters={selectedFilters}
+                  onToggleFilter={toggleFilterValue}
+                  onApply={handleApplyFilters}
+                  onReset={handleResetFilters}
+                  hasChanges={hasChanges}
+                  loading={filtersLoading}
+              />
+          )}
+
+          <div className={styles.catalogMain}>
+            <div className={styles.catalogHeader}>
+              <div className={styles.catalogInfo}>
+                <h1 className={styles.catalogTitle}>{getPageTitle()}</h1>
+                {!loading && products.length > 0 && (
+                    <span className={styles.productsCount}>
                   {total} {total === 1 ? 'товар' : total < 5 ? 'товара' : 'товаров'}
                 </span>
-              )}
+                )}
+              </div>
+              {!isMobile && <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />}
             </div>
 
-            {/* Сортировка для десктопа */}
-            {!isMobile && (
-              <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />
-            )}
+            <ProductGrid
+                products={products}
+                loading={loading}
+                loadingMore={loadingMore}
+                hasMore={hasMore}
+                onLoadMore={loadMore}
+                onImageChange={handleImageChange}
+            />
+
+            {error && <div className={styles.errorMessage}><p>Ошибка загрузки: {error}</p></div>}
           </div>
-
-          {/* Сетка товаров */}
-          <ProductGrid
-            products={products}
-            loading={loading}
-            loadingMore={loadingMore}
-            hasMore={hasMore}
-            onLoadMore={loadMore}
-            onImageChange={handleImageChange}
-          />
-
-          {/* Ошибка */}
-          {error && (
-            <div className={styles.errorMessage}>
-              <p>Ошибка загрузки: {error}</p>
-            </div>
-          )}
         </div>
+
+        {isMobile && showFloatingFilter && (
+            <button className={styles.floatingFiltersBtn} onClick={() => setIsFiltersModalOpen(true)}>
+              <FiSliders size={20} /><span>Фильтры</span>
+              {hasChanges && <span className={styles.floatingBadge}>{Object.keys(selectedFilters).length}</span>}
+            </button>
+        )}
+
+        {isMobile && (
+            <FiltersModal
+                isOpen={isFiltersModalOpen}
+                onClose={() => setIsFiltersModalOpen(false)}
+                filters={filters}
+                selectedFilters={selectedFilters}
+                onToggleFilter={toggleFilterValue}
+                onApply={handleApplyFilters}
+                onReset={handleResetFilters}
+                hasChanges={hasChanges}
+                loading={filtersLoading}
+            />
+        )}
       </div>
-
-      {/* Плавающая кнопка фильтров для мобильных */}
-      {isMobile && showFloatingFilter && (
-        <button
-          className={styles.floatingFiltersBtn}
-          onClick={() => setIsFiltersModalOpen(true)}
-        >
-          <FiSliders size={20} />
-          <span>Фильтры</span>
-          {Object.keys(selectedFilters).length > 0 && (
-            <span className={styles.floatingBadge}>
-              {Object.keys(selectedFilters).length}
-            </span>
-          )}
-        </button>
-      )}
-
-      {/* Модальное окно фильтров для мобильных */}
-      {isMobile && (
-        <FiltersModal
-          isOpen={isFiltersModalOpen}
-          onClose={() => setIsFiltersModalOpen(false)}
-          filters={filters}
-          selectedFilters={selectedFilters}
-          onToggleFilter={toggleFilterValue}
-          onApply={handleApplyFilters}
-          onReset={handleResetFilters}
-          hasChanges={hasChanges}
-          loading={filtersLoading}
-        />
-      )}
-    </div>
   );
 };
 
