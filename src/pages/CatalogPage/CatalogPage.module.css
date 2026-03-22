@@ -1,127 +1,116 @@
+/* ======================
+   Page
+====================== */
 .catalogPage {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #f6f7f9; /* мягче чем было */
 }
 
-/* Mobile top bar - сортировка и фильтры */
+/* ======================
+   Layout
+====================== */
+.catalogContent {
+  display: flex;
+  gap: 16px; /* было 20 → плотнее */
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+/* Основная область */
+.catalogMain {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ======================
+   Header (ВАЖНО — убрали "карточность")
+====================== */
+.catalogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 8px 4px;
+
+  background: none;        /* УБРАЛИ карточку */
+  border: none;
+  box-shadow: none;
+}
+
+.catalogInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.catalogTitle {
+  margin: 0;
+  font-size: 18px;  /* было 22 */
+  font-weight: 600;
+  color: #111;
+}
+
+.productsCount {
+  font-size: 12.5px;
+  color: #888;
+}
+
+/* ======================
+   Mobile Top Bar
+====================== */
 .mobileTopBar {
   display: none;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e2e6;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: #fff;
+  border-bottom: 1px solid #e6e8eb;
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
-/* Плавающая кнопка фильтров */
+/* ======================
+   Floating Filters Button
+====================== */
 .floatingFiltersBtn {
   display: none;
   position: fixed;
-  bottom: 80px;
-  left: 16px;
+  bottom: 70px;
+  left: 12px;
   z-index: 90;
+
+  display: none;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: 6px;
+
+  padding: 10px 14px;
   background-color: #005bff;
-  color: #ffffff;
+  color: #fff;
+
   border: none;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: 500;
+
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.3);
-  transition: all 0.3s ease;
-  animation: slideUp 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 91, 255, 0.25);
+  transition: all 0.2s ease;
 }
 
 .floatingFiltersBtn:hover {
   background-color: #004ecc;
-  transform: translateY(-2px);
-}
-
-.floatingFiltersBtn:active {
-  transform: translateY(0);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  transform: translateY(-1px);
 }
 
 .floatingBadge {
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background-color: #ffffff;
-  color: #005bff;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Mobile filters bar */
-.mobileFiltersBar {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e2e6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.mobileFiltersBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background-color: #ffffff;
-  border: 1px solid #e0e2e6;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.mobileFiltersBtn:hover {
-  background-color: #f5f7fa;
-  border-color: #005bff;
-}
-
-.mobileFiltersBtn:active {
-  background-color: #e8f0fe;
-}
-
-.filtersBadge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
   min-width: 18px;
   height: 18px;
-  padding: 0 6px;
-  background-color: #005bff;
-  color: #ffffff;
+  padding: 0 5px;
+  background-color: #fff;
+  color: #005bff;
   font-size: 11px;
   font-weight: 600;
   border-radius: 9px;
@@ -130,64 +119,84 @@
   justify-content: center;
 }
 
-/* Catalog content */
-.catalogContent {
-  display: flex;
-  gap: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Основная область каталога */
-.catalogMain {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Catalog header */
-.catalogHeader {
-  flex-shrink: 0;
-  display: flex;
+/* ======================
+   Mobile Filters Bar
+====================== */
+.mobileFiltersBar {
+  display: none;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 14px 20px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f0f2f5;
+  gap: 10px;
+
+  padding: 10px 12px;
+  background-color: #fff;
+  border-bottom: 1px solid #e6e8eb;
+
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
-.catalogInfo {
+.mobileFiltersBtn {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 12px;
+  background-color: #fff;
+  border: 1px solid #e0e2e6;
+  border-radius: 6px;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+
+  cursor: pointer;
 }
 
-.catalogTitle {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
+.mobileFiltersBtn:hover {
+  border-color: #005bff;
+  background-color: #f7f9ff;
 }
 
-.productsCount {
-  font-size: 14px;
-  color: #888;
-  font-weight: 400;
+/* Badge */
+.filtersBadge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+
+  background-color: #005bff;
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Error message */
+/* ======================
+   Error
+====================== */
 .errorMessage {
-  padding: 20px;
+  padding: 14px;
   text-align: center;
   color: #ff3b30;
   background-color: #fff5f5;
-  border-radius: 8px;
-  margin-top: 20px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 13px;
 }
 
-/* Адаптив */
+/* ======================
+   Responsive
+====================== */
 @media (max-width: 768px) {
   .mobileTopBar {
     display: flex;
@@ -200,31 +209,22 @@
   .catalogContent {
     padding: 0;
     gap: 0;
-    overflow: visible;
   }
 
   .catalogMain {
     padding: 0;
-    overflow: visible;
   }
 
   .catalogHeader {
-    margin-bottom: 0;
-    border-radius: 0;
-    box-shadow: none;
-    border: none;
-    padding: 12px 16px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
   }
 
   .catalogTitle {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .productsCount {
-    font-size: 13px;
-  }
-
-  .mobileFiltersBar {
-    display: none;
+    font-size: 12px;
   }
 }

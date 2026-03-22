@@ -14,23 +14,181 @@
   }
 }
 
-/* Top border */
-.headerTop {
-}
-
-/* Container */
+/* ======================
+   Container
+====================== */
 .headerContainer {
   max-width: var(--max-width-header-pc);
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: 5px 20px;
+  gap: 12px;
+  padding: 6px 20px;
   background-color: var(--surface);
   position: relative;
 }
 
-/* Выпадающее меню каталога - на всю ширину хедера */
+/* ======================
+   Header Left
+====================== */
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto; /* НЕ тянется */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoImage {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Кнопка каталога — фикс по высоте */
+.catalogBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  background-color: var(--primary);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-xl);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.catalogBtn:hover {
+  background-color: var(--primary-hover);
+}
+
+.catalogBtnActive {
+  background-color: var(--primary-hover);
+}
+
+/* ======================
+   Header Center (ПОИСК)
+====================== */
+.headerCenter {
+  flex: 1 1 auto;            /* занимает всё доступное */
+  max-width: 700px;          /* ограничение как у маркетплейсов */
+  display: flex;
+  align-items: center;
+}
+
+/* Обертка поиска */
+.searchWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ВАЖНО: фиксируем высоту */
+.searchBar {
+  width: 100%;
+  height: 36px;              /* одинаково с кнопкой каталога */
+  display: flex;
+  align-items: center;
+  background-color: var(--primary);
+  border-radius: var(--radius-xl);
+  padding: 2px;
+  transition: background-color 0.2s;
+}
+
+.searchBar:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Сам input */
+.searchInput {
+  flex: 1;
+  height: 100%;
+  padding: 0 12px;           /* убрали вертикальный padding */
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  outline: none;
+  background-color: var(--surface);
+  color: var(--text);
+}
+
+/* ======================
+   Header Right
+====================== */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto; /* НЕ тянется */
+}
+
+/* Кнопки справа — одинаковая высота */
+.headerActionBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-width: 52px;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.headerActionBtn:hover {
+  background-color: var(--surface-muted);
+}
+
+.headerActionBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.actionLabel {
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* ======================
+   Badge
+====================== */
+.cartBadge {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  background-color: #ff3b30;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ======================
+   Catalog Dropdown
+====================== */
 .catalogDropdown {
   position: absolute;
   left: 50%;
@@ -56,187 +214,9 @@
 }
 
 /* ======================
-   Header Left
-====================== */
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-width: 180px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.logoImage {
-  height: 24px;
-  width: auto;
-  object-fit: contain;
-  padding-right: 8px;
-}
-
-.catalogWrapper {
-  position: relative;
-}
-
-.catalogBtn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: var(--primary);
-  color: var(--surface);
-  border: none;
-  padding: 7px 12px;
-  height: 36px;
-  border-radius: var(--radius-xl);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.catalogBtn:hover {
-  background-color: var(--primary-hover);
-}
-
-.catalogBtnActive {
-  background-color: var(--primary-hover);
-}
-
-.catalogBtn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* ======================
-   Header Center
-====================== */
-.headerCenter {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 300px;
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.searchWrapper {
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  height: 36px;
-  display: flex;
-  align-items: center;
-}
-
-.searchBar {
-  width: 100%;
-  max-width: 100%;
-  display: flex;
-  background-color: var(--primary);
-  border-radius: var(--radius-xl);
-  padding: 2px;
-  border: none;
-  cursor: pointer;
-  height: 36px;
-}
-
-.searchBar:hover {
-  background-color: var(--primary-hover);
-}
-
-.searchInput {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--radius-lg);
-  font-size: 13px;
-  outline: none;
-  background-color: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.searchInput::placeholder {
-  color: var(--text-muted);
-}
-
-/* ======================
-   Header Right
-====================== */
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  min-width: 260px;
-  justify-content: flex-end;
-}
-
-.headerActionBtn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: var(--radius-lg);
-  text-decoration: none;
-  transition: background-color 0.2s;
-  min-width: 48px;
-  position: relative;
-}
-
-.cartBadge {
-  position: absolute;
-  top: 1px;
-  right: 6px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 5px;
-  background-color: #ff3b30;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 600;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.headerActionBtn:hover {
-  background-color: var(--surface-muted);
-}
-
-.headerActionBtn svg {
-  color: var(--text-secondary);
-  transition: color 0.2s;
-  width: 18px;
-  height: 18px;
-}
-
-.headerActionBtn:hover svg {
-  color: var(--primary);
-}
-
-.actionLabel {
-  font-size: 9px;
-  color: var(--text-muted);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-/* ======================
    Categories Bar
 ====================== */
 .categoriesBar {
-  background-color: transparent;
   overflow: hidden;
   max-height: 200px;
   transition: opacity 0.25s ease, max-height 0.25s ease;
@@ -246,7 +226,6 @@
   visibility: hidden;
   opacity: 0;
   max-height: 0;
-  transition: visibility 0s 0.25s, opacity 0.25s ease, max-height 0.25s ease;
 }
 
 .categoriesContainer {
@@ -254,8 +233,6 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  border-end-start-radius: 20px;
-  border-end-end-radius: 20px;
   gap: 12px;
   padding: 4px 14px 7px;
   overflow-x: auto;
@@ -263,23 +240,17 @@
   border-bottom: 1px solid var(--border);
 }
 
-
+/* ======================
+   Responsive
+====================== */
 @media (max-width: 930px) {
   .logoImage {
-    height: 24px;
     width: 100px;
-    padding-right: 0;
   }
-
 }
 
 @media (max-width: 850px) {
   .logoImage {
     display: none;
   }
-  .headerLeft {
-    gap: 0;
-    min-width: 0;
-  }
-
 }
