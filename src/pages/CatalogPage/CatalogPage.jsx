@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog from '../../shared/hooks/useCatalog';
+import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
@@ -63,11 +63,10 @@ const CatalogPage = () => {
     }
   }, [categoryId, productType]);
 
-  const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, loadMore } = useCatalog({
+  const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, resetFilters: sortedResetFilters, loadMore } = useCatalog({
     ...catalogParamsBase,
     sort_type: urlSortType,
     initialFilters: appliedFilters,
-    preserveProducts: true,
   });
 
   const [selectedFilters, setSelectedFilters] = useState(urlFilters);
@@ -145,10 +144,18 @@ const CatalogPage = () => {
     setSelectedFilters({});
     selectedFiltersRef.current = {};
     setAppliedFilters({});
-    applyCatalogFilters({});
-    applySortedFilters({});
+    
+    // Очищаем кэш перед сбросом
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
+    
+    // Сбрасываем каталоги с принудительной перезагрузкой
+    setTimeout(() => {
+      sortedResetFilters();
+      applyCatalogFilters({});
+    }, 0);
+    
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [applyCatalogFilters, applySortedFilters, updateUrl]);
+  }, [sortedResetFilters, applyCatalogFilters, updateUrl, categoryIdNum, productTypeIdNum]);
 
   const handleSortChange = useCallback((value) => {
     updateUrl({ sort_type: value });
