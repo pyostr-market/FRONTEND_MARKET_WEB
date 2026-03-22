@@ -67,22 +67,22 @@ const ProductCardSlider = ({ images = [], alt = '' }) => {
 
   return (
     <div className={styles.sliderContainer}>
-      {/* Стрелки */}
-      <button
-        className={`${styles.arrow} ${styles.arrowLeft}`}
-        onClick={handlePrev}
-        aria-label="Предыдущее изображение"
-      >
-        <FiChevronLeft size={16} />
-      </button>
+      {/*/!* Стрелки *!/*/}
+      {/*<button*/}
+      {/*  className={`${styles.arrow} ${styles.arrowLeft}`}*/}
+      {/*  onClick={handlePrev}*/}
+      {/*  aria-label="Предыдущее изображение"*/}
+      {/*>*/}
+      {/*  <FiChevronLeft size={16} />*/}
+      {/*</button>*/}
 
-      <button
-        className={`${styles.arrow} ${styles.arrowRight}`}
-        onClick={handleNext}
-        aria-label="Следующее изображение"
-      >
-        <FiChevronRight size={16} />
-      </button>
+      {/*<button*/}
+      {/*  className={`${styles.arrow} ${styles.arrowRight}`}*/}
+      {/*  onClick={handleNext}*/}
+      {/*  aria-label="Следующее изображение"*/}
+      {/*>*/}
+      {/*  <FiChevronRight size={16} />*/}
+      {/*</button>*/}
 
       {/* Изображение */}
       <LazyImage

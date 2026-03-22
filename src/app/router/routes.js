@@ -12,12 +12,14 @@ const routes = [
     component: HomePage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
   },
   {
     path: paths.CATALOG,
     component: CatalogPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: true,
   },
   {
     path: '/product/:id',
@@ -31,18 +33,21 @@ const routes = [
     component: CartPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
   },
   {
     path: paths.CHECKOUT,
     component: CheckoutPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
   },
   {
     path: paths.WISHLIST,
     component: WishlistPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
   },
 ];
 

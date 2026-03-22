@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight } from 'react-icons/fi';
+import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight, FiTruck, FiShield } from 'react-icons/fi';
 import { useCart } from '../../app/store/cartStore';
 import useCartProducts from '../../shared/hooks/useCartProducts';
 import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
@@ -151,53 +151,67 @@ const CartPage = () => {
                 {/* Информация о товаре */}
                 <div className={styles.itemInfo}>
                   <h3 className={styles.itemName}>{item.name}</h3>
+                  <div className={styles.itemArticle}>Арт. {item.id}</div>
                   <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
+                  
+                  <div className={styles.itemBadges}>
+                    <span className={styles.badge}>
+                      <FiTruck size={14} /> Быстрая доставка
+                    </span>
+                    <span className={styles.badge}>
+                      <FiShield size={14} /> Гарантия качества
+                    </span>
+                  </div>
                 </div>
 
-                {/* Количество */}
-                <div className={styles.itemQuantity}>
+                {/* Количество и удаление */}
+                <div className={styles.itemActions}>
+                  <div className={styles.itemQuantity}>
+                    <button
+                      className={styles.quantityButton}
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                      aria-label="Уменьшить количество"
+                    >
+                      <FiMinus size={14} />
+                    </button>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(item.id, parseInt(e.target.value, 10))
+                      }
+                      className={styles.quantityInput}
+                      min="1"
+                      max={item.maxQuantity}
+                    />
+                    <button
+                      className={styles.quantityButton}
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity + 1)
+                      }
+                      disabled={item.quantity >= item.maxQuantity}
+                      aria-label="Увеличить количество"
+                    >
+                      <FiPlus size={14} />
+                    </button>
+                  </div>
+
+                  <div className={styles.itemTotal}>
+                    <span className={styles.itemTotalLabel}>Итого:</span>
+                    <span className={styles.itemTotalValue}>
+                      {formatPrice((parseFloat(item.price) * item.quantity).toString())}
+                    </span>
+                  </div>
+
                   <button
-                    className={styles.quantityButton}
-                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                    aria-label="Уменьшить количество"
+                    className={styles.removeButton}
+                    onClick={() => handleRemoveItem(item.id)}
+                    aria-label="Удалить товар"
                   >
-                    <FiMinus size={16} />
-                  </button>
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(item.id, parseInt(e.target.value, 10))
-                    }
-                    className={styles.quantityInput}
-                    min="1"
-                    max={item.maxQuantity}
-                  />
-                  <button
-                    className={styles.quantityButton}
-                    onClick={() =>
-                      handleQuantityChange(item.id, item.quantity + 1)
-                    }
-                    disabled={item.quantity >= item.maxQuantity}
-                    aria-label="Увеличить количество"
-                  >
-                    <FiPlus size={16} />
+                    <FiTrash2 size={18} />
+                    <span className={styles.removeButtonText}>Удалить</span>
                   </button>
                 </div>
-
-                {/* Итого за товар */}
-                <div className={styles.itemTotal}>
-                  {formatPrice((parseFloat(item.price) * item.quantity).toString())}
-                </div>
-
-                {/* Удалить */}
-                <button
-                  className={styles.removeButton}
-                  onClick={() => handleRemoveItem(item.id)}
-                  aria-label="Удалить товар"
-                >
-                  <FiTrash2 size={20} />
-                </button>
               </div>
             ))}
           </div>
@@ -213,10 +227,24 @@ const CartPage = () => {
               </span>
             </div>
 
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Доставка</span>
+              <span className={styles.summaryValueFree}>Бесплатно</span>
+            </div>
+
             <div className={styles.summaryTotal}>
               <span className={styles.totalLabel}>Общая сумма:</span>
               <span className={styles.totalValue}>
                 {formatPrice(totalPrice.toString())}
+              </span>
+            </div>
+
+            <div className={styles.summaryBenefits}>
+              <span className={styles.benefitItem}>
+                <FiTruck size={16} /> Бесплатная доставка
+              </span>
+              <span className={styles.benefitItem}>
+                <FiShield size={16} /> Гарантия возврата
               </span>
             </div>
 

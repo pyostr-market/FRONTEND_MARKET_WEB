@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  height: 36px; /* КЛЮЧЕВОЕ — одинаково с header */
+  height: 36px;
   background-color: var(--primary);
   border-radius: var(--radius-xl);
   padding: 2px;
@@ -40,7 +40,7 @@
 .searchInput {
   flex: 1;
   height: 100%;
-  padding: 0 12px; /* УБРАЛИ вертикальный padding */
+  padding: 0 12px;
   border: none;
   border-radius: var(--radius-lg);
   font-size: 13px;
@@ -49,7 +49,6 @@
   color: var(--text);
 }
 
-/* Placeholder */
 .searchInput::placeholder {
   color: var(--text-muted);
 }
@@ -91,14 +90,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ======================
@@ -109,7 +102,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  top: 60px;
+  top: 50px;
   background-color: var(--surface);
   border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   z-index: 998;
@@ -120,12 +113,8 @@
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 .mobileHeader {
@@ -163,9 +152,8 @@
 }
 
 /* ======================
-   Остальное без изменений
+   Search results
 ====================== */
-
 .searchLoading {
   text-align: center;
   color: var(--text-muted);
@@ -203,4 +191,118 @@
   text-align: center;
   color: var(--text-muted);
   padding: 32px 16px;
+}
+
+/* ======================
+   Mobile Popular Products
+====================== */
+.popularList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Сделаем минимум три в ряд */
+.popularItem {
+  flex: 1 1 calc(33.33% - 8px);
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface-muted);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+/* ======================
+   Mobile Product Types
+====================== */
+.productTypesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Минимум три карточки в ряд */
+.productTypeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 calc(33.33% - 12px);
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+/* ======================
+   Mobile Product Types
+====================== */
+.productTypesSection {
+  margin-top: 16px;
+}
+
+.productTypesTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.productTypesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.productTypeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.typeImage {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.typeName {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+/* Адаптив */
+@media (max-width: 576px) {
+  .popularItem {
+    flex: 1 1 48%;
+    font-size: 13px;
+  }
+
+  .productTypeCard {
+    width: 45%;
+    padding: 6px;
+  }
+
+  .typeImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .typeName {
+    font-size: 11px;
+  }
 }
