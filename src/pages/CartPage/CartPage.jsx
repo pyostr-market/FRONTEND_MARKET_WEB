@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight, FiTruck, FiShield } from 'react-icons/fi';
+import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight, FiTruck, FiShield, FiCheck } from 'react-icons/fi';
 import { useCart } from '../../app/store/cartStore';
 import useCartProducts from '../../shared/hooks/useCartProducts';
 import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
@@ -20,6 +20,12 @@ const CartPage = () => {
     MAX_ITEM_QUANTITY,
   } = useCart();
 
+  // Состояние для выбранных товаров
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  
+  // Состояние для товаров в процессе удаления
+  const [removingItems, setRemovingItems] = useState({});
+
   // Получаем ID товаров из корзины
   const productIds = useMemo(() => {
     return Object.keys(cartItems).map((id) => parseInt(id, 10));
@@ -33,6 +39,21 @@ const CartPage = () => {
   } = useCartProducts(productIds);
 
   const totalItems = getTotalQuantity();
+
+  // Состояние "выбрать все"
+  const allSelected = useMemo(() => {
+    return products.length > 0 && products.every(p => selectedIds.has(p.id));
+  }, [products, selectedIds]);
+
+  // Сумма выбранных товаров
+  const selectedTotal = useMemo(() => {
+    return products
+      .filter(p => selectedIds.has(p.id))
+      .reduce((sum, item) => sum + parseFloat(item.price) * (cartItems[item.id] || 1), 0);
+  }, [products, selectedIds, cartItems]);
+
+  // Количество выбранных товаров
+  const selectedCount = selectedIds.size;
 
   /**
    * Форматирование цены
@@ -48,22 +69,100 @@ const CartPage = () => {
   }, []);
 
   /**
+   * Запуск процесса удаления товара
+   */
+  const startRemoval = useCallback((productId) => {
+    // Если уже удаляется, не запускаем повторно
+    if (removingItems[productId]) return;
+    
+    const timeout = setTimeout(() => {
+      removeFromCart(productId);
+      setRemovingItems(prev => {
+        const { [productId]: removed, ...rest } = prev;
+        return rest;
+      });
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        next.delete(productId);
+        return next;
+      });
+    }, 3000);
+    
+    setRemovingItems(prev => ({
+      ...prev,
+      [productId]: { timeout },
+    }));
+  }, [removeFromCart, removingItems]);
+
+  /**
+   * Отмена удаления товара
+   */
+  const cancelRemoval = useCallback((productId) => {
+    setRemovingItems(prev => {
+      const item = prev[productId];
+      if (item?.timeout) {
+        clearTimeout(item.timeout);
+      }
+      const { [productId]: removed, ...rest } = prev;
+      return rest;
+    });
+    // Восстанавливаем количество в 1
+    setItemQuantity(productId, 1);
+  }, [setItemQuantity]);
+
+  /**
+   * Переключение выбора товара
+   */
+  const toggleSelectItem = useCallback((productId) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(productId)) {
+        next.delete(productId);
+      } else {
+        next.add(productId);
+      }
+      return next;
+    });
+  }, []);
+
+  /**
+   * Переключение выбора всех товаров
+   */
+  const toggleSelectAll = useCallback(() => {
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(products.map(p => p.id)));
+    }
+  }, [allSelected, products]);
+
+  /**
+   * Удаление выбранных товаров
+   */
+  const removeSelected = useCallback(() => {
+    selectedIds.forEach(id => startRemoval(id));
+  }, [selectedIds, startRemoval]);
+
+  /**
+   * Очистка корзины (с задержкой для всех товаров)
+   */
+  const handleClearCart = useCallback(() => {
+    products.forEach(product => {
+      startRemoval(product.id);
+    });
+  }, [products, startRemoval]);
+
+  /**
    * Обработчик изменения количества
    */
   const handleQuantityChange = useCallback((productId, newQuantity) => {
     if (newQuantity <= 0) {
-      removeFromCart(productId);
+      // Запускаем процесс удаления
+      startRemoval(productId);
     } else {
       setItemQuantity(productId, Math.min(newQuantity, MAX_ITEM_QUANTITY));
     }
-  }, [removeFromCart, setItemQuantity, MAX_ITEM_QUANTITY]);
-
-  /**
-   * Обработчик удаления товара
-   */
-  const handleRemoveItem = useCallback((productId) => {
-    removeFromCart(productId);
-  }, [removeFromCart]);
+  }, [setItemQuantity, MAX_ITEM_QUANTITY, startRemoval]);
 
   /**
    * Товары в корзине с количествами
@@ -73,8 +172,9 @@ const CartPage = () => {
       ...product,
       quantity: cartItems[product.id] || 1,
       maxQuantity: MAX_ITEM_QUANTITY,
+      isRemoving: !!removingItems[product.id],
     }));
-  }, [products, cartItems, MAX_ITEM_QUANTITY]);
+  }, [products, cartItems, MAX_ITEM_QUANTITY, removingItems]);
 
   /**
    * Общая сумма
@@ -135,90 +235,159 @@ const CartPage = () => {
       <div className={styles.cartContainer}>
         <h1 className={styles.cartTitle}>Корзина</h1>
 
+        {/* Панель с чекбоксом "выбрать все" и кнопками */}
+        {/*<div className={styles.cartToolbar}>*/}
+        {/*  <label className={styles.selectAllLabel}>*/}
+        {/*    <input*/}
+        {/*        type="checkbox"*/}
+        {/*        className={styles.selectAllCheckbox}*/}
+        {/*        checked={allSelected}*/}
+        {/*        onChange={toggleSelectAll}*/}
+        {/*    />*/}
+        {/*    <span className={styles.selectAllText}>Выбрать все</span>*/}
+        {/*  </label>*/}
+
+        {/*  {selectedCount > 0 && (*/}
+        {/*      <button*/}
+        {/*          className={styles.removeSelectedButton}*/}
+        {/*          onClick={removeSelected}*/}
+        {/*      >*/}
+        {/*        <FiTrash2 size={18} />*/}
+        {/*        <span>Удалить выбранное ({selectedCount})</span>*/}
+        {/*      </button>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+
         <div className={styles.cartContent}>
           {/* Список товаров */}
           <div className={styles.cartItems}>
-            {cartProducts.map((item) => (
-              <div key={item.id} className={styles.cartItem}>
-                {/* Изображение со слайдером */}
-                <div className={styles.itemImage}>
-                  <ProductCardSlider
-                    images={item.images || []}
-                    alt={item.name}
-                  />
-                </div>
+            {cartProducts.map((item) => {
+              const isRemoving = !!removingItems[item.id];
+              
+              return (
+                <div 
+                  key={item.id} 
+                  className={styles.cartItem}
+                >
+                  {/* Чекбокс выбора */}
+                  {/*<label className={styles.itemCheckbox}>*/}
+                  {/*  <input*/}
+                  {/*    type="checkbox"*/}
+                  {/*    checked={selectedIds.has(item.id)}*/}
+                  {/*    onChange={() => toggleSelectItem(item.id)}*/}
+                  {/*    disabled={isRemoving}*/}
+                  {/*  />*/}
+                  {/*  <span className={styles.checkboxMark}></span>*/}
+                  {/*</label>*/}
 
-                {/* Информация о товаре */}
-                <div className={styles.itemInfo}>
-                  <h3 className={styles.itemName}>{item.name}</h3>
-                  <div className={styles.itemArticle}>Арт. {item.id}</div>
-                  <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
-                  
-                  <div className={styles.itemBadges}>
-                    <span className={styles.badge}>
-                      <FiTruck size={14} /> Быстрая доставка
-                    </span>
-                    <span className={styles.badge}>
-                      <FiShield size={14} /> Гарантия качества
-                    </span>
-                  </div>
-                </div>
-
-                {/* Количество и удаление */}
-                <div className={styles.itemActions}>
-                  <div className={styles.itemQuantity}>
-                    <button
-                      className={styles.quantityButton}
-                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                      aria-label="Уменьшить количество"
-                    >
-                      <FiMinus size={14} />
-                    </button>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleQuantityChange(item.id, parseInt(e.target.value, 10))
-                      }
-                      className={styles.quantityInput}
-                      min="1"
-                      max={item.maxQuantity}
+                  {/* Изображение со слайдером */}
+                  <div className={styles.itemImage}>
+                    <ProductCardSlider
+                      images={item.images || []}
+                      alt={item.name}
                     />
-                    <button
-                      className={styles.quantityButton}
-                      onClick={() =>
-                        handleQuantityChange(item.id, item.quantity + 1)
-                      }
-                      disabled={item.quantity >= item.maxQuantity}
-                      aria-label="Увеличить количество"
-                    >
-                      <FiPlus size={14} />
-                    </button>
                   </div>
 
-                  <div className={styles.itemTotal}>
-                    <span className={styles.itemTotalLabel}>Итого:</span>
-                    <span className={styles.itemTotalValue}>
-                      {formatPrice((parseFloat(item.price) * item.quantity).toString())}
-                    </span>
+                  {/* Информация о товаре */}
+                  <div className={styles.itemInfo}>
+                    <h3 className={styles.itemName}>{item.name}</h3>
+                    <div className={styles.itemArticle}>Арт. {item.id}</div>
+                    <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
+                    
+                    <div className={styles.itemBadges}>
+                      <span className={styles.badge}>
+                        <FiTruck size={14} /> Быстрая доставка
+                      </span>
+                      <span className={styles.badge}>
+                        <FiShield size={14} /> Гарантия качества
+                      </span>
+                    </div>
                   </div>
 
-                  <button
-                    className={styles.removeButton}
-                    onClick={() => handleRemoveItem(item.id)}
-                    aria-label="Удалить товар"
-                  >
-                    <FiTrash2 size={18} />
-                    <span className={styles.removeButtonText}>Удалить</span>
-                  </button>
+                  {/* Количество и удаление */}
+                  <div className={styles.itemActions}>
+                    {isRemoving ? (
+                      <div className={`${styles.removingOverlay} ${styles.itemRemoving}`}>
+                        <div className={styles.removingText}>
+                          Товар будет удалён через 3 сек
+                        </div>
+                        <button
+                          className={styles.restoreButton}
+                          onClick={() => cancelRemoval(item.id)}
+                          type="button"
+                        >
+                          <FiCheck size={18} />
+                          <span>Восстановить</span>
+                        </button>
+                        <div key={`progress-${item.id}`} className={styles.removingProgress}></div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className={styles.itemQuantity}>
+                          <button
+                            className={styles.quantityButton}
+                            onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                            aria-label="Уменьшить количество"
+                          >
+                            <FiMinus size={14} />
+                          </button>
+                          <input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              handleQuantityChange(item.id, parseInt(e.target.value, 10))
+                            }
+                            className={styles.quantityInput}
+                            min="1"
+                            max={item.maxQuantity}
+                          />
+                          <button
+                            className={styles.quantityButton}
+                            onClick={() =>
+                              handleQuantityChange(item.id, item.quantity + 1)
+                            }
+                            disabled={item.quantity >= item.maxQuantity}
+                            aria-label="Увеличить количество"
+                          >
+                            <FiPlus size={14} />
+                          </button>
+                        </div>
+
+                        <div className={styles.itemTotal}>
+                          <span className={styles.itemTotalLabel}>Итого:</span>
+                          <span className={styles.itemTotalValue}>
+                            {formatPrice((parseFloat(item.price) * item.quantity).toString())}
+                          </span>
+                        </div>
+
+                        <button
+                          className={styles.removeButton}
+                          onClick={() => startRemoval(item.id)}
+                          aria-label="Удалить товар"
+                        >
+                          <FiTrash2 size={18} />
+                          <span className={styles.removeButtonText}>Удалить</span>
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Итоговая панель */}
           <div className={styles.cartSummary}>
             <h2 className={styles.summaryTitle}>Итого</h2>
+
+            {selectedCount > 0 ? (
+              <div className={styles.summaryRow}>
+                <span className={styles.summaryLabel}>Выбрано товаров ({selectedCount} шт.)</span>
+                <span className={styles.summaryValue}>
+                  {formatPrice(selectedTotal.toString())}
+                </span>
+              </div>
+            ) : null}
 
             <div className={styles.summaryRow}>
               <span className={styles.summaryLabel}>Товары ({totalItems} шт.)</span>
@@ -252,10 +421,6 @@ const CartPage = () => {
               Оформить заказ
               <FiArrowRight size={20} />
             </Link>
-
-            <button className={styles.clearButton} onClick={clearCart}>
-              Очистить корзину
-            </button>
           </div>
         </div>
       </div>

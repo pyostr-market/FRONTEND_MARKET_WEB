@@ -16,6 +16,86 @@
   color: #1a1a1a;
 }
 
+/* Toolbar с чекбоксами */
+.cartToolbar {
+  display: flex;
+  align-items: center; /* вертикальное выравнивание */
+  gap: 12px;           /* расстояние между элементами */
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.selectAllLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selectAllCheckbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #005bff;
+}
+
+.selectAllText {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.toolbarActions {
+  display: flex;
+  gap: 12px;
+  align-items: center; /* по центру относительно чекбокса */
+}
+
+
+.removeSelectedButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #fff5f5;
+  border: 1px solid #ffe0e0;
+  border-radius: 10px;
+  color: #ff3b30;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0; /* чтобы не сдвигалась */
+
+}
+
+.removeSelectedButton:hover {
+  background-color: #ffebeb;
+  border-color: #ff3b30;
+}
+
+.clearCartButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #f5f7f9;
+  border: 1px solid #e0e2e6;
+  border-radius: 10px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.clearCartButton:hover {
+  background-color: #ffebeb;
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
 .cartContent {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -30,6 +110,7 @@
 }
 
 .cartItem {
+  position: relative;
   display: grid;
   grid-template-columns: 140px 1fr 200px;
   gap: 20px;
@@ -37,13 +118,70 @@
   padding: 20px;
   background-color: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, opacity 0.3s ease;
+  overflow: hidden;
 }
 
 .cartItem:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+
+/* Состояние удаления - затемнение товара */
+.cartItem:has(.itemRemoving) .itemImage,
+.cartItem:has(.itemRemoving) .itemInfo {
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+/* Чекбокс товара */
+.itemCheckbox {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.itemCheckbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+}
+
+.checkboxMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background-color: #ffffff;
+  border: 2px solid #d0d4db;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.itemCheckbox input:checked + .checkboxMark {
+  background-color: #005bff;
+  border-color: #005bff;
+}
+
+.itemCheckbox input:checked + .checkboxMark::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-bottom: 2px;
+}
+
+.itemCheckbox input:disabled + .checkboxMark {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .itemImage {
@@ -212,6 +350,69 @@
   display: inline;
 }
 
+/* Overlay удаления */
+.removingOverlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  width: 100%;
+  background-color: #f5f7f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.removingText {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.restoreButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #005bff;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.restoreButton:hover {
+  background-color: #004ecc;
+}
+
+.removingProgress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, rgba(255, 59, 48, 0.1) 0%, rgba(255, 59, 48, 0.3) 100%);
+  pointer-events: none;
+}
+
+.itemRemoving .removingProgress {
+  animation: progressRemove 3s linear forwards;
+}
+
+@keyframes progressRemove {
+  0% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
 /* Итоговая панель */
 .cartSummary {
   position: sticky;
@@ -329,26 +530,6 @@
   transform: translateY(0);
 }
 
-.clearButton {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  margin-top: 12px;
-  background-color: #f5f7f9;
-  color: #666;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.clearButton:hover {
-  background-color: #ffebeb;
-  color: #ff3b30;
-}
-
 /* Loading и Error */
 .loading {
   padding: 60px;
@@ -447,6 +628,29 @@
     margin: 0 0 12px 0;
   }
 
+  .cartToolbar {
+    padding: 12px 16px;
+    margin: 0 0 12px 0;
+    border-radius: 0;
+  }
+
+  .selectAllText {
+    font-size: 14px;
+  }
+
+  .toolbarActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .removeSelectedButton,
+  .clearCartButton {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
   .cartContent {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -462,7 +666,18 @@
     grid-template-rows: auto auto;
     gap: 12px;
     padding: 14px;
+    padding-left: 44px;
     border-radius: 12px;
+  }
+
+  .itemCheckbox {
+    top: 12px;
+    left: 12px;
+  }
+
+  .checkboxMark {
+    width: 20px;
+    height: 20px;
   }
 
   .itemImage {
@@ -539,6 +754,26 @@
     display: none;
   }
 
+  .removingOverlay {
+    order: 3;
+    grid-column: 1 / 3;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .removingText {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .restoreButton {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
   .cartSummary {
     position: fixed;
     bottom: 0;
@@ -587,10 +822,6 @@
     font-size: 15px;
     border-radius: 12px;
   }
-
-  .clearButton {
-    display: none;
-  }
 }
 
 @media (max-width: 576px) {
@@ -616,6 +847,21 @@
     z-index: 10;
   }
 
+  .cartToolbar {
+    padding: 12px 14px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .selectAllLabel {
+    justify-content: center;
+  }
+
+  .toolbarActions {
+    display: none;
+  }
+
   .cartContent {
     padding-bottom: 240px;
   }
@@ -625,6 +871,7 @@
     grid-template-rows: auto auto;
     gap: 10px;
     padding: 12px;
+    padding-left: 40px;
     border-radius: 0;
     box-shadow: none;
     border-bottom: 1px solid #f0f2f5;
@@ -633,6 +880,16 @@
   .cartItem:hover {
     box-shadow: none;
     transform: none;
+  }
+
+  .itemCheckbox {
+    top: 10px;
+    left: 10px;
+  }
+
+  .checkboxMark {
+    width: 18px;
+    height: 18px;
   }
 
   .itemImage {
@@ -705,6 +962,27 @@
     width: 40px;
     height: 28px;
     font-size: 13px;
+  }
+
+  .removingOverlay {
+    order: 2;
+    grid-column: 1 / 3;
+    padding: 10px;
+  }
+
+  .removingText {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .restoreButton {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .removingProgress {
+    animation: progressRemove 3s linear forwards;
   }
 
   /* Sticky footer с итогом */
