@@ -24,8 +24,8 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: 10px 24px;
+  gap: var(--space-2);
+  padding: 5px 20px;
   background-color: var(--surface);
   position: relative;
 }
@@ -72,10 +72,10 @@
 }
 
 .logoImage {
-  height: 30px;
+  height: 24px;
   width: auto;
   object-fit: contain;
-  padding-right: 10px;
+  padding-right: 8px;
 }
 
 .catalogWrapper {
@@ -85,14 +85,14 @@
 .catalogBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background-color: var(--primary);
   color: var(--surface);
   border: none;
-  padding: 10px 14px;
-  height: 44px;
+  padding: 7px 12px;
+  height: 36px;
   border-radius: var(--radius-xl);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -105,6 +105,11 @@
 
 .catalogBtnActive {
   background-color: var(--primary-hover);
+}
+
+.catalogBtn svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* ======================
@@ -123,6 +128,9 @@
   width: 100%;
   max-width: 100%;
   position: relative;
+  height: 36px;
+  display: flex;
+  align-items: center;
 }
 
 .searchBar {
@@ -131,9 +139,10 @@
   display: flex;
   background-color: var(--primary);
   border-radius: var(--radius-xl);
-  padding: 3px;
+  padding: 2px;
   border: none;
   cursor: pointer;
+  height: 36px;
 }
 
 .searchBar:hover {
@@ -142,10 +151,10 @@
 
 .searchInput {
   flex: 1;
-  padding: 11px 16px;
+  padding: 8px 12px;
   border: none;
   border-radius: var(--radius-lg);
-  font-size: 14px;
+  font-size: 13px;
   outline: none;
   background-color: var(--surface);
   color: var(--text);
@@ -171,31 +180,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   background: none;
   border: none;
   color: var(--text);
   cursor: pointer;
-  padding: 6px 8px;
+  padding: 4px 6px;
   border-radius: var(--radius-lg);
   text-decoration: none;
   transition: background-color 0.2s;
-  min-width: 56px;
+  min-width: 48px;
   position: relative;
 }
 
 .cartBadge {
   position: absolute;
-  top: 2px;
-  right: 8px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 6px;
+  top: 1px;
+  right: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
   background-color: #ff3b30;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  border-radius: 9px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,6 +217,8 @@
 .headerActionBtn svg {
   color: var(--text-secondary);
   transition: color 0.2s;
+  width: 18px;
+  height: 18px;
 }
 
 .headerActionBtn:hover svg {
@@ -215,7 +226,7 @@
 }
 
 .actionLabel {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-muted);
   font-weight: 500;
   line-height: 1.2;
@@ -243,10 +254,10 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  border-end-start-radius: 25px;
-  border-end-end-radius: 25px;
-  gap: 15px;
-  padding: 5px 14px 9px;
+  border-end-start-radius: 20px;
+  border-end-end-radius: 20px;
+  gap: 12px;
+  padding: 4px 14px 7px;
   overflow-x: auto;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -255,8 +266,8 @@
 
 @media (max-width: 930px) {
   .logoImage {
-    height: 30px;
-    width: 120px;
+    height: 24px;
+    width: 100px;
     padding-right: 0;
   }
 

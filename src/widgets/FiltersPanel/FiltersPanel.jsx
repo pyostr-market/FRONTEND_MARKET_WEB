@@ -84,12 +84,12 @@ const FiltersPanel = ({
 
   return (
     <aside className={styles.filtersPanel}>
-      <div className={styles.filtersHeader}>
-        <h2 className={styles.filtersTitle}>Фильтры</h2>
-        {getSelectedCount() > 0 && (
-          <span className={styles.selectedCount}>{getSelectedCount()} выбрано</span>
-        )}
-      </div>
+      {/*<div className={styles.filtersHeader}>*/}
+      {/*  <h2 className={styles.filtersTitle}>Фильтры</h2>*/}
+      {/*  {getSelectedCount() > 0 && (*/}
+      {/*    <span className={styles.selectedCount}>{getSelectedCount()} выбрано</span>*/}
+      {/*  )}*/}
+      {/*</div>*/}
 
       <div className={styles.filtersContent}>
         {filters.map((filter) => {
