@@ -66,8 +66,8 @@
     --font-family-base: 'Onest', 'arial', sans-serif;
     --font-family-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
 
-    --max-width-header-pc: 1250px;
-    --max-width-content: 1250px;
+    --max-width-header-pc: 1150px;
+    --max-width-content: 1150px;
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;

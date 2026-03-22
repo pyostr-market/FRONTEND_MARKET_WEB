@@ -4,46 +4,42 @@ import { AddToCart } from '../../features/add-to-cart';
 import LazyImage from '../../shared/ui/LazyImage';
 import paths from '../../app/router/paths';
 import styles from './ProductCard.module.css';
-import {DEFAULT_IMAGES} from "../../shared/config";
+import { DEFAULT_IMAGES } from '../../shared/config';
+import { FiShoppingCart } from "react-icons/fi";
+
+const getRating = () => {
+  const stars = (Math.random() * 1.5 + 3.5).toFixed(1);
+  const reviews = Math.floor(Math.random() * 50 + 5);
+  return { stars, reviews };
+};
 
 const SCROLL_KEY = 'catalogScroll_v1';
 
-/**
- * Карточка товара
- */
 const ProductCard = ({ product, onImageChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchOffset, setTouchOffset] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+
+  const [rating] = useState(() => getRating());
+  const { stars, reviews } = rating;
 
   const images = useMemo(() => product?.images || [], [product?.images]);
   const hasMultipleImages = !imageError && images.length > 1;
 
-  // Ссылка на страницу товара с category_id
   const productLink = product?.id
-    ? `${paths.PRODUCT(product.id)}?category=${product.category?.id || ''}`
-    : '#';
+      ? `${paths.PRODUCT(product.id)}?category=${product.category?.id || ''}`
+      : '#';
 
-  /**
-   * Обработчик нажатия на ссылку товара
-   */
-  const handleProductLinkClick = useCallback((e) => {
-    // Сохраняем скролл перед переходом
+  const handleProductLinkClick = useCallback(() => {
     sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
   }, []);
 
-  /**
-   * Обработчик нажатия на ссылку товара (для надёжности сохраняем и на mouseDown)
-   */
   const handleProductLinkMouseDown = useCallback(() => {
-    // Сохраняем скролл при нажатии кнопки мыши
     sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
   }, []);
 
-  /**
-   * Свайп для мобильных
-   */
   const handleTouchStart = useCallback((e) => {
     const touch = e.touches[0];
     setTouchStartX(touch.clientX);
@@ -52,26 +48,18 @@ const ProductCard = ({ product, onImageChange }) => {
 
   const handleTouchMove = useCallback((e) => {
     if (!touchStartX) return;
-
     const touch = e.touches[0];
-    const diff = touch.clientX - touchStartX;
-    setTouchOffset(diff);
+    setTouchOffset(touch.clientX - touchStartX);
   }, [touchStartX]);
 
   const handleTouchEnd = useCallback(() => {
     if (!touchOffset) return;
-
     const threshold = 50;
 
     if (Math.abs(touchOffset) > threshold) {
       setCurrentImageIndex((prev) => {
-        if (touchOffset > 0) {
-          // Свайп вправо - предыдущее изображение
-          return prev === 0 ? images.length - 1 : prev - 1;
-        } else {
-          // Свайп влево - следующее изображение
-          return prev === images.length - 1 ? 0 : prev + 1;
-        }
+        if (touchOffset > 0) return prev === 0 ? images.length - 1 : prev - 1;
+        else return prev === images.length - 1 ? 0 : prev + 1;
       });
     }
 
@@ -79,9 +67,6 @@ const ProductCard = ({ product, onImageChange }) => {
     setTouchOffset(0);
   }, [touchOffset, images.length]);
 
-  /**
-   * Форматирование цены
-   */
   const formatPrice = useCallback((price) => {
     if (!price) return '0 ₽';
     const numPrice = parseFloat(price);
@@ -92,93 +77,86 @@ const ProductCard = ({ product, onImageChange }) => {
     }).format(numPrice);
   }, []);
 
+  const handleAdd = () => setQuantity(1);
+  const handleIncrease = () => setQuantity((q) => q + 1);
+  const handleDecrease = () => setQuantity((q) => Math.max(0, q - 1));
+
   return (
-    <div className={styles.productCard}>
-      {/* Изображение с каруселью */}
-      <div
-        className={styles.imageContainer}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className={styles.imageWrapper}>
-          <div
-            className={styles.carouselTrack}
-            style={{
-              transform: `translateX(calc(-${currentImageIndex * 100}% + ${touchOffset}px))`,
-              transition: touchOffset ? 'none' : 'transform 0.3s ease-out'
-            }}
-          >
-            {images.length === 0 || imageError ? (
-              // Заглушка если нет изображений
-              <div className={styles.carouselSlide}>
-                <img
-                  src={DEFAULT_IMAGES.NOT_FOUND}
-                  alt="Нет изображения"
-                  className={styles.productImage}
-                />
+      <div className={styles.productCard}>
+        {/* Изображение */}
+        <div className={styles.imageContainer}
+             onTouchStart={handleTouchStart}
+             onTouchMove={handleTouchMove}
+             onTouchEnd={handleTouchEnd}>
+          <div className={styles.imageWrapper}>
+            <div className={styles.carouselTrack}
+                 style={{
+                   transform: `translateX(calc(-${currentImageIndex * 100}% + ${touchOffset}px))`,
+                   transition: touchOffset ? 'none' : 'transform 0.3s ease-out',
+                 }}>
+              {images.length === 0 || imageError ? (
+                  <div className={styles.carouselSlide}>
+                    <img src={DEFAULT_IMAGES.NOT_FOUND} alt="Нет изображения" className={styles.productImage} />
+                  </div>
+              ) : (
+                  images.map((img, index) => (
+                      <div key={img.upload_id || index} className={styles.carouselSlide}>
+                        <LazyImage
+                            src={img.image_url}
+                            alt={product?.name || 'Товар'}
+                            className={styles.productImage}
+                            observerOptions={{ rootMargin: '200px' }}
+                            onError={() => setImageError(true)}
+                        />
+                      </div>
+                  ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Контент */}
+        <div className={styles.productContent}>
+          {/* Миниатюрные индикаторы сверху блока */}
+          {hasMultipleImages && (
+              <div className={styles.carouselIndicatorsTop}>
+                {images.map((_, index) => (
+                    <button
+                        key={index}
+                        className={`${styles.indicatorSmall} ${index === currentImageIndex ? styles.indicatorActiveSmall : ''}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setCurrentImageIndex(index);
+                          onImageChange?.(product.id, index);
+                        }}
+                        aria-label={`Изображение ${index + 1}`}
+                    />
+                ))}
               </div>
-            ) : (
-              images.map((img, index) => (
-                <div key={img.upload_id || index} className={styles.carouselSlide}>
-                  <LazyImage
-                    src={img.image_url}
-                    alt={product?.name || 'Товар'}
-                    className={styles.productImage}
-                    observerOptions={{ rootMargin: '200px' }}
-                    onError={() => setImageError(true)}
-                  />
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
+          )}
 
-      {/* Контент */}
-      <div className={styles.productContent}>
-        {/* Индикаторы карусели или placeholder для выравнивания */}
-        {hasMultipleImages ? (
-          <div className={styles.carouselIndicators}>
-            {images.map((_, index) => (
-              <button
-                key={index}
-                className={`${styles.indicator} ${
-                  index === currentImageIndex ? styles.indicatorActive : ''
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentImageIndex(index);
-                  onImageChange?.(product.id, index);
-                }}
-                aria-label={`Изображение ${index + 1}`}
-              />
+          <div className={styles.productPrice}>{formatPrice(product?.price)}</div>
+
+          <Link to={productLink} className={styles.productNameLink}
+                onClick={handleProductLinkClick}
+                onMouseDown={handleProductLinkMouseDown}>
+            <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
+          </Link>
+
+          <div className={styles.rating}>
+            {Array.from({ length: 5 }, (_, i) => (
+                <span key={i}>{i < Math.floor(stars) ? '★' : i < stars ? '☆' : '☆'}</span>
             ))}
+            <span className={styles.reviewCount}>({reviews})</span>
           </div>
-        ) : (
-          <div className={styles.carouselIndicatorsPlaceholder} />
-        )}
 
-        {/* Название - ссылка на товар */}
-        <Link 
-          to={productLink} 
-          className={styles.productNameLink} 
-          onClick={handleProductLinkClick}
-          onMouseDown={handleProductLinkMouseDown}
-        >
-          <h3 className={styles.productName}>{product?.name || 'Без названия'}</h3>
-        </Link>
-
-        {/* Цена */}
-        <div className={styles.productPrice}>{formatPrice(product?.price)}</div>
-
-        {/* Кнопка добавления в корзину */}
-        <div className={styles.productActions}>
-          <AddToCart productId={product?.id} />
+          {/* Кнопка Добавить / счётчик */}
+          <div className={styles.productActions}>
+            <AddToCart productId={product?.id} />
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -7,15 +7,15 @@ const CATALOG_CACHE_KEY = 'catalogCache_v1';
  * Хук для управления состоянием каталога товаров
  */
 const useCatalog = ({
-  category_id,
-  product_type_id,
-  device_type_id,
-  sort_type = 'default',
-  limit = 10,
-  enableCache = false,
-  cacheKeyPrefix = CATALOG_CACHE_KEY,
-  initialFilters = {},
-} = {}) => {
+                      category_id,
+                      product_type_id,
+                      device_type_id,
+                      sort_type = 'default',
+                      limit = 10,
+                      enableCache = false,
+                      cacheKeyPrefix = CATALOG_CACHE_KEY,
+                      initialFilters = {},
+                    } = {}) => {
   // Состояние товаров
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
@@ -62,73 +62,73 @@ const useCatalog = ({
    * Загрузка товаров
    */
   const loadProducts = useCallback(
-    async (isAppend = false, customFilters = null, useCurrentFilters = false) => {
-      if (loadingRef.current) return;
+      async (isAppend = false, customFilters = null, useCurrentFilters = false) => {
+        if (loadingRef.current) return;
 
-      loadingRef.current = true;
-      if (!isAppend) {
-        setLoading(true);
-      } else {
-        setLoadingMore(true);
-      }
-      setError(null);
-
-      try {
-        const currentOffset = isAppend ? offset + limit : 0;
-
-        // Используем переданные фильтры или текущие из ref
-        let filtersToUse;
-        if (customFilters !== null) {
-          filtersToUse = customFilters;
-        } else if (useCurrentFilters) {
-          filtersToUse = appliedFiltersRef.current;
+        loadingRef.current = true;
+        if (!isAppend) {
+          setLoading(true);
         } else {
-          filtersToUse = {};
+          setLoadingMore(true);
         }
+        setError(null);
 
-        const result = await productApi.getProducts({
-          category_id,
-          product_type_id,
-          device_type_id,
-          sort_type,
-          attributes: filtersToUse,
-          limit,
-          offset: currentOffset,
-          f5: !isAppend,
-        });
+        try {
+          const currentOffset = isAppend ? offset + limit : 0;
 
-        if (result.success) {
-          const { items, total: totalItems } = result.data;
-
-          if (isAppend) {
-            setProducts((prev) => [...prev, ...items]);
+          // Используем переданные фильтры или текущие из ref
+          let filtersToUse;
+          if (customFilters !== null) {
+            filtersToUse = customFilters;
+          } else if (useCurrentFilters) {
+            filtersToUse = appliedFiltersRef.current;
           } else {
-            setProducts(items);
-            setOffset(0);
+            filtersToUse = {};
           }
 
-          setTotal(totalItems);
-          // Правильный расчет hasMore
-          const loadedCount = isAppend ? products.length + items.length : items.length;
-          setHasMore(loadedCount < totalItems);
+          const result = await productApi.getProducts({
+            category_id,
+            product_type_id,
+            device_type_id,
+            sort_type,
+            attributes: filtersToUse,
+            limit,
+            offset: currentOffset,
+            f5: !isAppend,
+          });
 
-          if (!isAppend) {
-            setOffset(currentOffset);
+          if (result.success) {
+            const { items, total: totalItems } = result.data;
+
+            if (isAppend) {
+              setProducts((prev) => [...prev, ...items]);
+            } else {
+              setProducts(items);
+              setOffset(0);
+            }
+
+            setTotal(totalItems);
+            // Правильный расчет hasMore
+            const loadedCount = isAppend ? products.length + items.length : items.length;
+            setHasMore(loadedCount < totalItems);
+
+            if (!isAppend) {
+              setOffset(currentOffset);
+            }
+          } else {
+            setError(result.error?.message || 'Ошибка загрузки товаров');
           }
-        } else {
-          setError(result.error?.message || 'Ошибка загрузки товаров');
+        } catch (err) {
+          console.error('Error loading products:', err);
+          setError(err.message || 'Ошибка загрузки товаров');
+        } finally {
+          setLoading(false);
+          setLoadingMore(false);
+          loadingRef.current = false;
         }
-      } catch (err) {
-        console.error('Error loading products:', err);
-        setError(err.message || 'Ошибка загрузки товаров');
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
-        loadingRef.current = false;
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [category_id, product_type_id, device_type_id, sort_type, limit, offset]
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [category_id, product_type_id, device_type_id, sort_type, limit, offset]
   );
 
   /**
@@ -162,17 +162,17 @@ const useCatalog = ({
    * Применение фильтров
    */
   const applyFilters = useCallback(
-    (newFilters) => {
-      setAppliedFilters(newFilters);
-      setOffset(0);
-      setProducts([]);
-      setLoading(true);
+      (newFilters) => {
+        setAppliedFilters(newFilters);
+        setOffset(0);
+        setProducts([]);
+        setLoading(true);
 
-      setTimeout(() => {
-        loadProducts(false, newFilters, false);
-      }, 0);
-    },
-    [loadProducts]
+        setTimeout(() => {
+          loadProducts(false, newFilters, false);
+        }, 0);
+      },
+      [loadProducts]
   );
 
   /**
@@ -210,7 +210,7 @@ const useCatalog = ({
     const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
     const categoryChanged = prevCategoryRef.current !== categoryKey;
     const filtersChanged = JSON.stringify(prevInitialFiltersRef.current) !== JSON.stringify(initialFilters);
-    
+
     // Сбрасываем флаг при изменении категории
     if (categoryChanged) {
       cacheRestoredRef.current = false;
@@ -225,7 +225,7 @@ const useCatalog = ({
       // Ключ кэша включает фильтры для отфильтрованных результатов
       const filtersKey = Object.keys(initialFilters).length > 0 ? '_f_' + JSON.stringify(initialFilters) : '';
       const cacheKey = `${cacheKeyPrefix}_${categoryKey}${filtersKey}`;
-      
+
       try {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
@@ -267,7 +267,7 @@ const useCatalog = ({
     const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
     const filtersKey = Object.keys(initialFilters).length > 0 ? '_f_' + JSON.stringify(initialFilters) : '';
     const cacheKey = `${cacheKeyPrefix}_${categoryKey}${filtersKey}`;
-    
+
     const state = {
       products,
       total,
@@ -306,7 +306,7 @@ export const clearCatalogCache = (category_id, product_type_id, cacheKeyPrefix =
   // Очищаем основной кэш и все кэши с фильтрами
   const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
   const baseCacheKey = `${cacheKeyPrefix}_${categoryKey}`;
-  
+
   // Перебираем все ключи localStorage и удаляем подходящие
   Object.keys(localStorage).forEach((key) => {
     if (key.startsWith(baseCacheKey)) {

@@ -234,10 +234,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 4px 14px 7px;
+  padding: 0 4px 14px 7px;
   overflow-x: auto;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 /* ======================
