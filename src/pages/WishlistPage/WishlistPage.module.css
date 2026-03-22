@@ -7,7 +7,6 @@
 .wishlistContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .wishlistHeader {
@@ -54,170 +53,32 @@
   color: #ff3b30;
 }
 
-/* Grid */
+/* Grid - как в ProductGrid */
 .wishlistGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
 }
 
-/* Карточка товара */
-.wishlistItem {
+/* Wrapper для карточки с кнопкой удаления */
+.wishlistItemWrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-  overflow: hidden;
 }
 
-.wishlistItem:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.itemLink {
-  text-decoration: none;
-  color: inherit;
-}
-
-.itemImage {
-  width: 100%;
-  padding-top: 100%;
-  position: relative;
-  background-color: #f8f9fa;
-  overflow: hidden;
-}
-
-.productImage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.25s ease;
-}
-
-.wishlistItem:hover .productImage {
-  transform: scale(1.05);
-}
-
-.itemInfo {
-  padding: 16px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.itemNameLink {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.itemName {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.itemArticle {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 8px;
-}
-
-.itemPrice {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 12px;
-}
-
-.itemActions {
-  margin-top: auto;
-}
-
-/* Кнопка удаления */
-.removeButton {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ffe0e0;
-  border-radius: 50%;
-  color: #ff3b30;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
-}
 
 .removeButton:hover {
   background-color: #fff5f5;
   border-color: #ff3b30;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
-/* Skeleton */
-.skeletonImage {
-  width: 100%;
-  padding-top: 100%;
-  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-}
-
-.skeletonContent {
-  padding: 16px;
-}
-
-.skeletonTitle {
-  height: 18px;
-  width: 80%;
-  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 4px;
-  margin-bottom: 8px;
-}
-
-.skeletonPrice {
-  height: 24px;
-  width: 50%;
-  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 4px;
-  margin-bottom: 12px;
-}
-
-.skeletonButton {
-  height: 36px;
-  width: 100%;
-  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 8px;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.productNotFound {
+  padding: 40px 20px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  background-color: #fff;
+  border-radius: 10px;
 }
 
 /* Пустое состояние */
@@ -277,22 +138,26 @@
   transform: translateY(-2px);
 }
 
-.productNotFound {
-  padding: 40px 20px;
-  text-align: center;
-  color: #888;
-  font-size: 14px;
+/* Mobile styles */
+@media (max-width: 1200px) {
+  .wishlistGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
 }
 
-/* Mobile styles */
+@media (max-width: 900px) {
+  .wishlistGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .wishlistPage {
     padding-bottom: 80px;
   }
 
-  .wishlistContainer {
-    padding: 12px;
-  }
 
   .wishlistHeader {
     flex-direction: column;
@@ -312,50 +177,20 @@
   }
 
   .wishlistGrid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .wishlistItem {
-    flex-direction: row;
-    border-radius: 12px;
-  }
-
-  .itemImage {
-    width: 120px;
-    padding-top: 0;
-    flex-shrink: 0;
-  }
-
-  .productImage {
-    position: relative;
-  }
-
-  .itemInfo {
-    flex: 1;
-    padding: 12px;
-    min-width: 0;
-  }
-
-  .itemName {
-    font-size: 14px;
-  }
-
-  .itemPrice {
-    font-size: 18px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .removeButton {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
+    top: 6px;
+    right: 6px;
   }
 
   .removeButton svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
   .emptyWishlist {
@@ -386,30 +221,24 @@
 }
 
 @media (max-width: 576px) {
-  .wishlistItem {
-    flex-direction: column;
+  .wishlistGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
 
-  .itemImage {
-    width: 100%;
-    padding-top: 100%;
-  }
-
-  .productImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .itemInfo {
-    padding: 12px;
+  .wishlistItemWrapper {
+    min-width: 0;
   }
 
   .removeButton {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+    width: 26px;
+    height: 26px;
+    top: 4px;
+    right: 4px;
+  }
+
+  .removeButton svg {
+    width: 12px;
+    height: 12px;
   }
 }
