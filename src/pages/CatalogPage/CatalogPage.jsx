@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearCatalogCache } from '../../shared/hooks/useCatalog';
+import useCatalog from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
@@ -116,6 +116,11 @@ const CatalogPage = () => {
     }
   }, [products.length]);
 
+  // Сброс флага скролла только при изменении категории (не фильтров!)
+  useEffect(() => {
+    didRestoreScroll.current = false;
+  }, [categoryId, productType]);
+
   const hasChanges = Object.keys(selectedFilters).length > 0;
   const toggleFilterValue = useCallback((name, value) => {
     setSelectedFilters(prev => {
@@ -145,17 +150,12 @@ const CatalogPage = () => {
     selectedFiltersRef.current = {};
     setAppliedFilters({});
     
-    // Очищаем кэш перед сбросом
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
-    
-    // Сбрасываем каталоги с принудительной перезагрузкой
-    setTimeout(() => {
-      sortedResetFilters();
-      applyCatalogFilters({});
-    }, 0);
+    // Сбрасываем каталоги
+    sortedResetFilters();
+    applyCatalogFilters({});
     
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [sortedResetFilters, applyCatalogFilters, updateUrl, categoryIdNum, productTypeIdNum]);
+  }, [sortedResetFilters, applyCatalogFilters, updateUrl]);
 
   const handleSortChange = useCallback((value) => {
     updateUrl({ sort_type: value });

@@ -220,9 +220,12 @@ const useCatalog = ({
     // Сохраняем предыдущие initialFilters
     prevInitialFiltersRef.current = initialFilters;
 
-    // Восстанавливаем из кэша только если категория изменилась и нет фильтров
-    if (enableCache && categoryChanged && Object.keys(initialFilters).length === 0) {
-      const cacheKey = `${cacheKeyPrefix}_${categoryKey}`;
+    // Восстанавливаем из кэша только если категория изменилась
+    if (enableCache && categoryChanged) {
+      // Ключ кэша включает фильтры для отфильтрованных результатов
+      const filtersKey = Object.keys(initialFilters).length > 0 ? '_f_' + JSON.stringify(initialFilters) : '';
+      const cacheKey = `${cacheKeyPrefix}_${categoryKey}${filtersKey}`;
+      
       try {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
@@ -260,8 +263,11 @@ const useCatalog = ({
       return;
     }
 
-    // Ключ кэша без offset - чтобы кэш был общим для всей категории
-    const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
+    // Ключ кэша включает фильтры для отфильтрованных результатов
+    const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
+    const filtersKey = Object.keys(initialFilters).length > 0 ? '_f_' + JSON.stringify(initialFilters) : '';
+    const cacheKey = `${cacheKeyPrefix}_${categoryKey}${filtersKey}`;
+    
     const state = {
       products,
       total,
@@ -274,7 +280,7 @@ const useCatalog = ({
     } catch (e) {
       console.warn('Failed to save catalog cache:', e);
     }
-  }, [enableCache, cacheKeyPrefix, category_id, product_type_id, products, total, offset, sort_type, loading]);
+  }, [enableCache, cacheKeyPrefix, category_id, product_type_id, products, total, offset, sort_type, loading, initialFilters]);
 
   return {
     products,
@@ -297,8 +303,16 @@ const useCatalog = ({
  * Очистка кэша
  */
 export const clearCatalogCache = (category_id, product_type_id, cacheKeyPrefix = CATALOG_CACHE_KEY) => {
-  const cacheKey = `${cacheKeyPrefix}_${category_id || 'all'}_${product_type_id || 'all'}`;
-  localStorage.removeItem(cacheKey);
+  // Очищаем основной кэш и все кэши с фильтрами
+  const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
+  const baseCacheKey = `${cacheKeyPrefix}_${categoryKey}`;
+  
+  // Перебираем все ключи localStorage и удаляем подходящие
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith(baseCacheKey)) {
+      localStorage.removeItem(key);
+    }
+  });
 };
 
 export default useCatalog;
