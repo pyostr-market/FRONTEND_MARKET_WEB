@@ -2,6 +2,7 @@
    Card
 ====================== */
 .productCard {
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -34,28 +35,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background: none;
   border: none;
-  border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
   color: #666;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
 }
 
 .wishlistButton:hover {
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: scale(1.05);
+  transform: scale(1.2);
 }
 
 .wishlistButton.wishlistActive {
   color: #ff3b30;
-  background-color: #ffffff;
+}
+
+.wishlistButton.wishlistActive svg {
+  fill: #ff3b30;
 }
 
 .wishlistButton.wishlistActive:hover {
-  color: #ff1f1f;
+  transform: scale(1.2);
 }
 
 .imageWrapper {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getProductsByIds } from '../api/catalogApi';
 
 /**
@@ -10,6 +10,15 @@ const useCartProducts = (productIds = []) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Сортируем и стабилизируем productIds для сравнения
+  const sortedProductIds = useMemo(() => {
+    if (!productIds || productIds.length === 0) return [];
+    return [...productIds].sort((a, b) => a - b);
+  }, [productIds]);
+
+  // Храним предыдущие загруженные IDs для оптимизации
+  const [loadedIds, setLoadedIds] = useState([]);
 
   /**
    * Загрузка товаров
@@ -34,6 +43,7 @@ const useCartProducts = (productIds = []) => {
           .filter(Boolean);
 
         setProducts(sortedProducts);
+        setLoadedIds(sortedProductIds);
       } else {
         setError(result.error?.message || 'Ошибка загрузки товаров');
         setProducts([]);
@@ -45,14 +55,22 @@ const useCartProducts = (productIds = []) => {
     } finally {
       setLoading(false);
     }
-  }, [productIds]);
+  }, [productIds, sortedProductIds]);
 
   /**
    * Загрузка при изменении productIds
    */
   useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+    // Не загружаем, если IDs не изменились
+    const currentIds = productIds ? [...productIds].sort((a, b) => a - b) : [];
+    const prevIds = loadedIds;
+    
+    const idsChanged = JSON.stringify(currentIds) !== JSON.stringify(prevIds);
+    
+    if (idsChanged) {
+      loadProducts();
+    }
+  }, [productIds, loadedIds, loadProducts]);
 
   /**
    * Принудительное обновление
