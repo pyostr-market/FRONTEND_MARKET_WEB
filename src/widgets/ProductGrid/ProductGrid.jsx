@@ -80,14 +80,18 @@ const ProductGrid = ({
 
   return (
     <div className={styles.productGrid}>
-      {/* Товары */}
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onImageChange={onImageChange}
-        />
-      ))}
+      {/* Товары - убираем дубликаты по ID */}
+      {products
+        .filter((product, index, self) => 
+          index === self.findIndex(p => p.id === product.id)
+        )
+        .map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onImageChange={onImageChange}
+          />
+        ))}
 
       {/* Skeleton при первой загрузке */}
       {loading && renderSkeleton()}
