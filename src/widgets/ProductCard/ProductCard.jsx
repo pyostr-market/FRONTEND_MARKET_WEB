@@ -1,11 +1,12 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { FiHeart } from 'react-icons/fi';
+import { useWishlist } from '../../app/store/wishlistStore';
 import { AddToCart } from '../../features/add-to-cart';
 import LazyImage from '../../shared/ui/LazyImage';
 import paths from '../../app/router/paths';
 import styles from './ProductCard.module.css';
 import { DEFAULT_IMAGES } from '../../shared/config';
-import { FiShoppingCart } from "react-icons/fi";
 
 const getRating = () => {
   const stars = (Math.random() * 1.5 + 3.5).toFixed(1);
@@ -16,17 +17,20 @@ const getRating = () => {
 const SCROLL_KEY = 'catalogScroll_v1';
 
 const ProductCard = ({ product, onImageChange }) => {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchOffset, setTouchOffset] = useState(0);
-  const [quantity, setQuantity] = useState(0);
 
   const [rating] = useState(() => getRating());
   const { stars, reviews } = rating;
 
   const images = useMemo(() => product?.images || [], [product?.images]);
   const hasMultipleImages = !imageError && images.length > 1;
+  
+  const inWishlist = product?.id ? isInWishlist(product.id) : false;
 
   const productLink = product?.id
       ? `${paths.PRODUCT(product.id)}?category=${product.category?.id || ''}`
@@ -77,12 +81,28 @@ const ProductCard = ({ product, onImageChange }) => {
     }).format(numPrice);
   }, []);
 
-  const handleAdd = () => setQuantity(1);
-  const handleIncrease = () => setQuantity((q) => q + 1);
-  const handleDecrease = () => setQuantity((q) => Math.max(0, q - 1));
+  const handleWishlistToggle = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product?.id) {
+      toggleWishlist(product.id);
+    }
+  }, [product?.id, toggleWishlist]);
 
   return (
       <div className={styles.productCard}>
+        {/* Кнопка избранного */}
+        {product?.id && (
+          <button
+            className={`${styles.wishlistButton} ${inWishlist ? styles.wishlistActive : ''}`}
+            onClick={handleWishlistToggle}
+            aria-label={inWishlist ? 'Удалить из избранного' : 'Добавить в избранное'}
+            type="button"
+          >
+            <FiHeart size={20} />
+          </button>
+        )}
+        
         {/* Изображение */}
         <div className={styles.imageContainer}
              onTouchStart={handleTouchStart}

@@ -1,19 +1,22 @@
 import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../app/store/cartStore';
+import { useWishlist } from '../../app/store/wishlistStore';
 import paths from '../../app/router/paths';
 import styles from './MobileNavbar.module.css';
 
 const MobileNavbar = ({ onProfileClick }) => {
   const location = useLocation();
   const { getTotalQuantity } = useCart();
+  const { getTotalCount } = useWishlist();
   const cartCount = getTotalQuantity();
+  const wishlistCount = getTotalCount();
 
   const navItems = [
     { path: paths.HOME, icon: FiHome, label: 'Главная' },
     { path: paths.CATALOG, icon: FiGrid, label: 'Каталог' },
     { path: paths.CART, icon: FiShoppingCart, label: 'Корзина', badge: cartCount },
-    { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное' },
+    { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное', badge: wishlistCount },
     { icon: FiUser, label: 'Профиль', isModal: true },
   ];
 

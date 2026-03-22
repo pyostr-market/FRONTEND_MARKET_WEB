@@ -23,6 +23,41 @@
   border-radius: 10px 10px 0 0;
 }
 
+/* Кнопка избранного */
+.wishlistButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wishlistButton:hover {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.wishlistButton.wishlistActive {
+  color: #ff3b30;
+  background-color: #ffffff;
+}
+
+.wishlistButton.wishlistActive:hover {
+  color: #ff1f1f;
+}
+
 .imageWrapper {
   position: absolute;
   inset: 0;
@@ -177,5 +212,17 @@
 
   .productPrice {
     font-size: 15px;
+  }
+
+  .wishlistButton {
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .wishlistButton svg {
+    width: 16px;
+    height: 16px;
   }
 }

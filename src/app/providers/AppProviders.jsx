@@ -1,13 +1,16 @@
 import { CartProvider } from '../store/cartStore';
+import { WishlistProvider } from '../store/wishlistStore';
 
 /**
  * Глобальные провайдеры приложения
  */
 const AppProviders = ({ children }) => {
   return (
-    <CartProvider>
-      {children}
-    </CartProvider>
+    <WishlistProvider>
+      <CartProvider>
+        {children}
+      </CartProvider>
+    </WishlistProvider>
   );
 };
 

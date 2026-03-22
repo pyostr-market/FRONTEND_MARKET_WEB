@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FiHeart } from 'react-icons/fi';
+import { useWishlist } from '../../app/store/wishlistStore';
 import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
@@ -10,6 +12,7 @@ import styles from './ProductPage.module.css';
 import DOMPurify from "dompurify";
 
 const ProductPage = () => {
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const { id } = useParams();
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
@@ -35,6 +38,14 @@ const ProductPage = () => {
   });
 
   const [variantExpanded, setVariantExpanded] = useState(urlVariantsExpanded);
+  
+  const inWishlist = product?.id ? isInWishlist(product.id) : false;
+
+  const handleWishlistToggle = useCallback(() => {
+    if (product?.id) {
+      toggleWishlist(product.id);
+    }
+  }, [product?.id, toggleWishlist]);
 
   const handleVariantSelect = useCallback((variant) => {
     if (variant.id !== product?.id) {
@@ -75,6 +86,17 @@ const ProductPage = () => {
               <h1 className={styles.title}>{product.name}</h1>
 
               <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>
+
+              {/* Кнопка избранного */}
+              <button
+                className={`${styles.wishlistButton} ${inWishlist ? styles.wishlistActive : ''}`}
+                onClick={handleWishlistToggle}
+                aria-label={inWishlist ? 'Удалить из избранного' : 'Добавить в избранное'}
+                type="button"
+              >
+                <FiHeart size={20} />
+                <span>{inWishlist ? 'В избранном' : 'В избранное'}</span>
+              </button>
 
               {/* Миниатюры вариантов */}
               <ProductVariants

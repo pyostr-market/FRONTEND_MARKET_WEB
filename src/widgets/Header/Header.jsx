@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiX } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../app/store/cartStore';
+import { useWishlist } from '../../app/store/wishlistStore';
 import paths from '../../app/router/paths';
 import SearchOverlay from '../SearchOverlay/SearchOverlay';
 import { ProductTypeMenu } from '../ProductTypeMenu';
@@ -10,7 +11,9 @@ import styles from './Header.module.css';
 
 const Header = ({ onProfileClick, isAuthorized = false }) => {
   const { getTotalQuantity } = useCart();
+  const { getTotalCount: getWishlistCount } = useWishlist();
   const cartCount = getTotalQuantity();
+  const wishlistCount = getWishlistCount();
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [isCategoriesVisible, setIsCategoriesVisible] = useState(true);
   const catalogRef = useRef(null);
@@ -104,10 +107,13 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
               <FiUser size={20} />
               <span className={styles.actionLabel}>Профиль</span>
             </button>
-            <button className={styles.headerActionBtn} title="Избранное">
+            <Link to={paths.WISHLIST} className={styles.headerActionBtn} title="Избранное">
               <FiHeart size={20} />
               <span className={styles.actionLabel}>Избранное</span>
-            </button>
+              {wishlistCount > 0 && (
+                <span className={styles.cartBadge}>{wishlistCount}</span>
+              )}
+            </Link>
             <Link to={paths.CART} className={styles.headerActionBtn} title="Корзина">
               <FiShoppingCart size={20} />
               <span className={styles.actionLabel}>Корзина</span>

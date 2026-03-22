@@ -67,6 +67,47 @@
   min-width: 0;
 }
 
+/* Кнопка избранного */
+.wishlistButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #f5f7f9;
+  border: 1px solid #e0e2e6;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.wishlistButton:hover {
+  background-color: #ffebeb;
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
+.wishlistButton.wishlistActive {
+  background-color: #fff5f5;
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
+.wishlistButton.wishlistActive:hover {
+  background-color: #ffebeb;
+}
+
+.wishlistButton svg {
+  transition: all 0.2s ease;
+}
+
+.wishlistButton.wishlistActive svg {
+  fill: #ff3b30;
+}
+
 .buyBlock {
   position: relative;
 }
@@ -256,6 +297,17 @@
 
   .mainInfo {
     padding: 0 12px;
+  }
+
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .wishlistButton svg {
+    width: 16px;
+    height: 16px;
   }
 
   .breadcrumbs {
