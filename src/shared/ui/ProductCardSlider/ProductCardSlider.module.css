@@ -2,9 +2,9 @@
   position: relative;
   width: 120px;
   height: 120px;
-  border-radius: 8px;
+  border-radius: var(--radius-md); /* 8px */
   overflow: hidden;
-  background-color: #f8f9fa;
+  background-color: var(--card-bg);
 }
 
 .sliderImage {
@@ -26,18 +26,18 @@
   background-color: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
-  color: #1a1a1a;
+  color: var(--text);
   cursor: pointer;
   padding: 0;
   z-index: 10;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
 }
 
 .arrow:hover {
-  background-color: #ffffff;
-  color: #005bff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: var(--surface);
+  color: var(--primary);
+  box-shadow: var(--shadow-md);
 }
 
 .arrow:active {
@@ -45,30 +45,30 @@
 }
 
 .arrowLeft {
-  left: 8px;
+  left: var(--space-2); /* 8px */
 }
 
 .arrowRight {
-  right: 8px;
+  right: var(--space-2); /* 8px */
 }
 
 /* Индикаторы */
 .indicators {
   position: absolute;
-  bottom: 8px;
+  bottom: var(--space-2); /* 8px */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 6px;
-  padding: 6px 10px;
+  gap: var(--space-1); /* 6px */
+  padding: var(--space-1) var(--space-2); /* 6px 10px */
   background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 12px;
+  border-radius: var(--radius-2xl); /* 12px */
   backdrop-filter: blur(4px);
 }
 
 .indicator {
-  width: 6px;
-  height: 6px;
+  width: var(--space-1); /* 6px */
+  height: var(--space-1);
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5);
   border: none;
@@ -83,9 +83,9 @@
 }
 
 .indicatorActive {
-  background-color: #ffffff;
+  background-color: var(--surface);
   width: 18px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
 }
 
 /* Адаптив для корзины */
@@ -108,17 +108,17 @@
   }
 
   .arrowLeft {
-    left: 4px;
+    left: var(--space-1); /* 4px */
   }
 
   .arrowRight {
-    right: 4px;
+    right: var(--space-1); /* 4px */
   }
 
   .indicators {
-    bottom: 4px;
+    bottom: var(--space-1);
     padding: 4px 8px;
-    gap: 4px;
+    gap: var(--space-1);
   }
 
   .indicator {

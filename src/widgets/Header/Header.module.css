@@ -186,6 +186,23 @@
   justify-content: center;
 }
 
+/* Позиции бейджей для разных кнопок */
+.cartBtn .cartBadge {
+  right: 6px;
+}
+
+.wishlistBtn .cartBadge {
+  right: 11px;
+}
+
+.profileBtn .cartBadge {
+  right: 11px;
+}
+
+.ordersBtn .cartBadge {
+  right: 7px;
+}
+
 /* ======================
    Catalog Dropdown
 ====================== */

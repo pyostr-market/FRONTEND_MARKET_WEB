@@ -99,22 +99,22 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
           </div>
 
           <div className={styles.headerRight}>
-            <button className={styles.headerActionBtn} title="Заказы">
+            <button className={`${styles.headerActionBtn} ${styles.ordersBtn}`} title="Заказы">
               <FiPackage size={20} />
               <span className={styles.actionLabel}>Заказы</span>
             </button>
-            <button className={styles.headerActionBtn} title="Профиль" onClick={onProfileClick}>
+            <button className={`${styles.headerActionBtn} ${styles.profileBtn}`} title="Профиль" onClick={onProfileClick}>
               <FiUser size={20} />
               <span className={styles.actionLabel}>Профиль</span>
             </button>
-            <Link to={paths.WISHLIST} className={styles.headerActionBtn} title="Избранное">
+            <Link to={paths.WISHLIST} className={`${styles.headerActionBtn} ${styles.wishlistBtn}`} title="Избранное">
               <FiHeart size={20} />
               <span className={styles.actionLabel}>Избранное</span>
               {wishlistCount > 0 && (
                 <span className={styles.cartBadge}>{wishlistCount}</span>
               )}
             </Link>
-            <Link to={paths.CART} className={styles.headerActionBtn} title="Корзина">
+            <Link to={paths.CART} className={`${styles.headerActionBtn} ${styles.cartBtn}`} title="Корзина">
               <FiShoppingCart size={20} />
               <span className={styles.actionLabel}>Корзина</span>
               {cartCount > 0 && (

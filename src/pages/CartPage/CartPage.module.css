@@ -1,34 +1,34 @@
 .cartPage {
   min-height: 100vh;
-  background-color: #f5f7f9;
+  background-color: var(--bg);
 }
 
 .cartContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-5);
 }
 
 .cartTitle {
-  margin: 0 0 24px 0;
+  margin: 0 0 var(--space-6) 0;
   font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 /* Toolbar с чекбоксами */
 .cartToolbar {
   display: flex;
-  align-items: center; /* вертикальное выравнивание */
-  gap: 12px;           /* расстояние между элементами */
-  border-radius: 12px;
-  padding: 12px 16px;
+  align-items: center;
+  gap: var(--space-3);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-3) var(--space-4);
 }
 
 .selectAllLabel {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -37,53 +37,51 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #005bff;
+  accent-color: var(--primary);
 }
 
 .selectAllText {
   font-size: 15px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .toolbarActions {
   display: flex;
-  gap: 12px;
-  align-items: center; /* по центру относительно чекбокса */
+  gap: var(--space-3);
+  align-items: center;
 }
-
 
 .removeSelectedButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 10px 18px;
-  background-color: #fff5f5;
-  border: 1px solid #ffe0e0;
-  border-radius: 10px;
-  color: #ff3b30;
+  background-color: var(--danger-bg);
+  border: 1px solid var(--danger-bg);
+  border-radius: var(--radius-xl);
+  color: var(--danger);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
-  margin: 0; /* чтобы не сдвигалась */
-
+  margin: 0;
 }
 
 .removeSelectedButton:hover {
-  background-color: #ffebeb;
-  border-color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
 }
 
 .clearCartButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 10px 18px;
-  background-color: #f5f7f9;
-  border: 1px solid #e0e2e6;
-  border-radius: 10px;
-  color: #666;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
@@ -91,33 +89,33 @@
 }
 
 .clearCartButton:hover {
-  background-color: #ffebeb;
-  border-color: #ff3b30;
-  color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 .cartContent {
   display: grid;
   grid-template-columns: 1fr 380px;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 /* Список товаров */
 .cartItems {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
 }
 
 .cartItem {
   position: relative;
   display: grid;
   grid-template-columns: 140px 1fr 200px;
-  gap: 20px;
+  gap: var(--space-5);
   align-items: start;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 16px;
+  padding: var(--space-6);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
   transition: box-shadow 0.2s ease, transform 0.2s ease, opacity 0.3s ease;
   overflow: hidden;
 }
@@ -132,8 +130,8 @@
 /* Чекбокс товара */
 .itemCheckbox {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: var(--space-4);
+  left: var(--space-4);
   z-index: 10;
   cursor: pointer;
   user-select: none;
@@ -153,22 +151,22 @@
   justify-content: center;
   width: 22px;
   height: 22px;
-  background-color: #ffffff;
-  border: 2px solid #d0d4db;
-  border-radius: 6px;
+  background-color: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
   transition: all 0.2s ease;
 }
 
 .itemCheckbox input:checked + .checkboxMark {
-  background-color: #005bff;
-  border-color: #005bff;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .itemCheckbox input:checked + .checkboxMark::after {
   content: '';
   width: 5px;
   height: 9px;
-  border: solid white;
+  border: solid var(--surface);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
   margin-bottom: 2px;
@@ -182,9 +180,9 @@
 .itemImage {
   width: 140px;
   height: 140px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background-color: #f8f9fa;
+  background-color: var(--bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,7 +192,7 @@
 .itemInfo {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -202,7 +200,7 @@
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -212,31 +210,30 @@
 
 .itemArticle {
   font-size: 12px;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .itemPrice {
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
-  margin-top: 4px;
+  color: var(--text);
+  margin-top: var(--space-1);
 }
 
 .itemBadges {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
 }
-
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background-color: #f0f7ff;
-  color: #005bff;
-  border-radius: 6px;
+  gap: var(--space-1);
+  padding: var(--space-1) 10px;
+  background-color: var(--accent-blue-bg);
+  color: var(--primary);
+  border-radius: var(--radius-md);
   font-size: 12px;
   font-weight: 500;
 }
@@ -245,17 +242,17 @@
 .itemActions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: flex-end;
 }
 
 .itemQuantity {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background-color: #f5f7f9;
-  border-radius: 10px;
-  padding: 4px;
+  gap: var(--space-2);
+  background-color: var(--surface-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-1);
 }
 
 .quantityButton {
@@ -264,19 +261,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
-  border: 1px solid #e0e2e6;
-  border-radius: 8px;
-  color: #005bff;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--primary);
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .quantityButton:hover:not(:disabled) {
-  background-color: #005bff;
-  border-color: #005bff;
-  color: #ffffff;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--surface);
 }
 
 .quantityButton:disabled {
@@ -290,10 +287,10 @@
   text-align: center;
   border: none;
   background: transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
   -moz-appearance: textfield;
 }
 
@@ -312,24 +309,24 @@
 
 .itemTotalLabel {
   font-size: 12px;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .itemTotalValue {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .removeButton {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   padding: 8px 14px;
   background: none;
-  border: 1px solid #ffe0e0;
-  border-radius: 10px;
-  color: #ff3b30;
+  border: 1px solid var(--danger-bg);
+  border-radius: var(--radius-xl);
+  color: var(--danger);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 13px;
@@ -337,8 +334,8 @@
 }
 
 .removeButton:hover {
-  background-color: #fff5f5;
-  border-color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
 }
 
 .removeButtonText {
@@ -351,29 +348,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
+  gap: var(--space-3);
+  padding: var(--space-3);
   width: 100%;
-  background-color: #f5f7f9;
-  border-radius: 10px;
+  background-color: var(--surface-subtle);
+  border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
 .removingText {
   font-size: 13px;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .restoreButton {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   padding: 8px 16px;
-  background-color: #005bff;
+  background-color: var(--primary);
   border: none;
-  border-radius: 8px;
-  color: #ffffff;
+  border-radius: var(--radius-md);
+  color: var(--surface);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 13px;
@@ -382,7 +379,7 @@
 }
 
 .restoreButton:hover {
-  background-color: #004ecc;
+  background-color: #004ecc; /* Для градиентного/темного оттенка можно добавить переменную, если нужно */
 }
 
 .removingProgress {
@@ -391,7 +388,11 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: linear-gradient(90deg, rgba(255, 59, 48, 0.1) 0%, rgba(255, 59, 48, 0.3) 100%);
+  background: linear-gradient(
+          90deg,
+          rgba(239, 68, 68, 0.1) 0%,
+          rgba(239, 68, 68, 0.3) 100%
+  ); /* Можно заменить на var(--danger) с прозрачностью, если нужно */
   pointer-events: none;
 }
 
@@ -411,102 +412,102 @@
 /* Итоговая панель */
 .cartSummary {
   position: sticky;
-  top: 20px;
-  padding: 24px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  top: var(--space-5);
+  padding: var(--space-6);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
   height: fit-content;
 }
 
 .summaryTitle {
-  margin: 0 0 20px 0;
+  margin: 0 0 var(--space-5) 0;
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #f0f2f5;
+  color: var(--text);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--surface-subtle);
 }
 
 .summaryRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-4);
   font-size: 14px;
 }
 
 .summaryLabel {
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .summaryValue {
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .summaryValueFree {
   font-size: 14px;
   font-weight: 600;
-  color: #00a651;
+  color: #00a651; /* Можно добавить переменную, если нужно */
 }
 
 .summaryTotal {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 0;
-  margin-top: 8px;
-  border-top: 2px solid #f0f2f5;
-  border-bottom: 2px solid #f0f2f5;
+  padding: var(--space-5) 0;
+  margin-top: var(--space-2);
+  border-top: 2px solid var(--surface-subtle);
+  border-bottom: 2px solid var(--surface-subtle);
 }
 
 .totalLabel {
   font-size: 16px;
   font-weight: 500;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .totalValue {
   font-size: 26px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .summaryBenefits {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f2f5;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--surface-subtle);
 }
 
 .benefitItem {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   font-size: 13px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .benefitItem svg {
-  color: #005bff;
+  color: var(--primary);
 }
 
 .checkoutButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
-  padding: 18px;
-  margin-top: 20px;
-  background: linear-gradient(135deg, #005bff 0%, #004ecc 100%);
-  color: #ffffff;
+  padding: var(--space-5);
+  margin-top: var(--space-5);
+  background: var(--gradient-primary);
+  color: var(--surface);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
@@ -516,7 +517,7 @@
 }
 
 .checkoutButton:hover {
-  background: linear-gradient(135deg, #004ecc 0%, #003d99 100%);
+  background: linear-gradient(135deg, #004ecc 0%, #003d99 100%); /* Можно добавить переменную для hover */
   box-shadow: 0 6px 20px rgba(0, 91, 255, 0.4);
   transform: translateY(-2px);
 }
@@ -530,18 +531,18 @@
   padding: 60px;
   text-align: center;
   font-size: 16px;
-  color: #666;
-  background-color: #ffffff;
-  border-radius: 12px;
+  color: var(--text-secondary);
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
 }
 
 .error {
   padding: 60px;
   text-align: center;
   font-size: 16px;
-  color: #ff3b30;
-  background-color: #fff5f5;
-  border-radius: 12px;
+  color: var(--danger);
+  background-color: var(--danger-bg);
+  border-radius: var(--radius-xl);
 }
 
 /* Пустая корзина */
@@ -550,29 +551,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
+  padding: 100px var(--space-5);
   text-align: center;
-  background-color: #ffffff;
-  border-radius: 16px;
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .emptyCartIcon {
-  color: #d0d4db;
-  margin-bottom: 24px;
+  color: var(--border);
+  margin-bottom: var(--space-6);
 }
 
 .emptyCartTitle {
-  margin: 0 0 12px 0;
+  margin: 0 0 var(--space-3) 0;
   font-size: 26px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .emptyCartText {
-  margin: 0 0 32px 0;
+  margin: 0 0 var(--space-8) 0;
   font-size: 16px;
-  color: #666;
+  color: var(--text-secondary);
   max-width: 400px;
   line-height: 1.5;
 }
@@ -580,12 +581,12 @@
 .emptyCartButton {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #005bff 0%, #004ecc 100%);
-  color: #ffffff;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-8);
+  background: var(--gradient-primary);
+  color: var(--surface);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
@@ -599,14 +600,13 @@
   box-shadow: 0 6px 20px rgba(0, 91, 255, 0.4);
   transform: translateY(-2px);
 }
-
 /* ======================
    Mobile styles
 ====================== */
 @media (max-width: 992px) {
   .cartPage {
-    padding: 12px;
-    background-color: #f5f7f9;
+    padding: var(--space-3);
+    background-color: var(--bg);
   }
 
   .cartContainer {
@@ -616,16 +616,15 @@
 
   .cartTitle {
     font-size: 22px;
-    margin-bottom: 16px;
-    padding: 16px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    margin: 0 0 12px 0;
+    margin: 0 0 var(--space-4) 0;
+    padding: var(--space-4);
+    background-color: var(--surface);
+    border-radius: var(--radius-xl);
   }
 
   .cartToolbar {
-    padding: 12px 16px;
-    margin: 0 0 12px 0;
+    padding: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-4) 0;
     border-radius: 0;
   }
 
@@ -635,7 +634,7 @@
 
   .toolbarActions {
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .removeSelectedButton,
@@ -648,26 +647,26 @@
 
   .cartContent {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: var(--space-3);
     padding-bottom: 220px;
   }
 
   .cartItems {
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   .cartItem {
     grid-template-columns: 100px 1fr;
     grid-template-rows: auto auto;
-    gap: 12px;
+    gap: var(--space-3);
     padding: 14px;
     padding-left: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
   }
 
   .itemCheckbox {
-    top: 12px;
-    left: 12px;
+    top: var(--space-3);
+    left: var(--space-3);
   }
 
   .checkboxMark {
@@ -680,7 +679,7 @@
     height: 100px;
     grid-row: 1 / 3;
     grid-column: 1;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
 
   .itemInfo {
@@ -702,7 +701,7 @@
   }
 
   .itemBadges {
-    gap: 6px;
+    gap: var(--space-1);
   }
 
   .badge {
@@ -717,8 +716,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding-top: 8px;
-    border-top: 1px solid #f0f2f5;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--surface-subtle);
   }
 
   .itemQuantity {
@@ -729,7 +728,7 @@
     order: 2;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .itemTotalLabel {
@@ -775,13 +774,13 @@
     left: 0;
     right: 0;
     top: auto;
-    padding: 16px;
-    background-color: #ffffff;
+    padding: var(--space-4);
+    background-color: var(--surface);
     box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
-    border-radius: 20px 20px 0 0;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
     z-index: 100;
     margin: 0;
-    margin-bottom: 60px; /* Отступ под высоту MobileNavbar */
+    margin-bottom: 60px;
   }
 
   .summaryTitle {
@@ -789,13 +788,13 @@
   }
 
   .summaryRow {
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
   }
 
   .summaryTotal {
-    padding: 12px 0;
-    margin-top: 8px;
-    border-top: 2px solid #f0f2f5;
+    padding: var(--space-3) 0;
+    margin-top: var(--space-2);
+    border-top: 2px solid var(--surface-subtle);
     border-bottom: none;
   }
 
@@ -812,18 +811,17 @@
   }
 
   .checkoutButton {
-    padding: 16px;
-    margin-top: 12px;
+    padding: var(--space-4);
+    margin-top: var(--space-3);
     font-size: 15px;
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
   }
 }
-
 @media (max-width: 576px) {
   .cartPage {
     padding: 0;
-    background-color: #f5f7f9;
     padding-bottom: 220px;
+    background-color: var(--bg);
   }
 
   .cartContainer {
@@ -833,19 +831,19 @@
 
   .cartTitle {
     font-size: 20px;
-    padding: 16px;
+    padding: var(--space-4);
     margin: 0;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e0e2e6;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--surface-subtle);
     position: sticky;
     top: 0;
     z-index: 10;
   }
 
   .cartToolbar {
-    padding: 12px 14px;
+    padding: var(--space-3) var(--space-4);
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
     align-items: stretch;
   }
 
@@ -864,11 +862,11 @@
   .cartItem {
     grid-template-columns: 85px 1fr;
     grid-template-rows: auto auto;
-    gap: 10px;
-    padding: 12px;
+    gap: var(--space-2);
+    padding: var(--space-3);
     border-radius: 0;
     box-shadow: none;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid var(--surface-subtle);
   }
 
   .cartItem:hover {
@@ -877,8 +875,8 @@
   }
 
   .itemCheckbox {
-    top: 10px;
-    left: 10px;
+    top: var(--space-2);
+    left: var(--space-2);
   }
 
   .checkboxMark {
@@ -891,7 +889,7 @@
     height: 85px;
     grid-row: 1 / 3;
     grid-column: 1;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
   }
 
   .itemName {
@@ -917,8 +915,8 @@
   .itemActions {
     grid-column: 1 / 3;
     grid-row: 2;
-    gap: 10px;
-    padding-top: 10px;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
   }
 
   .itemQuantity {
@@ -961,12 +959,12 @@
   .removingOverlay {
     order: 2;
     grid-column: 1 / 3;
-    padding: 10px;
+    padding: var(--space-3);
   }
 
   .removingText {
     font-size: 12px;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
   }
 
   .restoreButton {
@@ -985,13 +983,13 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 14px 16px;
-    padding-bottom: calc(14px + env(safe-area-inset-bottom));
-    background-color: #ffffff;
+    padding: var(--space-3) var(--space-4);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    background-color: var(--surface);
     box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 20px 20px 0 0;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
     z-index: 100;
-    margin-bottom: 60px; /* Отступ под высоту MobileNavbar */
+    margin-bottom: 60px;
   }
 
   .summaryTotal {
@@ -999,13 +997,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 0;
-    margin: 0 0 12px 0;
+    margin: 0 0 var(--space-3) 0;
     border: none;
   }
 
   .totalLabel {
     font-size: 13px;
-    color: #666;
+    color: var(--text-secondary);
   }
 
   .totalValue {
@@ -1016,14 +1014,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--space-2);
     width: 100%;
-    padding: 16px;
+    padding: var(--space-4);
     margin-top: 0;
-    background: linear-gradient(135deg, #005bff 0%, #004ecc 100%);
-    color: #ffffff;
+    background: var(--gradient-primary);
+    color: var(--surface);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-xl);
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;
@@ -1038,23 +1036,23 @@
   }
 
   .emptyCart {
-    padding: 60px 20px;
+    padding: 60px var(--space-5);
     border-radius: 0;
     box-shadow: none;
   }
 
   .emptyCartIcon {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
   }
 
   .emptyCartTitle {
     font-size: 22px;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-3);
   }
 
   .emptyCartText {
     font-size: 14px;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-4);
   }
 
   .emptyCartButton {
@@ -1064,7 +1062,7 @@
 
   .loading,
   .error {
-    padding: 60px 20px;
+    padding: 60px var(--space-5);
     font-size: 14px;
     border-radius: 0;
   }

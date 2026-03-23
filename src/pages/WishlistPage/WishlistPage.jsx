@@ -65,14 +65,7 @@ const WishlistPage = () => {
           {wishlistItems.map((productId) => (
             <div key={productId} className={styles.wishlistItemWrapper}>
               <ProductCardWrapper productId={productId} />
-              <button
-                className={styles.removeButton}
-                onClick={() => handleRemoveFromWishlist(productId)}
-                aria-label="Удалить из избранного"
-                title="Удалить из избранного"
-              >
-                <FiHeart size={16} />
-              </button>
+
             </div>
           ))}
         </div>

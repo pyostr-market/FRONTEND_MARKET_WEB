@@ -1,7 +1,7 @@
 .wishlistPage {
   min-height: 100vh;
-  background-color: #f5f7f9;
-  padding-bottom: 80px;
+  background-color: var(--bg);
+  padding-bottom: calc(var(--space-8) * 2.5); /* 80px */
 }
 
 .wishlistContainer {
@@ -13,158 +13,158 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-radius: 16px;
+  margin-bottom: var(--space-6); /* 24px */
+  border-radius: var(--radius-xl); /* 16px */
+  padding: 0;
+  gap: 0;
 }
 
 .wishlistTitle {
   margin: 0;
   font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .wishlistActions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4); /* 16px */
 }
 
 .wishlistCount {
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .clearWishlistButton {
   padding: 10px 18px;
-  background-color: #f5f7f9;
-  border: 1px solid #e0e2e6;
-  border-radius: 10px;
-  color: #666;
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl); /* 10px */
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .clearWishlistButton:hover {
-  background-color: #ffebeb;
-  border-color: #ff3b30;
-  color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
-/* Grid - как в ProductGrid */
 .wishlistGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 14px;
+  gap: var(--space-3); /* 12px → примерно 14px */
 }
 
-/* Wrapper для карточки с кнопкой удаления */
 .wishlistItemWrapper {
   position: relative;
+  min-width: 0;
 }
 
+.removeButton {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
 .removeButton:hover {
-  background-color: #fff5f5;
-  border-color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
   transform: scale(1.1);
 }
 
 .productNotFound {
-  padding: 40px 20px;
+  padding: calc(var(--space-6) * 1.5) var(--space-5); /* 40px 20px */
   text-align: center;
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 14px;
-  background-color: #fff;
-  border-radius: 10px;
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
 }
 
-/* Пустое состояние */
 .emptyWishlist {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
+  padding: calc(var(--space-8) * 3) var(--space-5); /* 100px 20px */
   text-align: center;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   max-width: 500px;
-  margin: 40px auto;
+  margin: var(--space-7) auto; /* 40px */
 }
 
 .emptyWishlistIcon {
-  color: #d0d4db;
-  margin-bottom: 24px;
+  color: #d0d4db; /* нет переменной под этот цвет, оставил как есть */
+  margin-bottom: var(--space-6);
 }
 
 .emptyWishlistTitle {
-  margin: 0 0 12px 0;
+  margin: 0 0 var(--space-3);
   font-size: 26px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .emptyWishlistText {
-  margin: 0 0 32px 0;
+  margin: 0 0 var(--space-8);
   font-size: 16px;
-  color: #666;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .emptyWishlistButton {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3); /* 10px */
   padding: 16px 32px;
-  background: linear-gradient(135deg, #005bff 0%, #004ecc 100%);
-  color: #ffffff;
+  background: var(--gradient-primary);
+  color: var(--surface);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-2xl);
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 14px rgba(0, 91, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 91, 255, 0.3); /* можно сделать переменной позже */
 }
 
 .emptyWishlistButton:hover {
-  background: linear-gradient(135deg, #004ecc 0%, #003d99 100%);
+  background: linear-gradient(135deg, #004ecc 0%, #003d99 100%); /* не было переменной для hover градиента */
   box-shadow: 0 6px 20px rgba(0, 91, 255, 0.4);
   transform: translateY(-2px);
 }
 
-/* Mobile styles */
+/* Responsive */
 @media (max-width: 1200px) {
   .wishlistGrid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    gap: var(--space-3);
   }
 }
 
 @media (max-width: 900px) {
   .wishlistGrid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 10px;
+    gap: var(--space-2); /* 10px */
   }
 }
 
 @media (max-width: 768px) {
-  .wishlistPage {
-    padding-bottom: 80px;
-  }
-
-
   .wishlistHeader {
     flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-    border-radius: 12px;
+    gap: var(--space-3); /* 12px */
+    padding: var(--space-4); /* 16px */
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-lg);
   }
 
   .wishlistTitle {
@@ -178,7 +178,7 @@
 
   .wishlistGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .removeButton {
@@ -194,24 +194,24 @@
   }
 
   .emptyWishlist {
-    padding: 60px 20px;
-    margin: 20px auto;
+    padding: 60px var(--space-5);
+    margin: var(--space-5) auto;
     border-radius: 0;
     box-shadow: none;
   }
 
   .emptyWishlistIcon {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
   }
 
   .emptyWishlistTitle {
     font-size: 22px;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-3);
   }
 
   .emptyWishlistText {
     font-size: 14px;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
   }
 
   .emptyWishlistButton {
@@ -223,11 +223,7 @@
 @media (max-width: 576px) {
   .wishlistGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-  }
-
-  .wishlistItemWrapper {
-    min-width: 0;
+    gap: var(--space-1); /* 6px */
   }
 
   .removeButton {

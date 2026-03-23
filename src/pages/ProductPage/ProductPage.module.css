@@ -1,6 +1,6 @@
 .productPage {
   min-height: 100vh;
-  background: #f6f7f9;
+  background: var(--bg-secondary);
 }
 
 /* ======================
@@ -9,7 +9,7 @@
 .productContainer {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 16px 20px 120px;
+  padding: var(--space-4) var(--space-5) 120px; /* 16px 20px -> var-space */
   box-sizing: border-box;
 }
 
@@ -19,48 +19,46 @@
 .breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: var(--space-2); /* 6px */
+  margin-bottom: var(--space-4); /* 16px */
   font-size: 13px;
 }
 
 .crumb {
   background: none;
   border: none;
-  color: #005bff;
+  color: var(--primary);
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: var(--space-1) var(--space-2); /* 2px 6px */
+  border-radius: var(--radius-md); /* 4px */
 }
 
 .crumb:hover {
-  background-color: #e8f0fe;
+  background-color: var(--primary-light);
 }
 
 .crumbSeparator {
-  color: #aaa;
+  color: #aaa; /* Можно оставить или создать переменную --text-muted-light */
 }
 
 /* ======================
    GRID LAYOUT
 ====================== */
-
-/* Desktop (большие) */
 .productContent {
   display: grid;
   grid-template-columns: 1.1fr 380px 320px;
-  gap: 20px;
-  margin-bottom: 24px;
+  gap: var(--space-5); /* 20px */
+  margin-bottom: var(--space-6); /* 24px */
 }
 
 /* ======================
    Blocks
 ====================== */
 .gallery {
-  background: #fff;
-  border-radius: 10px;
-  padding: 12px;
-  border: 1px solid #eef0f2;
+  background: var(--surface);
+  border-radius: var(--radius-xl); /* 10px */
+  padding: var(--space-3); /* 12px */
+  border: 1px solid #eef0f2; /* можно создать --border-light если нужно */
 }
 
 .mainInfo {
@@ -71,33 +69,33 @@
 .wishlistButton {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background-color: #f5f7f9;
+  gap: var(--space-3); /* 8px */
+  padding: 10px 18px; /* можно var-space-* для соответствия */
+  background-color: var(--bg-secondary);
   border: 1px solid #e0e2e6;
-  border-radius: 10px;
+  border-radius: var(--radius-xl); /* 10px */
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
-  color: #666;
-  margin-bottom: 16px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-5); /* 16px */
 }
 
 .wishlistButton:hover {
-  background-color: #ffebeb;
-  border-color: #ff3b30;
-  color: #ff3b30;
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 .wishlistButton.wishlistActive {
   background-color: #fff5f5;
-  border-color: #ff3b30;
-  color: #ff3b30;
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 .wishlistButton.wishlistActive:hover {
-  background-color: #ffebeb;
+  background-color: var(--danger-bg);
 }
 
 .wishlistButton svg {
@@ -105,7 +103,7 @@
 }
 
 .wishlistButton.wishlistActive svg {
-  fill: #ff3b30;
+  fill: var(--danger);
 }
 
 .buyBlock {
@@ -116,12 +114,12 @@
    Buy Box
 ====================== */
 .buyBox {
-  background-color: #ffffff;
+  background-color: var(--surface);
   border: 1px solid #e6e8eb;
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: var(--radius-xl); /* 10px */
+  padding: var(--space-4); /* 16px */
   position: sticky;
-  top: 16px;
+  top: var(--space-4); /* 16px */
 }
 
 /* ======================
@@ -130,28 +128,30 @@
 .title {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 8px;
-  color: #1a1a1a;
+  margin-bottom: var(--space-2); /* 8px */
+  color: var(--text-primary);
 }
 
 .rating {
   font-size: 13px;
-  margin-bottom: 16px;
-  color: #666;
+  margin-bottom: var(--space-5); /* 16px */
+  color: var(--text-secondary);
 }
 
 .price {
   font-size: 26px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-3); /* 10px */
 }
+
 .price_mobile {
   display: none;
 }
+
 .stock {
-  color: #00a046;
+  color: var(--success);
   font-size: 13px;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-3); /* 10px */
 }
 
 /* ======================
@@ -159,34 +159,34 @@
 ====================== */
 .buyNow {
   width: 100%;
-  padding: 12px;
-  background-color: #ff9900;
+  padding: var(--space-3); /* 12px */
+  background-color: var(--accent-orange);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md); /* 8px */
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2); /* 8px */
 }
 
 .buyNow:hover {
-  background-color: #e68a00;
+  background-color: #e68a00; /* можно создать переменную --accent-orange-hover */
 }
 
 .addToCartSection {
-  margin-top: 8px;
+  margin-top: var(--space-2); /* 8px */
 }
 
 .delivery {
   font-size: 12px;
-  color: #666;
-  margin-top: 8px;
+  color: var(--text-secondary);
+  margin-top: var(--space-2); /* 8px */
 }
 
 .features {
-  margin-top: 10px;
-  padding-left: 14px;
+  margin-top: var(--space-2_5); /* 10px - можно оставить 10px или var-space-2 + 2px */
+  padding-left: var(--space-3_5); /* 14px, можно создать кастомную переменную */
   font-size: 12px;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 /* ======================
@@ -194,15 +194,15 @@
 ====================== */
 .descriptionSection,
 .specsSection {
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 18px;
-  margin-bottom: 16px;
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4 + 2px); /* 18px - чуть больше базового */
+  margin-bottom: var(--space-5); /* 16px */
   border: 1px solid #eef0f2;
 }
 
 .sectionTitle {
-  margin: 0 0 12px 0;
+  margin: 0 0 var(--space-3) 0; /* 12px */
   font-size: 18px;
   font-weight: 600;
 }
@@ -213,12 +213,12 @@
 }
 
 .specsTable td {
-  padding: 8px 0;
+  padding: var(--space-2) 0; /* 8px 0 */
 }
 
 .specName {
   font-size: 13px;
-  color: #777;
+  color: #777; /* можно var(--text-muted) */
   width: 40%;
 }
 
@@ -228,8 +228,9 @@
 }
 
 /* ======================
-   TABLET (≤1200px)
+   MEDIA QUERIES
 ====================== */
+
 @media (max-width: 1200px) {
   .productContent {
     grid-template-columns: 1fr 320px;
