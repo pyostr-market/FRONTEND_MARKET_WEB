@@ -5,7 +5,7 @@ import { useWishlist } from '../../app/store/wishlistStore';
 import paths from '../../app/router/paths';
 import styles from './MobileNavbar.module.css';
 
-const MobileNavbar = ({ onProfileClick }) => {
+const MobileNavbar = () => {
   const location = useLocation();
   const { getTotalQuantity } = useCart();
   const { getTotalCount } = useWishlist();
@@ -17,27 +17,14 @@ const MobileNavbar = ({ onProfileClick }) => {
     { path: paths.CATALOG, icon: FiGrid, label: 'Каталог' },
     { path: paths.CART, icon: FiShoppingCart, label: 'Корзина', badge: cartCount },
     { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное', badge: wishlistCount },
-    { icon: FiUser, label: 'Профиль', isModal: true },
+    { path: paths.AUTH, icon: FiUser, label: 'Профиль' },
   ];
 
   return (
     <nav className={styles.mobileNavbar}>
       <div className={styles.mobileNavbarContainer}>
-        {navItems.map((item, index) => {
-          const { path, icon: Icon, label, isModal, badge } = item;
-
-          if (isModal) {
-            return (
-              <button
-                key={label}
-                className={styles.mobileNavItem}
-                onClick={onProfileClick}
-              >
-                <Icon size={24} />
-                <span>{label}</span>
-              </button>
-            );
-          }
+        {navItems.map((item) => {
+          const { path, icon: Icon, label, badge } = item;
 
           return (
             <Link

@@ -1,61 +1,66 @@
-.profileModalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--modal-overlay);
-  z-index: 1000;
+.authPage {
+  min-height: 100vh;
+  background-color: var(--bg);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-4);
+  flex-direction: column;
 }
 
-.profileModal {
-  background-color: var(--surface);
-  border-radius: var(--radius-2xl);
+.authContainer {
   width: 100%;
-  max-width: 400px;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: var(--surface);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.profileModalHeader {
+/* Header */
+.authHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
+  padding: var(--space-4) var(--space-4);
   border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.profileModalHeader h2 {
-  margin: 0;
-  font-size: 20px;
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text);
+  transition: background-color 0.2s;
+  padding: 0;
+}
+
+.backBtn:hover {
+  background-color: var(--surface-muted);
+}
+
+.headerTitle {
+  font-size: 17px;
   font-weight: 600;
   color: var(--text);
 }
 
-.profileModalClose {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-muted);
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+.headerSpacer {
+  width: 40px;
 }
 
-.profileModalClose:hover {
-  background-color: var(--surface-muted);
-}
-
-.profileModalBody {
-  padding: 32px 24px;
+/* Body */
+.authBody {
+  flex: 1;
+  padding: var(--space-8) var(--space-5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,16 +71,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
   color: var(--surface);
+  margin-top: var(--space-2);
 }
 
 .title {
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text);
   text-align: center;
@@ -88,17 +94,19 @@
   color: var(--text-secondary);
   text-align: center;
   line-height: 1.5;
-  max-width: 260px;
+  max-width: 280px;
 }
 
-.profileForm {
+/* Form */
+.authForm {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  margin-top: var(--space-2);
 }
 
-.profileFormLabel {
+.formLabel {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -110,9 +118,9 @@
   font-weight: 500;
 }
 
-.profileFormInput {
+.formInput {
   width: 100%;
-  padding: 14px 16px;
+  padding: 16px var(--space-4);
   border: 2px solid var(--border);
   border-radius: var(--radius-xl);
   font-size: 16px;
@@ -122,18 +130,18 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.profileFormInput:focus {
+.formInput:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(0, 91, 255, 0.1);
 }
 
-.profileFormInput::placeholder {
+.formInput::placeholder {
   color: var(--text-muted);
 }
 
-.profileSubmitBtn {
+.submitBtn {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   background-color: var(--primary);
   color: var(--surface);
   border: none;
@@ -142,22 +150,24 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  margin-top: var(--space-2);
 }
 
-.profileSubmitBtn:hover {
+.submitBtn:hover {
   background-color: var(--primary-hover);
 }
 
-.profileSubmitBtn:active {
+.submitBtn:active {
   transform: scale(0.98);
 }
 
+/* Terms text */
 .termsText {
-  margin: 0;
-  font-size: 11px;
+  margin-top: var(--space-4);
+  font-size: 12px;
   color: var(--text-muted);
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .link {
@@ -168,4 +178,24 @@
 
 .link:hover {
   text-decoration: none;
+}
+
+/* Адаптив для больших экранов (если откроют на ПК) */
+@media (min-width: 481px) {
+  .authContainer {
+    margin: var(--space-8) auto;
+    min-height: auto;
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .authPage {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .authBody {
+    padding: var(--space-10) var(--space-8);
+  }
 }

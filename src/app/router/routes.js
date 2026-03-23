@@ -4,6 +4,7 @@ import ProductPage from '../../pages/ProductPage/ProductPage';
 import CartPage from '../../pages/CartPage/CartPage';
 import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import WishlistPage from '../../pages/WishlistPage/WishlistPage';
+import AuthPage from '../../pages/AuthPage/AuthPage';
 import paths from './paths';
 
 const routes = [
@@ -45,6 +46,13 @@ const routes = [
   {
     path: paths.WISHLIST,
     component: WishlistPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.AUTH,
+    component: AuthPage,
     layout: 'main',
     isPrivate: false,
     showSearch: false,
