@@ -9,7 +9,7 @@ const AppRouter = () => {
   };
 
   return (
-    <Routes location={location} key={location.pathname + location.search}>
+    <Routes location={location} key={location.pathname}>
       {routes.map(({ path, component: Component, layout, isPrivate, showSearch }) => {
         const Layout = layouts[layout] || MainLayout;
 
