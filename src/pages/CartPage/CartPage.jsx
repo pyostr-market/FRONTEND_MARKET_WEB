@@ -190,31 +190,11 @@ const CartPage = () => {
   }, [cartProducts]);
 
   /**
-   * Пустая корзина
+   * Пустая корзина - проверяем по cartItems, а не по products
    */
-  if (cartProducts.length === 0) {
-    if (loading) {
-      return (
-        <div className={styles.cartPage}>
-          <div className={styles.cartContainer}>
-            <h1 className={styles.cartTitle}>Корзина</h1>
-            <div className={styles.loading}>Загрузка товаров...</div>
-          </div>
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div className={styles.cartPage}>
-          <div className={styles.cartContainer}>
-            <h1 className={styles.cartTitle}>Корзина</h1>
-            <div className={styles.error}>Ошибка: {error}</div>
-          </div>
-        </div>
-      );
-    }
-
+  const hasItemsInCart = Object.keys(cartItems).length > 0;
+  
+  if (!hasItemsInCart) {
     return (
       <div className={styles.cartPage}>
         <div className={styles.emptyCart}>
@@ -229,6 +209,34 @@ const CartPage = () => {
             Перейти в каталог
             <FiArrowRight size={20} />
           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Загрузка товаров
+   */
+  if (loading) {
+    return (
+      <div className={styles.cartPage}>
+        <div className={styles.cartContainer}>
+          <h1 className={styles.cartTitle}>Корзина</h1>
+          <div className={styles.loading}>Загрузка товаров...</div>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Ошибка загрузки
+   */
+  if (error) {
+    return (
+      <div className={styles.cartPage}>
+        <div className={styles.cartContainer}>
+          <h1 className={styles.cartTitle}>Корзина</h1>
+          <div className={styles.error}>Ошибка: {error}</div>
         </div>
       </div>
     );
