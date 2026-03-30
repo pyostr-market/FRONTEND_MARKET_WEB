@@ -317,14 +317,16 @@ const CartPage = () => {
                         <FiTrash2 size={18} />
                         <span>Удалить</span>
                       </button>
-                      <AddToCart
-                        productId={item.id}
-                        onQuantityChange={(newQuantity) => {
-                          if (newQuantity === 0) {
-                            startRemoval(item.id);
-                          }
-                        }}
-                      />
+                      <div className={styles.addToCartWrapper}>
+                        <AddToCart
+                          productId={item.id}
+                          onQuantityChange={(newQuantity) => {
+                            if (newQuantity === 0) {
+                              startRemoval(item.id);
+                            }
+                          }}
+                        />
+                      </div>
 
 
                     </div>
