@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearLegacyCache, clearCatalogCache } from '../../shared/hooks/useCatalog';
+import useCatalog, { clearLegacyCache } from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
@@ -33,17 +33,9 @@ const CatalogPage = () => {
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
 
-  // Очистка ВСЕГО кэша при загрузке страницы (после перезагрузки)
+  // Очистка legacy кэша при загрузке
   useEffect(() => {
-    clearAllCatalogCache();
-  }, []);
-
-  // Очистка кэша при размонтировании (уход с страницы каталога)
-  useEffect(() => {
-    return () => {
-      console.log('[CatalogPage] Unmounting, clearing all cache');
-      clearAllCatalogCache();
-    };
+    clearLegacyCache();
   }, []);
 
   const { categoryName } = useCategoryName(categoryId);
@@ -82,16 +74,16 @@ const CatalogPage = () => {
   const [appliedFilters, setAppliedFilters] = useState(urlFilters);
   const prevCategoryKey = useRef(`${categoryId}-${productType}`);
 
-  // Сброс фильтров и кэша при изменении категории или типа товара
+  // Сброс фильтров и ВСЕГО кэша при изменении категории или типа товара
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
     if (prevCategoryKey.current !== currentKey) {
-      console.log('[CatalogPage] Category/type changed, resetting filters and clearing cache');
+      console.log('[CatalogPage] Category/type changed, resetting filters and clearing all cache');
       setAppliedFilters({});
-      clearCatalogCache(categoryIdNum, productTypeIdNum);
+      clearAllCatalogCache();
       prevCategoryKey.current = currentKey;
     }
-  }, [categoryId, productType, categoryIdNum, productTypeIdNum]);
+  }, [categoryId, productType]);
 
   const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, resetFilters: sortedResetFilters, loadMore } = useCatalog({
     ...catalogParamsBase,
@@ -135,10 +127,10 @@ const CatalogPage = () => {
     selectedFiltersRef.current = filtersToApply;
     // Очищаем scroll state при применении фильтров
     clearScrollState();
-    // Сбрасываем кэш при применении новых фильтров
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
+    // Сбрасываем ВЕСЬ кэш при применении новых фильтров
+    clearAllCatalogCache();
     if (isMobile) setIsFiltersModalOpen(false);
-  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile, clearScrollState, categoryIdNum, productTypeIdNum]);
+  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile, clearScrollState]);
 
   const handleResetFilters = useCallback(() => {
     setSelectedFilters({});
@@ -149,11 +141,11 @@ const CatalogPage = () => {
     sortedResetFilters();
     applyCatalogFilters({});
 
-    // Очищаем scroll state и кэш при сбросе фильтров
+    // Очищаем scroll state и ВЕСЬ кэш при сбросе фильтров
     clearScrollState();
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
+    clearAllCatalogCache();
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState, categoryIdNum, productTypeIdNum]);
+  }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState]);
 
   const handleSortChange = useCallback((value) => {
     console.log('[CatalogPage] handleSortChange:', value);
@@ -161,9 +153,9 @@ const CatalogPage = () => {
     clearScrollState();
     // Обновляем URL
     updateUrl({ sort_type: value });
-    // Сбрасываем кэш каталога для перезагрузки с новой сортировкой
-    clearCatalogCache(categoryIdNum, productTypeIdNum);
-  }, [updateUrl, clearScrollState, categoryIdNum, productTypeIdNum]);
+    // Сбрасываем ВЕСЬ кэш для перезагрузки с новой сортировкой
+    clearAllCatalogCache();
+  }, [updateUrl, clearScrollState]);
 
   const getPageTitle = useCallback(() => {
     if (categoryName) return categoryName;
@@ -175,8 +167,9 @@ const CatalogPage = () => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);
   }, []);
 
-  // Временно используем обычный ProductGrid для отладки
+  // Временно отключаем виртуализацию для отладки
   const useVirtualization = false;
+  console.log('[CatalogPage] render:', { products: products.length, loading, useVirtualization });
 
   return (
       <div className={styles.catalogPage}>
