@@ -38,7 +38,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/verification/verification/request`, {
+      const response = await fetch(`${API_BASE_URL}/verification/request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
