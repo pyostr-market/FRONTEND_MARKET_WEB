@@ -244,34 +244,97 @@
   align-items: flex-end;
 }
 
-.itemQuantity {
+/* Нижний блок действий (мобильный) */
+.itemBottomActions {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--space-2);
-  background-color: var(--surface-subtle);
-  border-radius: var(--radius-xl);
-  padding: var(--space-1);
+  width: 100%;
 }
 
-.quantityButton {
-  width: 32px;
-  height: 32px;
+.wishlistActionBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--surface);
+  gap: var(--space-2);
+  padding: 10px 14px;
+  background: none;
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  color: var(--primary);
+  border-radius: var(--radius-xl);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
-  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.wishlistActionBtnActive {
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+
+.removeActionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 14px;
+  background: none;
+  border: 1px solid var(--danger-bg);
+  border-radius: var(--radius-xl);
+  color: var(--danger);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.removeActionBtn:hover {
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+.itemQuantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  background-color: var(--surface-subtle);
+  border-radius: var(--radius-xl);
+  padding: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.quantityButton {
+  flex: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quantityButton svg {
+  width: 18px;
+  height: 18px;
+  opacity: 1;
 }
 
 .quantityButton:hover:not(:disabled) {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  color: var(--surface);
+  background-color: var(--primary-hover);
 }
 
 .quantityButton:disabled {
@@ -280,13 +343,13 @@
 }
 
 .quantityInput {
-  width: 50px;
-  height: 32px;
+  width: 60px;
+  height: 36px;
   text-align: center;
   border: none;
   background: transparent;
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text);
   -moz-appearance: textfield;
@@ -344,26 +407,31 @@
 .removingOverlay {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3);
+  padding: 10px 14px;
   width: 100%;
-  background-color: var(--surface-subtle);
+  background-color: #fff5f5;
+  border: 1px solid #ffd0d0;
   border-radius: var(--radius-xl);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .removingText {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: #d43030;
   font-weight: 500;
+  flex: 1;
 }
 
 .restoreButton {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
+  gap: var(--space-1);
   padding: 8px 16px;
   background-color: var(--primary);
   border: none;
@@ -374,10 +442,11 @@
   font-size: 13px;
   font-weight: 600;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .restoreButton:hover {
-  background-color: #004ecc; /* Для градиентного/темного оттенка можно добавить переменную, если нужно */
+  background-color: #004ecc;
 }
 
 .removingProgress {
@@ -388,9 +457,9 @@
   left: 0;
   background: linear-gradient(
           90deg,
-          rgba(239, 68, 68, 0.1) 0%,
-          rgba(239, 68, 68, 0.3) 100%
-  ); /* Можно заменить на var(--danger) с прозрачностью, если нужно */
+          rgba(239, 68, 68, 0.08) 0%,
+          rgba(239, 68, 68, 0.15) 100%
+  );
   pointer-events: none;
 }
 
@@ -707,51 +776,116 @@
     border-top: 1px solid var(--surface-subtle);
   }
 
-  .itemQuantity {
-    order: 1;
-  }
-
-  .itemTotal {
-    order: 2;
+  .itemBottomActions {
+    display: flex;
     flex-direction: row;
-    align-items: center;
     gap: var(--space-2);
+    width: 100%;
+    align-items: center;
+    flex-wrap: nowrap;
   }
 
-  .itemTotalLabel {
-    font-size: 12px;
-  }
-
-  .itemTotalValue {
-    font-size: 17px;
-  }
-
-  .removeButton {
-    order: 3;
+  .wishlistActionBtn {
+    flex: 0 0 auto;
     padding: 8px 12px;
+    font-size: 12px;
+    justify-content: center;
+    min-width: 44px;
+    width: auto;
   }
 
-  .removeButtonText {
+  .wishlistActionBtn span {
     display: none;
+  }
+
+  .removeActionBtn {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 12px;
+    justify-content: center;
+    min-width: 44px;
+    width: auto;
+  }
+
+  .removeActionBtn span {
+    display: none;
+  }
+
+  .itemQuantity {
+    order: 3;
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 110px;
+    background-color: var(--surface-subtle);
+    border-radius: var(--radius-xl);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .quantityButton {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--surface);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .quantityButton svg {
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+  }
+
+
+
+  .quantityButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .quantityInput {
+    width: 44px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    -moz-appearance: textfield;
   }
 
   .removingOverlay {
     order: 3;
     grid-column: 1 / 3;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 10px 14px;
+    background-color: #fff5f5;
+    border: 1px solid #ffd0d0;
   }
 
   .removingText {
-    width: 100%;
-    font-size: 12px;
+    font-size: 13px;
+    color: #d43030;
+    flex: 1;
+    white-space: nowrap;
   }
 
   .restoreButton {
-    flex: 1;
+    flex: 0 0 auto;
     justify-content: center;
-    padding: 8px 14px;
+    padding: 8px 16px;
     font-size: 13px;
   }
 
@@ -856,10 +990,7 @@
     border-bottom: 1px solid var(--surface-subtle);
   }
 
-  .cartItem:hover {
-    box-shadow: none;
-    transform: none;
-  }
+
 
   .itemCheckbox {
     top: var(--space-2);
@@ -874,9 +1005,24 @@
   .itemImage {
     width: 85px;
     height: 85px;
-    grid-row: 1 / 3;
+    grid-row: 1 / 2;
     grid-column: 1;
     border-radius: var(--radius-sm);
+  }
+
+  .itemInfo {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .itemPrice {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    order: 1;
   }
 
   .itemName {
@@ -885,79 +1031,138 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    order: 2;
+    font-weight: 600;
+    line-height: 1.3;
   }
 
   .itemArticle {
     font-size: 10px;
-  }
-
-  .itemPrice {
-    font-size: 16px;
+    order: 3;
   }
 
   .itemBadges {
     display: none;
+    order: 4;
   }
 
   .itemActions {
     grid-column: 1 / 3;
     grid-row: 2;
-    gap: var(--space-3);
-    padding-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--surface-subtle);
   }
 
-  .itemQuantity {
-    order: 1;
-  }
-
-  .itemTotal {
-    order: 3;
+  .itemBottomActions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2);
     width: 100%;
-    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
   }
 
-  .removeButton {
-    order: 2;
-    padding: 8px;
-    min-width: 40px;
+  .wishlistActionBtn {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 12px;
     justify-content: center;
+    min-width: 44px;
+    width: auto;
   }
 
-  .removeButtonText {
+  .wishlistActionBtn span {
     display: none;
   }
 
+  .removeActionBtn {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 12px;
+    justify-content: center;
+    min-width: 44px;
+    width: auto;
+  }
+
+  .removeActionBtn span {
+    display: none;
+  }
+
+  .itemQuantity {
+    order: 3;
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 110px;
+    background-color: var(--surface-subtle);
+    border-radius: var(--radius-xl);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
   .quantityButton {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--surface);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
   }
 
   .quantityButton svg {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+  }
+
+
+
+  .quantityButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   .quantityInput {
-    width: 40px;
-    height: 28px;
-    font-size: 13px;
+    width: 44px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    -moz-appearance: textfield;
   }
 
   .removingOverlay {
     order: 2;
     grid-column: 1 / 3;
-    padding: var(--space-3);
+    padding: 10px 14px;
+    flex-direction: row;
+    gap: var(--space-2);
+    background-color: #fff5f5;
+    border: 1px solid #ffd0d0;
   }
 
   .removingText {
-    font-size: 12px;
-    margin-bottom: var(--space-2);
+    font-size: 13px;
+    color: #d43030;
+    margin-bottom: 0;
+    flex: 1;
   }
 
   .restoreButton {
-    width: 100%;
-    justify-content: center;
-    padding: 10px 14px;
+    width: auto;
+    padding: 8px 16px;
+    flex-shrink: 0;
   }
 
   .removingProgress {
@@ -1005,7 +1210,7 @@
     width: 100%;
     padding: var(--space-4);
     margin-top: 0;
-    background: var(--gradient-primary);
+    background: var(--primary);
     color: var(--surface);
     border: none;
     border-radius: var(--radius-xl);

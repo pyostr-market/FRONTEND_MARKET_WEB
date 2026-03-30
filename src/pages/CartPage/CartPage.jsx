@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight, FiTruck, FiShield, FiCheck } from 'react-icons/fi';
+import { FiTrash2, FiMinus, FiPlus, FiShoppingCart, FiArrowRight, FiTruck, FiShield, FiCheck, FiHeart } from 'react-icons/fi';
 import { useCart } from '../../app/store/cartStore';
+import { useWishlist } from '../../app/store/wishlistStore';
 import useCartProducts from '../../shared/hooks/useCartProducts';
 import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
 import paths from '../../app/router/paths';
@@ -19,6 +20,8 @@ const CartPage = () => {
     getTotalQuantity,
     MAX_ITEM_QUANTITY,
   } = useCart();
+
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   // Состояние для выбранных товаров
   const [selectedIds, setSelectedIds] = useState(new Set());
@@ -290,10 +293,9 @@ const CartPage = () => {
 
                   {/* Информация о товаре */}
                   <div className={styles.itemInfo}>
+                    <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
                     <h3 className={styles.itemName}>{item.name}</h3>
                     <div className={styles.itemArticle}>Арт. {item.id}</div>
-                    <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
-                    
                     <div className={styles.itemBadges}>
                       <span className={styles.badge}>
                         <FiTruck size={14} /> Быстрая доставка
@@ -323,51 +325,56 @@ const CartPage = () => {
                       </div>
                     ) : (
                       <>
-                        <div className={styles.itemQuantity}>
+                        <div className={styles.itemBottomActions}>
                           <button
-                            className={styles.quantityButton}
-                            onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                            aria-label="Уменьшить количество"
+                            className={`${styles.wishlistActionBtn} ${isInWishlist(item.id) ? styles.wishlistActionBtnActive : ''}`}
+                            onClick={() => toggleWishlist(item.id)}
+                            aria-label={isInWishlist(item.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
+                            type="button"
                           >
-                            <FiMinus size={14} />
+                            <FiHeart size={18} />
+                            <span>{isInWishlist(item.id) ? 'В избранном' : 'В избранное'}</span>
                           </button>
-                          <input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) =>
-                              handleQuantityChange(item.id, parseInt(e.target.value, 10))
-                            }
-                            className={styles.quantityInput}
-                            min="1"
-                            max={item.maxQuantity}
-                          />
+
                           <button
-                            className={styles.quantityButton}
-                            onClick={() =>
-                              handleQuantityChange(item.id, item.quantity + 1)
-                            }
-                            disabled={item.quantity >= item.maxQuantity}
-                            aria-label="Увеличить количество"
+                            className={styles.removeActionBtn}
+                            onClick={() => startRemoval(item.id)}
+                            aria-label="Удалить товар"
                           >
-                            <FiPlus size={14} />
+                            <FiTrash2 size={18} />
+                            <span>Удалить</span>
                           </button>
-                        </div>
 
-                        <div className={styles.itemTotal}>
-                          <span className={styles.itemTotalLabel}>Итого:</span>
-                          <span className={styles.itemTotalValue}>
-                            {formatPrice((parseFloat(item.price) * item.quantity).toString())}
-                          </span>
+                          <div className={styles.itemQuantity}>
+                            <button
+                              className={styles.quantityButton}
+                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                              aria-label="Уменьшить количество"
+                            >
+                              <FiMinus size={14} />
+                            </button>
+                            <input
+                              type="number"
+                              value={item.quantity}
+                              onChange={(e) =>
+                                handleQuantityChange(item.id, parseInt(e.target.value, 10))
+                              }
+                              className={styles.quantityInput}
+                              min="1"
+                              max={item.maxQuantity}
+                            />
+                            <button
+                              className={styles.quantityButton}
+                              onClick={() =>
+                                handleQuantityChange(item.id, item.quantity + 1)
+                              }
+                              disabled={item.quantity >= item.maxQuantity}
+                              aria-label="Увеличить количество"
+                            >
+                              <FiPlus size={14} />
+                            </button>
+                          </div>
                         </div>
-
-                        <button
-                          className={styles.removeButton}
-                          onClick={() => startRemoval(item.id)}
-                          aria-label="Удалить товар"
-                        >
-                          <FiTrash2 size={18} />
-                          <span className={styles.removeButtonText}>Удалить</span>
-                        </button>
                       </>
                     )}
                   </div>
