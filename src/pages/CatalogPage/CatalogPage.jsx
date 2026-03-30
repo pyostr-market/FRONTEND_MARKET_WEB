@@ -96,13 +96,18 @@ const CatalogPage = () => {
   useEffect(() => { selectedFiltersRef.current = selectedFilters; }, [selectedFilters]);
 
   // Хук для управления скроллом
-  const { clearScrollState } = useCatalogScroll({
+  const { clearScrollState, resetRestoreFlag } = useCatalogScroll({
     productsCount: products.length,
     loading,
     categoryId: categoryIdNum?.toString() || 'all',
     productType: productType?.toString() || 'all',
     enableRestore: true,
   });
+
+  // Сброс флага восстановления при изменении категории
+  useEffect(() => {
+    resetRestoreFlag();
+  }, [categoryId, productType, resetRestoreFlag]);
 
   const hasChanges = Object.keys(selectedFilters).length > 0;
   const toggleFilterValue = useCallback((name, value) => {

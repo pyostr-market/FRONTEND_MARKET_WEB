@@ -132,7 +132,6 @@ const ProductGridVirtual = ({
 
             return (
               <Grid
-                key={products.length}  // Принудительный ре-рендер при изменении количества товаров
                 ref={gridRef}
                 className={styles.grid}
                 cellComponent={renderCell}

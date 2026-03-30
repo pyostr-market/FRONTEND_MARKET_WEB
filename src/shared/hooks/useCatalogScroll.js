@@ -20,6 +20,15 @@ const useCatalogScroll = ({
 } = {}) => {
   const didRestoreScroll = useRef(false);
   const restoreTimeoutRef = useRef(null);
+  const productsCountRef = useRef(productsCount);
+
+  // Обновляем ref при изменении productsCount
+  useEffect(() => {
+    productsCountRef.current = productsCount;
+  }, [productsCount]);
+
+  // Уникальный ключ для этой категории/типа
+  const scrollKey = `${CATALOG_SCROLL_KEY}_${categoryId || 'all'}_${productType || 'all'}`;
 
   /**
    * Сохранение позиции скролла при размонтировании
@@ -27,20 +36,27 @@ const useCatalogScroll = ({
   const saveScrollPosition = useCallback(() => {
     const scrollData = {
       scrollPos: window.scrollY,
-      productsCount,
-      categoryId,
-      productType,
+      productsCount: productsCountRef.current,
       timestamp: Date.now(),
     };
-    sessionStorage.setItem(CATALOG_SCROLL_KEY, JSON.stringify(scrollData));
-  }, [productsCount, categoryId, productType]);
+    sessionStorage.setItem(scrollKey, JSON.stringify(scrollData));
+    console.log('[useCatalogScroll] Saved scroll:', scrollData, 'key:', scrollKey);
+  }, [scrollKey]);
+
+  /**
+   * Сохранение при размонтировании
+   */
+  useEffect(() => {
+    return () => {
+      saveScrollPosition();
+    };
+  }, [saveScrollPosition]);  // Только saveScrollPosition, без productsCount
 
   /**
    * Проверка готовности изображений
    */
   const checkImagesLoaded = useCallback(() => {
-    // Ищем grid контейнер по атрибуту или по классу виртуальной сетки
-    const gridEl = document.querySelector('[data-catalog-grid]') || 
+    const gridEl = document.querySelector('[data-catalog-grid]') ||
                    document.querySelector('.virtualGridWrapper');
     if (!gridEl) return false;
 
@@ -51,27 +67,16 @@ const useCatalogScroll = ({
   }, []);
 
   /**
-   * Восстановление позиции скролла
+   * Восстановление позиции скролла (только при первом рендере после возврата)
    */
   const restoreScrollPosition = useCallback(() => {
     if (!enableRestore || didRestoreScroll.current) return false;
 
-    const saved = sessionStorage.getItem(CATALOG_SCROLL_KEY);
+    const saved = sessionStorage.getItem(scrollKey);
     if (!saved) return false;
 
     try {
-      const {
-        scrollPos,
-        productsCount: savedProductsCount,
-        categoryId: savedCategoryId,
-        productType: savedProductType,
-      } = JSON.parse(saved);
-
-      // Проверяем, что категория не изменилась
-      if (savedCategoryId !== categoryId || savedProductType !== productType) {
-        sessionStorage.removeItem(CATALOG_SCROLL_KEY);
-        return false;
-      }
+      const { scrollPos, productsCount: savedProductsCount } = JSON.parse(saved);
 
       // Проверяем, что все товары отрендерены
       if (productsCount < savedProductsCount) {
@@ -85,16 +90,17 @@ const useCatalogScroll = ({
 
       // Восстанавливаем позицию
       window.scrollTo(0, scrollPos);
-      sessionStorage.removeItem(CATALOG_SCROLL_KEY);
+      sessionStorage.removeItem(scrollKey);
       didRestoreScroll.current = true;
+      console.log('[useCatalogScroll] Restored scroll:', scrollPos, 'key:', scrollKey);
 
       return true;
     } catch (e) {
       console.warn('Failed to restore scroll position:', e);
-      sessionStorage.removeItem(CATALOG_SCROLL_KEY);
+      sessionStorage.removeItem(scrollKey);
       return false;
     }
-  }, [enableRestore, categoryId, productType, productsCount, checkImagesLoaded]);
+  }, [enableRestore, scrollKey, productsCount, checkImagesLoaded]);
 
   /**
    * Автоматическое восстановление при изменении количества товаров
@@ -129,15 +135,6 @@ const useCatalogScroll = ({
   }, [productsCount, loading, enableRestore, restoreScrollPosition]);
 
   /**
-   * Сохранение при размонтировании
-   */
-  useEffect(() => {
-    return () => {
-      saveScrollPosition();
-    };
-  }, [saveScrollPosition]);
-
-  /**
    * Сброс флага восстановления при смене категории
    */
   useEffect(() => {
@@ -148,15 +145,16 @@ const useCatalogScroll = ({
    * Очистка sessionStorage при явном сбросе
    */
   const clearScrollState = useCallback(() => {
-    sessionStorage.removeItem(CATALOG_SCROLL_KEY);
+    sessionStorage.removeItem(scrollKey);
     didRestoreScroll.current = false;
-  }, []);
+  }, [scrollKey]);
 
   return {
     didRestoreScroll: didRestoreScroll.current,
     saveScrollPosition,
     restoreScrollPosition,
     clearScrollState,
+    resetRestoreFlag: () => { didRestoreScroll.current = false; },
   };
 };
 
