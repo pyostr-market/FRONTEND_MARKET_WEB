@@ -59,7 +59,7 @@
   border-radius: var(--radius-xl); /* 10px */
   border: 1px solid #eef0f2; /* можно создать --border-light если нужно */
   position: sticky;
-  top: var(--space-4);
+  top: var(--top-8);
   align-self: start;
 }
 
@@ -70,7 +70,7 @@
 /* Buy Block */
 .buyBlock {
   position: sticky;
-  top: var(--space-4);
+  top: var(--top-8);
   align-self: start;
 }
 
@@ -244,7 +244,7 @@
   .gallery {
     max-width: 100%;
     position: sticky;
-    top: var(--space-4);
+    top: 80px;
     align-self: start;
   }
 
@@ -254,7 +254,7 @@
 
   .buyBlock {
     position: sticky;
-    top: var(--space-4);
+    top: 80px;
     align-self: start;
   }
 
