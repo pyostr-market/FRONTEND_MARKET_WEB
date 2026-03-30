@@ -59,6 +59,9 @@ const useCatalog = ({
   // Ref для отслеживания предыдущих initialFilters
   const prevInitialFiltersRef = useRef({});
 
+  // Ref для отслеживания предыдущего sort_type
+  const prevSortTypeRef = useRef('');
+
   // Ref для хранения актуального products.length
   const productsLengthRef = useRef(0);
   useEffect(() => {
@@ -293,6 +296,9 @@ const useCatalog = ({
     const categoryKey = `${category_id || 'all'}_${product_type_id || 'all'}`;
     const categoryChanged = prevCategoryRef.current !== categoryKey;
     const filtersChanged = JSON.stringify(prevInitialFiltersRef.current) !== JSON.stringify(initialFilters);
+    
+    // Проверяем изменение сортировки
+    const sortTypeChanged = prevSortTypeRef.current !== sort_type;
 
     // Сбрасываем флаг при изменении категории
     if (categoryChanged) {
@@ -300,8 +306,9 @@ const useCatalog = ({
       prevCategoryRef.current = categoryKey;
     }
 
-    // Сохраняем предыдущие initialFilters
+    // Сохраняем предыдущие initialFilters и sort_type
     prevInitialFiltersRef.current = initialFilters;
+    prevSortTypeRef.current = sort_type;
 
     // Восстанавливаем из кэша только если категория изменилась
     if (enableCache && categoryChanged) {
@@ -336,14 +343,15 @@ const useCatalog = ({
 
     // Загружаем с API - используем initialFilters если есть
     // Перезагружаем только если категория изменилась или initialFilters изменились
-    if (categoryChanged || filtersChanged) {
+    if (categoryChanged || filtersChanged || sortTypeChanged) {
+      console.log('[useCatalog] Reloading due to:', { categoryChanged, filtersChanged, sortTypeChanged });
       setProducts([]);
       setOffset(0);
       const filtersToUse = Object.keys(initialFilters).length > 0 ? initialFilters : {};
       loadProducts(false, filtersToUse, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category_id, product_type_id, device_type_id, enableCache, cacheKeyPrefix, initialFilters]);
+  }, [category_id, product_type_id, device_type_id, enableCache, cacheKeyPrefix, initialFilters, sort_type]);
 
   // Ref для хранения предыдущего состояния для кэша
   const prevCacheStateRef = useRef({ products: 0, total: 0, sort_type: '' });

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog, { clearLegacyCache } from '../../shared/hooks/useCatalog';
+import useCatalog, { clearLegacyCache, clearCatalogCache } from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
@@ -112,8 +112,10 @@ const CatalogPage = () => {
     selectedFiltersRef.current = filtersToApply;
     // Очищаем scroll state при применении фильтров
     clearScrollState();
+    // Сбрасываем кэш при применении новых фильтров
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
     if (isMobile) setIsFiltersModalOpen(false);
-  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile, clearScrollState]);
+  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile, clearScrollState, categoryIdNum, productTypeIdNum]);
 
   const handleResetFilters = useCallback(() => {
     setSelectedFilters({});
@@ -130,10 +132,14 @@ const CatalogPage = () => {
   }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState]);
 
   const handleSortChange = useCallback((value) => {
+    console.log('[CatalogPage] handleSortChange:', value);
     // Очищаем scroll state при изменении сортировки
     clearScrollState();
+    // Обновляем URL
     updateUrl({ sort_type: value });
-  }, [updateUrl, clearScrollState]);
+    // Сбрасываем кэш каталога для перезагрузки с новой сортировкой
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
+  }, [updateUrl, clearScrollState, categoryIdNum, productTypeIdNum]);
 
   const getPageTitle = useCallback(() => {
     if (categoryName) return categoryName;
