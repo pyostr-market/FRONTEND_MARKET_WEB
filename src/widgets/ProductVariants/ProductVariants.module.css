@@ -121,6 +121,52 @@
   white-space: nowrap;
 }
 
+/* ======================
+   TABLET (769px - 1000px) - уменьшаем варианты
+====================== */
+@media (max-width: 1000px) and (min-width: 769px) {
+  .variantCard {
+    width: 75px;
+    max-width: 75px;
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .variantImage {
+    width: 55px;
+    height: 55px;
+  }
+
+  .specItem {
+    font-size: 10px;
+  }
+}
+
+/* ======================
+   SMALL TABLET (≤900px)
+====================== */
+@media (max-width: 900px) and (min-width: 769px) {
+  .variantCard {
+    width: 70px;
+    max-width: 70px;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .variantImage {
+    width: 50px;
+    height: 50px;
+  }
+
+  .specItem {
+    font-size: 9px;
+  }
+
+  .variantsTitle {
+    font-size: 15px;
+  }
+}
+
 /* Десктоп сетка с анимацией */
 @media (min-width: 768px) {
   .variantList {

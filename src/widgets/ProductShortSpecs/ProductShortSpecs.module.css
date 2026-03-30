@@ -43,6 +43,52 @@
   text-align: right;
 }
 
+/* ======================
+   TABLET (769px - 1000px)
+====================== */
+@media (max-width: 1000px) and (min-width: 769px) {
+  .specsTitle {
+    font-size: 15px;
+  }
+
+  .specName {
+    font-size: 13px;
+  }
+
+  .specValue {
+    font-size: 13px;
+  }
+
+  .specsList {
+    gap: 10px;
+  }
+}
+
+/* ======================
+   SMALL TABLET (≤900px)
+====================== */
+@media (max-width: 900px) and (min-width: 769px) {
+  .specsTitle {
+    font-size: 14px;
+  }
+
+  .specName {
+    font-size: 12px;
+  }
+
+  .specValue {
+    font-size: 12px;
+  }
+
+  .specsList {
+    gap: 8px;
+  }
+
+  .specItem {
+    padding: 6px 0;
+  }
+}
+
 /* Адаптив */
 @media (max-width: 768px) {
   .specsContainer {

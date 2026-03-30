@@ -229,9 +229,47 @@
    MEDIA QUERIES
 ====================== */
 
-@media (max-width: 1200px) {
+/* LARGE LAPTOP (1001px - 1200px) - немного сжимаем сетку */
+@media (max-width: 1200px) and (min-width: 1001px) {
   .productContent {
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 340px 280px;
+    gap: var(--space-4);
+  }
+
+  .gallery {
+    max-width: 100%;
+  }
+
+  .mainInfo {
+    min-width: 0;
+  }
+
+  .title {
+    font-size: 19px;
+  }
+
+  .price {
+    font-size: 24px;
+  }
+
+  .buyBox {
+    padding: var(--space-3);
+  }
+}
+
+/* MEDIUM LAPTOP (≤1000px) - перестройка в 2 колонки */
+@media (max-width: 1000px) {
+  .productContent {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--space-4);
+  }
+
+  .gallery {
+    max-width: 100%;
+  }
+
+  .mainImageWrapper {
+    max-height: 420px;
   }
 
   /* buyBlock вниз */
@@ -242,16 +280,6 @@
   .buyBox {
     position: static;
   }
-}
-
-/* ======================
-   SMALL LAPTOP (≤1024px)
-====================== */
-@media (max-width: 1024px) {
-  .productContent {
-    grid-template-columns: 1fr 280px;
-    gap: 16px;
-  }
 
   .title {
     font-size: 18px;
@@ -260,12 +288,57 @@
   .price {
     font-size: 24px;
   }
+
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: var(--space-4);
+  }
+
+  .wishlistButton svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* ======================
-   TABLET PORTRAIT (≤900px)
+   SMALL LAPTOP (≤900px)
 ====================== */
 @media (max-width: 900px) {
+  .productContainer {
+    padding: var(--space-4) var(--space-4) 120px;
+  }
+
+  .productContent {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: var(--space-3);
+  }
+
+  .mainImageWrapper {
+    max-height: 380px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+
+  .price {
+    font-size: 22px;
+  }
+
+  .rating {
+    font-size: 12px;
+  }
+
+  .buyBox {
+    padding: var(--space-3);
+  }
+}
+
+/* ======================
+   TABLET PORTRAIT (≤768px)
+====================== */
+@media (max-width: 768px) {
   .productContent {
     grid-template-columns: 1fr;
   }
@@ -277,6 +350,37 @@
   .buyBox {
     position: static;
     margin-top: 12px;
+  }
+
+  .gallery {
+    max-width: 100%;
+  }
+
+  .mainImageWrapper {
+    max-height: 340px;
+  }
+
+  .mainInfo {
+    padding: 0 var(--space-3);
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .price {
+    font-size: 22px;
+  }
+
+  .wishlistButton {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: var(--space-3);
+  }
+
+  .wishlistButton svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
