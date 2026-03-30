@@ -115,10 +115,6 @@
   fill: var(--danger);
 }
 
-.buyBlock {
-  position: relative;
-}
-
 /* ======================
    Buy Box
 ====================== */
@@ -127,7 +123,6 @@
   border: 1px solid #e6e8eb;
   border-radius: var(--radius-xl); /* 10px */
   padding: var(--space-4); /* 16px */
-  top: var(--space-4); /* 16px */
 }
 
 /* ======================
