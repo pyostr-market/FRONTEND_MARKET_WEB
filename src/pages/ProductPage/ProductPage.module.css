@@ -215,6 +215,14 @@
   line-height: 1.5;
 }
 
+.description img {
+  max-width: min(80%, 1000px);
+  height: auto;
+  display: block;
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-xl);
+}
+
 .specsTable td {
   padding: var(--space-2) 0; /* 8px 0 */
 }

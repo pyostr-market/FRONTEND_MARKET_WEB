@@ -142,7 +142,35 @@ const ProductPage = () => {
                 <div
                     className={styles.description}
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
+                      __html: DOMPurify.sanitize(
+                        (() => {
+                          let desc = product.description;
+                          
+                          // Если объект, извлекаем HTML
+                          if (typeof desc !== 'string') {
+                            return desc?.__html || String(desc);
+                          }
+                          
+                          // Если JSON-строка, парсим
+                          if (desc.startsWith('{') || desc.startsWith('[')) {
+                            try {
+                              const parsed = JSON.parse(desc);
+                              desc = parsed.html || parsed.description || desc;
+                            } catch (e) {
+                              // Не JSON, оставляем как есть
+                            }
+                          }
+                          
+                          // Декодируем HTML-сущности если они есть
+                          if (desc.includes('&lt;') || desc.includes('&gt;')) {
+                            const textarea = document.createElement('textarea');
+                            textarea.innerHTML = desc;
+                            desc = textarea.value;
+                          }
+                          
+                          return desc;
+                        })()
+                      ),
                     }}
                 />
               </div>
