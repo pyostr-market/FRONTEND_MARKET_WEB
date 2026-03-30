@@ -1,26 +1,24 @@
 .stickyBar {
   position: fixed;
-  top: 70px; /* сразу под хедером (60px хедер + 10px отступ) */
-  left: 0;
-  right: 0;
+  top: var(--height-header-pc);
+  transform: translate(-0%, -120%);
+  width: 100%;
+  max-width: var(--max-width-header-pc);
   background-color: var(--surface);
   border-bottom: 1px solid #e8e8e8;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  z-index: 90;
-  transform: translateY(-100%);
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s;
 }
 
 .stickyBarVisible {
-  transform: translateY(0);
+  transform: translate(-0%, 0);
   opacity: 1;
 }
 
-.container {
-  max-width: 1400px;
+.stickyBarInner {
   margin: 0 auto;
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -118,22 +116,6 @@
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
-}
-
-.addToCartButton {
-  padding: 10px 20px;
-  background-color: var(--accent-orange);
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 14px;
-  color: var(--surface);
-}
-
-.addToCartButton:hover {
-  background-color: #e68a00;
 }
 
 /* Показываем только на десктопе */

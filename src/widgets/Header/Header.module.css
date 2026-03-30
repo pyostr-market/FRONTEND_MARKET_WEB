@@ -26,6 +26,7 @@
   padding: 6px 20px;
   background-color: var(--surface);
   position: relative;
+  height: var(--height-header-pc);
 }
 
 /* ======================

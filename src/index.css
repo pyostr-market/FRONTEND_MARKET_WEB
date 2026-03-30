@@ -68,6 +68,9 @@
 
     --max-width-header-pc: 1150px;
     --max-width-content: 1150px;
+
+    --height-header-pc: 48px;
+
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;

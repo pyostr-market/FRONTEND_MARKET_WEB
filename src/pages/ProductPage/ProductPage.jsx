@@ -66,14 +66,6 @@ const ProductPage = () => {
     }).format(price);
   }, []);
 
-  const handleAddToCart = useCallback(() => {
-    // Прокрутка к блоку AddToCart
-    const addToCartBlock = document.querySelector(`[data-add-to-cart="${product?.id}"]`);
-    if (addToCartBlock) {
-      addToCartBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }, [product?.id]);
-
   if (loading) return <div className={styles.loading}>Загрузка...</div>;
   if (error || !product) return <div className={styles.error}>Товар не найден</div>;
 
@@ -189,7 +181,7 @@ const ProductPage = () => {
 
         {/* Плавающая менюшка */}
         {product && (
-            <StickyProductBar product={product} onAddToCart={handleAddToCart} />
+            <StickyProductBar product={product} />
         )}
       </div>
   );

@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { FiHeart } from 'react-icons/fi';
 import { useWishlist } from '../../app/store/wishlistStore';
+import { AddToCart } from '../../features/add-to-cart';
 import styles from './StickyProductBar.module.css';
 
-const StickyProductBar = ({ product, onAddToCart }) => {
+const StickyProductBar = ({ product }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -47,13 +48,13 @@ const StickyProductBar = ({ product, onAddToCart }) => {
     };
   }, []);
 
-  if (!product || !isVisible) return null;
+  if (!product) return null;
 
-  const firstImage = product.images?.[0] || null;
+  const firstImage = product.images?.[0]?.image_url || null;
 
   return (
     <div className={`${styles.stickyBar} ${isVisible ? styles.stickyBarVisible : ''}`}>
-      <div className={styles.container}>
+      <div className={styles.stickyBarInner}>
         <div className={styles.left}>
           {firstImage && (
             <div className={styles.thumbnail}>
@@ -75,9 +76,7 @@ const StickyProductBar = ({ product, onAddToCart }) => {
 
         <div className={styles.right}>
           <div className={styles.price}>{formatPrice(product.price)}</div>
-          <button className={styles.addToCartButton} onClick={onAddToCart}>
-            В корзину
-          </button>
+          <AddToCart productId={product.id} />
         </div>
       </div>
     </div>
