@@ -14,16 +14,36 @@ import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
 
 // Порог переключения на виртуализацию (количество товаров)
-const VIRTUALIZATION_THRESHOLD = 50;
+const VIRTUALIZATION_THRESHOLD = 100;
+
+/**
+ * Полная очистка всех кэшей каталога
+ */
+const clearAllCatalogCache = () => {
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith('catalogCache_v1_')) {
+      localStorage.removeItem(key);
+    }
+  });
+  console.log('[CatalogPage] All catalog cache cleared');
+};
 
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
 
-  // Очистка старого кэша при первой загрузке
+  // Очистка ВСЕГО кэша при загрузке страницы (после перезагрузки)
   useEffect(() => {
-    clearLegacyCache();
+    clearAllCatalogCache();
+  }, []);
+
+  // Очистка кэша при размонтировании (уход с страницы каталога)
+  useEffect(() => {
+    return () => {
+      console.log('[CatalogPage] Unmounting, clearing all cache');
+      clearAllCatalogCache();
+    };
   }, []);
 
   const { categoryName } = useCategoryName(categoryId);
@@ -62,13 +82,16 @@ const CatalogPage = () => {
   const [appliedFilters, setAppliedFilters] = useState(urlFilters);
   const prevCategoryKey = useRef(`${categoryId}-${productType}`);
 
+  // Сброс фильтров и кэша при изменении категории или типа товара
   useEffect(() => {
     const currentKey = `${categoryId}-${productType}`;
     if (prevCategoryKey.current !== currentKey) {
+      console.log('[CatalogPage] Category/type changed, resetting filters and clearing cache');
       setAppliedFilters({});
+      clearCatalogCache(categoryIdNum, productTypeIdNum);
       prevCategoryKey.current = currentKey;
     }
-  }, [categoryId, productType]);
+  }, [categoryId, productType, categoryIdNum, productTypeIdNum]);
 
   const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, resetFilters: sortedResetFilters, loadMore } = useCatalog({
     ...catalogParamsBase,
@@ -126,10 +149,11 @@ const CatalogPage = () => {
     sortedResetFilters();
     applyCatalogFilters({});
 
-    // Очищаем scroll state при сбросе фильтров
+    // Очищаем scroll state и кэш при сбросе фильтров
     clearScrollState();
+    clearCatalogCache(categoryIdNum, productTypeIdNum);
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState]);
+  }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState, categoryIdNum, productTypeIdNum]);
 
   const handleSortChange = useCallback((value) => {
     console.log('[CatalogPage] handleSortChange:', value);
@@ -151,15 +175,8 @@ const CatalogPage = () => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);
   }, []);
 
-  // Определяем, использовать ли виртуализацию
-  // Временно отключаем виртуализацию для отладки
-  const useVirtualization = false;  // products.length >= VIRTUALIZATION_THRESHOLD && !loading;
-  console.log('[CatalogPage] render:', {
-    products: products.length,
-    loading,
-    useVirtualization,
-    hasMore
-  });
+  // Временно используем обычный ProductGrid для отладки
+  const useVirtualization = false;
 
   return (
       <div className={styles.catalogPage}>

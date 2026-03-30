@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from 'react';
+import { useCallback, useRef, useEffect, useMemo } from 'react';
 import { Grid } from 'react-window';
 import { AutoSizer } from 'react-virtualized-auto-sizer';
 import ProductCard from '../ProductCard/ProductCard';
@@ -18,6 +18,7 @@ const ProductGridVirtual = ({
 }) => {
   const gridRef = useRef(null);
   const loadingMoreRef = useRef(false);
+  const prevProductsRef = useRef(0);
 
   // Вычисляем количество колонок на основе ширины (минимум 220px на карточку)
   const getColumnCount = useCallback((containerWidth) => {
@@ -32,6 +33,17 @@ const ProductGridVirtual = ({
   useEffect(() => {
     loadingMoreRef.current = loadingMore;
   }, [loadingMore]);
+
+  // Отслеживаем изменение количества товаров для принудительного ре-рендера Grid
+  useEffect(() => {
+    if (products.length !== prevProductsRef.current) {
+      prevProductsRef.current = products.length;
+      // Принудительно обновляем Grid при изменении количества товаров
+      if (gridRef.current && gridRef.current.resetAfterIndex) {
+        gridRef.current.resetAfterIndex(0);
+      }
+    }
+  }, [products.length]);
 
   /**
    * Рендер ячейки сетки
@@ -132,6 +144,7 @@ const ProductGridVirtual = ({
 
             return (
               <Grid
+                key={products.length}  // Принудительный ре-рендер при изменении количества товаров
                 ref={gridRef}
                 className={styles.grid}
                 cellComponent={renderCell}
