@@ -46,7 +46,11 @@ const AddToCart = ({ productId, onQuantityChange }) => {
 
   if (quantity === 0) {
     return (
-        <button className={styles.addButtonFull} onClick={handleAddToCart}>
+        <button
+            className={styles.addButtonFull}
+            onClick={handleAddToCart}
+            data-add-to-cart={productId}
+        >
           <FiShoppingCart className={styles.cartIcon} />
           Добавить
         </button>

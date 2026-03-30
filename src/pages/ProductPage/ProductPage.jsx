@@ -7,6 +7,7 @@ import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
 import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
 import { MobileCartButton } from '../../widgets/MobileCartButton';
+import { StickyProductBar } from '../../widgets/StickyProductBar';
 import { AddToCart } from '../../features/add-to-cart';
 import styles from './ProductPage.module.css';
 import DOMPurify from "dompurify";
@@ -65,6 +66,14 @@ const ProductPage = () => {
     }).format(price);
   }, []);
 
+  const handleAddToCart = useCallback(() => {
+    // Прокрутка к блоку AddToCart
+    const addToCartBlock = document.querySelector(`[data-add-to-cart="${product?.id}"]`);
+    if (addToCartBlock) {
+      addToCartBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [product?.id]);
+
   if (loading) return <div className={styles.loading}>Загрузка...</div>;
   if (error || !product) return <div className={styles.error}>Товар не найден</div>;
 
@@ -72,7 +81,7 @@ const ProductPage = () => {
       <div className={styles.page}>
         <div className={styles.container}>
 
-          <div className={styles.productContent}>
+          <div className={`${styles.productContent} productContent`}>
 
             {/* Галерея */}
             <div className={styles.gallery}>
@@ -135,8 +144,23 @@ const ProductPage = () => {
           </div>
 
           {product.description && (
-              <div className={styles.section}>
-                <h2>Описание</h2>
+              <div className="descriptionSection">
+                <h2 className={styles.sectionTitle}>Описание</h2>
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
                 <div
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(product.description),
@@ -161,6 +185,11 @@ const ProductPage = () => {
         {/* Мобильная кнопка корзины */}
         {product && (
             <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
+        )}
+
+        {/* Плавающая менюшка */}
+        {product && (
+            <StickyProductBar product={product} onAddToCart={handleAddToCart} />
         )}
       </div>
   );

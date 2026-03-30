@@ -1,0 +1,144 @@
+.stickyBar {
+  position: fixed;
+  top: 70px; /* сразу под хедером (60px хедер + 10px отступ) */
+  left: 0;
+  right: 0;
+  background-color: var(--surface);
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 90;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.stickyBarVisible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.thumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--surface-subtle);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.productName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+.wishlistButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid #e0e2e6;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: fit-content;
+}
+
+.wishlistButton:hover {
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.wishlistButton.wishlistActive {
+  background-color: #fff5f5;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.wishlistButton.wishlistActive:hover {
+  background-color: var(--danger-bg);
+}
+
+.wishlistButton svg {
+  transition: all 0.2s ease;
+}
+
+.wishlistButton.wishlistActive svg {
+  fill: var(--danger);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.addToCartButton {
+  padding: 10px 20px;
+  background-color: var(--accent-orange);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+  color: var(--surface);
+}
+
+.addToCartButton:hover {
+  background-color: #e68a00;
+}
+
+/* Показываем только на десктопе */
+@media (max-width: 1000px) {
+  .stickyBar {
+    display: none;
+  }
+}
