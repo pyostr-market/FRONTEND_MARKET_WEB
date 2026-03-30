@@ -7,6 +7,7 @@ import useCartProducts from '../../shared/hooks/useCartProducts';
 import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
 import paths from '../../app/router/paths';
 import styles from './CartPage.module.css';
+import {AddToCart} from "../../features/add-to-cart";
 
 /**
  * Страница корзины
@@ -266,23 +267,12 @@ const CartPage = () => {
           <div className={styles.cartItems}>
             {cartProducts.map((item) => {
               const isRemoving = !!removingItems[item.id];
-              
-              return (
-                <div 
-                  key={item.id} 
-                  className={styles.cartItem}
-                >
-                  {/* Чекбокс выбора */}
-                  {/*<label className={styles.itemCheckbox}>*/}
-                  {/*  <input*/}
-                  {/*    type="checkbox"*/}
-                  {/*    checked={selectedIds.has(item.id)}*/}
-                  {/*    onChange={() => toggleSelectItem(item.id)}*/}
-                  {/*    disabled={isRemoving}*/}
-                  {/*  />*/}
-                  {/*  <span className={styles.checkboxMark}></span>*/}
-                  {/*</label>*/}
 
+              return (
+                <div
+                  key={item.id}
+                  className={`${styles.cartItem} ${isRemoving ? styles.cartItemRemoving : ''}`}
+                >
                   {/* Изображение со слайдером */}
                   <div className={styles.itemImage}>
                     <ProductCardSlider
@@ -308,8 +298,42 @@ const CartPage = () => {
 
                   {/* Количество и удаление */}
                   <div className={styles.itemActions}>
-                    {isRemoving ? (
-                      <div className={`${styles.removingOverlay} ${styles.itemRemoving}`}>
+                    <div className={styles.itemBottomActions}>
+                      <button
+                        className={`${styles.wishlistActionBtn} ${isInWishlist(item.id) ? styles.wishlistActionBtnActive : ''}`}
+                        onClick={() => toggleWishlist(item.id)}
+                        aria-label={isInWishlist(item.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
+                        type="button"
+                      >
+                        <FiHeart size={18} />
+                        <span>{isInWishlist(item.id) ? 'В избранном' : 'В избранное'}</span>
+                      </button>
+                      <button
+                          className={styles.removeActionBtn}
+                          onClick={() => startRemoval(item.id)}
+                          aria-label="Удалить товар"
+                          type="button"
+                      >
+                        <FiTrash2 size={18} />
+                        <span>Удалить</span>
+                      </button>
+                      <AddToCart
+                        productId={item.id}
+                        onQuantityChange={(newQuantity) => {
+                          if (newQuantity === 0) {
+                            startRemoval(item.id);
+                          }
+                        }}
+                      />
+
+
+                    </div>
+                  </div>
+
+                  {/* Оверлей удаления - поверх всей карточки */}
+                  {isRemoving && (
+                    <div className={styles.removingOverlayWrapper}>
+                      <div className={styles.removingOverlay}>
                         <div className={styles.removingText}>
                           Товар будет удалён через 3 сек
                         </div>
@@ -321,63 +345,10 @@ const CartPage = () => {
                           <FiCheck size={18} />
                           <span>Восстановить</span>
                         </button>
-                        <div key={`progress-${item.id}`} className={styles.removingProgress}></div>
+                        <div className={styles.removingProgress}></div>
                       </div>
-                    ) : (
-                      <>
-                        <div className={styles.itemBottomActions}>
-                          <button
-                            className={`${styles.wishlistActionBtn} ${isInWishlist(item.id) ? styles.wishlistActionBtnActive : ''}`}
-                            onClick={() => toggleWishlist(item.id)}
-                            aria-label={isInWishlist(item.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
-                            type="button"
-                          >
-                            <FiHeart size={18} />
-                            <span>{isInWishlist(item.id) ? 'В избранном' : 'В избранное'}</span>
-                          </button>
-
-                          <button
-                            className={styles.removeActionBtn}
-                            onClick={() => startRemoval(item.id)}
-                            aria-label="Удалить товар"
-                          >
-                            <FiTrash2 size={18} />
-                            <span>Удалить</span>
-                          </button>
-
-                          <div className={styles.itemQuantity}>
-                            <button
-                              className={styles.quantityButton}
-                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                              aria-label="Уменьшить количество"
-                            >
-                              <FiMinus size={14} />
-                            </button>
-                            <input
-                              type="number"
-                              value={item.quantity}
-                              onChange={(e) =>
-                                handleQuantityChange(item.id, parseInt(e.target.value, 10))
-                              }
-                              className={styles.quantityInput}
-                              min="1"
-                              max={item.maxQuantity}
-                            />
-                            <button
-                              className={styles.quantityButton}
-                              onClick={() =>
-                                handleQuantityChange(item.id, item.quantity + 1)
-                              }
-                              disabled={item.quantity >= item.maxQuantity}
-                              aria-label="Увеличить количество"
-                            >
-                              <FiPlus size={14} />
-                            </button>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               );
             })}

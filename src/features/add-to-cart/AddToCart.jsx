@@ -36,7 +36,7 @@ const AddToCart = ({ productId, onQuantityChange }) => {
 
   const handleDecrement = () => {
     if (quantity <= 1) {
-      removeFromCart(productId);
+      // Не удаляем товар сразу, а только сообщаем о желании уменьшить до 0
       onQuantityChange?.(0);
     } else {
       decrementQuantity(productId);
