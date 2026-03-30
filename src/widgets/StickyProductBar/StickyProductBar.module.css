@@ -110,6 +110,12 @@
   align-items: center;
   gap: 16px;
   flex-shrink: 0;
+  width: 250px;
+}
+
+.right :global(.addButtonFull),
+.right :global(.quantityControlFull) {
+  width: 140px;
 }
 
 .price {
@@ -119,7 +125,7 @@
 }
 
 /* Показываем только на десктопе */
-@media (max-width: 1000px) {
+@media (max-width: 769px) {
   .stickyBar {
     display: none;
   }
