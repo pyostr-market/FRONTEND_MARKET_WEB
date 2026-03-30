@@ -61,6 +61,21 @@
 
 .mainInfo {
   min-width: 0;
+  position: sticky;
+  top: var(--space-4);
+  align-self: start;
+  max-height: calc(100vh - var(--space-8));
+  overflow-y: auto;
+  padding-right: var(--space-2);
+}
+
+.mainInfo::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mainInfo::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 2px;
 }
 
 /* Кнопка избранного */
