@@ -6,6 +6,7 @@ import useProduct from '../../shared/hooks/useProduct';
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
 import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
+import { ProductFullSpecs } from '../../widgets/ProductFullSpecs';
 import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { StickyProductBar } from '../../widgets/StickyProductBar';
 import { AddToCart } from '../../features/add-to-cart';
@@ -139,38 +140,16 @@ const ProductPage = () => {
               <div className="descriptionSection">
                 <h2 className={styles.sectionTitle}>Описание</h2>
                 <div
+                    className={styles.description}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(product.description),
                     }}
                 />
-                <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
-                    }}
-                />
-                <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
-                    }}
-                />
-                <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
-                    }}
-                />
-                <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
-                    }}
-                />
-                <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(product.description),
-                    }}
-                />
-
               </div>
           )}
+
+          {/* Полные характеристики */}
+          <ProductFullSpecs attributes={product.attributes} />
 
         </div>
 

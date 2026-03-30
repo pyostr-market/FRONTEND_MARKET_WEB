@@ -1,0 +1,169 @@
+.fullSpecs {
+  margin-top: var(--space-6);
+  border-top: 1px solid #d3d3d3;
+}
+
+.title {
+  margin: 0 0 var(--space-4) 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.specsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* Свёрнутый список с градиентом */
+.specsList.collapsed {
+  position: relative;
+}
+
+.gradientOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 40%,
+    var(--surface) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.specItem {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid #f0f2f5;
+  align-items: baseline;
+}
+
+.specItem:last-child {
+  border-bottom: none;
+}
+
+/* Атрибуты, которые уже показаны в коротких характеристиках - делаем менее заметными */
+.specItem.filterAttribute {
+  opacity: 0.5;
+}
+
+.specItem.filterAttribute .specName {
+  color: #999;
+}
+
+.specItem.filterAttribute .specValue {
+  color: #999;
+}
+
+.specName {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.specValue {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Кнопка разворачивания */
+.expandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: var(--space-4) auto 0;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+  border: none;
+  border-radius: var(--radius-xl);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
+}
+
+.expandButton:hover {
+  background: linear-gradient(135deg, #e8f0fe 0%, #d0e0fd 100%);
+  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.expandButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
+}
+
+.expandIcon {
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.expandButton:hover .expandIcon {
+  transform: translateY(1px);
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .fullSpecs {
+    border-radius: 0;
+    padding: var(--space-4);
+    margin-top: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .specItem {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+  }
+
+  .specName {
+    font-size: 13px;
+  }
+
+  .specValue {
+    font-size: 13px;
+  }
+
+  .expandButton {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .specItem {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .specName {
+    font-size: 12px;
+  }
+
+  .specValue {
+    font-size: 12px;
+  }
+}
