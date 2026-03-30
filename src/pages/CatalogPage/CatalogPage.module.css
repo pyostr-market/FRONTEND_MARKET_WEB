@@ -20,6 +20,14 @@
 .catalogMain {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalogMain > div:last-child {
+  /* ProductGrid или ProductGridVirtual */
+  flex: 1;
+  min-height: 400px;
 }
 
 /* ======================

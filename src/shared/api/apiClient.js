@@ -183,6 +183,7 @@ export async function request(
         ttl = DEFAULT_TTL,
         f5 = false, // ручной сброс кэша через API
         baseService = "crm",
+        useCache = true, // можно отключить кэш для конкретных запросов
     } = {}
 ) {
     // Маппинг имен сервисов
@@ -191,8 +192,12 @@ export async function request(
         crm: API_URLS.CRM,
         pricing: API_URLS.PRICING,
     };
-    
+
     const baseUrl = serviceUrlMap[baseService] || API_URLS.CRM;
+    
+    // Отключаем кэш для /product, так как там есть свой кэш в useCatalog
+    const shouldUseCache = useCache && endpoint !== '/product';
+    
     const cacheKey = getCacheKey(endpoint, params);
 
     // Принудительный сброс кэша через функцию
@@ -201,19 +206,21 @@ export async function request(
         localStorage.removeItem(cacheKey);
     }
 
-    // 1️⃣ memory cache
-    const memoryData = getFromMemory(cacheKey);
-    if (memoryData) return memoryData;
+    // 1️⃣ memory cache (только если кэш включён)
+    if (shouldUseCache) {
+        const memoryData = getFromMemory(cacheKey);
+        if (memoryData) return memoryData;
 
-    // 2️⃣ localStorage
-    const storageData = getFromStorage(cacheKey);
-    if (storageData) {
-        saveToMemory(cacheKey, storageData, ttl);
-        return storageData;
+        // 2️⃣ localStorage
+        const storageData = getFromStorage(cacheKey);
+        if (storageData) {
+            saveToMemory(cacheKey, storageData, ttl);
+            return storageData;
+        }
     }
 
-    // 3️⃣ pending requests (deduplication)
-    if (pendingRequests[cacheKey]) {
+    // 3️⃣ pending requests (deduplication) - только если кэш включён
+    if (shouldUseCache && pendingRequests[cacheKey]) {
         return pendingRequests[cacheKey];
     }
 
@@ -232,8 +239,8 @@ export async function request(
                 error: null,
             };
 
-            // сохраняем успешные ответы
-            if (result.success) {
+            // сохраняем успешные ответы ТОЛЬКО если кэш включён
+            if (result.success && shouldUseCache) {
                 saveToMemory(cacheKey, result, ttl);
                 saveToStorage(cacheKey, result, ttl);
             }

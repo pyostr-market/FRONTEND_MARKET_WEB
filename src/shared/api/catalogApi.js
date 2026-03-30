@@ -43,6 +43,7 @@ export const getProducts = async ({
   return crmApi.request('/product', {
     params,
     f5,
+    useCache: false, // Кэш управляется в useCatalog
   });
 };
 
@@ -70,8 +71,7 @@ export const getProductsByIds = async (product_ids, f5 = false) => {
   return crmApi.request('/product', {
     params,
     f5,
-    // Кэш 10 секунд
-    ttl: 10000,
+    useCache: false, // Кэш управляется в useCatalog
   });
 };
 
@@ -99,7 +99,7 @@ export const getProductById = async ({ product_id, category_id }, f5 = false) =>
       limit: 100,
     },
     f5,
-    ttl: 60000,
+    useCache: false, // Кэш управляется в useCatalog
   });
 
   if (result.success && result.data?.items?.length > 0) {
@@ -146,7 +146,7 @@ export const getCategoryProducts = async ({
   return crmApi.request('/product', {
     params,
     f5,
-    ttl: 30000, // 30 секунд
+    useCache: false, // Кэш управляется в useCatalog
   });
 };
 
@@ -174,6 +174,7 @@ export const getCatalogFilters = async ({
   return crmApi.request('/product/catalog/filters', {
     params,
     f5,
+    useCache: false, // Кэш управляется отдельно
   });
 };
 

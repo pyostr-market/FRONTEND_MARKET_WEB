@@ -1,23 +1,30 @@
-import { useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useCatalog from '../../shared/hooks/useCatalog';
+import useCatalog, { clearLegacyCache } from '../../shared/hooks/useCatalog';
 import useFilterUrl from '../../shared/hooks/useFilterUrl';
 import useCategoryName from '../../shared/hooks/useCategoryName';
 import useProductTypeName from '../../shared/hooks/useProductTypeName';
+import useCatalogScroll from '../../shared/hooks/useCatalogScroll';
 import { FiltersPanel } from '../../widgets/FiltersPanel';
 import { FiltersModal } from '../../widgets/FiltersModal';
 import { ProductGrid } from '../../widgets/ProductGrid';
+import { ProductGridVirtual } from '../../widgets/ProductGridVirtual';
 import { SortDropdown } from '../../widgets/SortDropdown';
 import { FiSliders } from 'react-icons/fi';
 import styles from './CatalogPage.module.css';
 
-const SCROLL_KEY = 'catalogScroll_v2';
+// Порог переключения на виртуализацию (количество товаров)
+const VIRTUALIZATION_THRESHOLD = 50;
 
 const CatalogPage = () => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
-  const didRestoreScroll = useRef(false);
+
+  // Очистка старого кэша при первой загрузке
+  useEffect(() => {
+    clearLegacyCache();
+  }, []);
 
   const { categoryName } = useCategoryName(categoryId);
   const { productTypeName } = useProductTypeName(productType);
@@ -73,53 +80,14 @@ const CatalogPage = () => {
   const selectedFiltersRef = useRef(urlFilters);
   useEffect(() => { selectedFiltersRef.current = selectedFilters; }, [selectedFilters]);
 
-  // Сохранение scroll и количества товаров при уходе
-  useEffect(() => {
-    return () => {
-      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
-        scrollPos: window.scrollY,
-        productsCount: products.length
-      }));
-    };
-  }, [products.length]);
-
-  // Восстановление scroll
-  useLayoutEffect(() => {
-    const saved = sessionStorage.getItem(SCROLL_KEY);
-    if (!saved || didRestoreScroll.current) return;
-
-    const { scrollPos, productsCount } = JSON.parse(saved);
-
-    const tryScroll = () => {
-      const gridEl = document.querySelector(`.${styles.catalogMain}`);
-      if (!gridEl) return;
-
-      const imgs = Array.from(gridEl.querySelectorAll('img'));
-      const allLoaded = imgs.every(img => img.complete);
-
-      // Проверяем, что все товары отрендерены и картинки загружены
-      if (products.length >= productsCount && allLoaded) {
-        window.scrollTo(0, scrollPos);
-        sessionStorage.removeItem(SCROLL_KEY);
-        didRestoreScroll.current = true;
-        return true;
-      }
-      return false;
-    };
-
-    if (!tryScroll()) {
-      // Проверяем каждые 50ms
-      const interval = setInterval(() => {
-        if (tryScroll()) clearInterval(interval);
-      }, 50);
-      return () => clearInterval(interval);
-    }
-  }, [products.length]);
-
-  // Сброс флага скролла только при изменении категории (не фильтров!)
-  useEffect(() => {
-    didRestoreScroll.current = false;
-  }, [categoryId, productType]);
+  // Хук для управления скроллом
+  const { clearScrollState } = useCatalogScroll({
+    productsCount: products.length,
+    loading,
+    categoryId: categoryIdNum?.toString() || 'all',
+    productType: productType?.toString() || 'all',
+    enableRestore: true,
+  });
 
   const hasChanges = Object.keys(selectedFilters).length > 0;
   const toggleFilterValue = useCallback((name, value) => {
@@ -142,24 +110,30 @@ const CatalogPage = () => {
     updateUrl({ filters: filtersToApply });
     setSelectedFilters(filtersToApply);
     selectedFiltersRef.current = filtersToApply;
+    // Очищаем scroll state при применении фильтров
+    clearScrollState();
     if (isMobile) setIsFiltersModalOpen(false);
-  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile]);
+  }, [applyCatalogFilters, applySortedFilters, updateUrl, isMobile, clearScrollState]);
 
   const handleResetFilters = useCallback(() => {
     setSelectedFilters({});
     selectedFiltersRef.current = {};
     setAppliedFilters({});
-    
+
     // Сбрасываем каталоги
     sortedResetFilters();
     applyCatalogFilters({});
-    
+
+    // Очищаем scroll state при сбросе фильтров
+    clearScrollState();
     updateUrl({ filters: {}, sort_type: 'default' });
-  }, [sortedResetFilters, applyCatalogFilters, updateUrl]);
+  }, [sortedResetFilters, applyCatalogFilters, updateUrl, clearScrollState]);
 
   const handleSortChange = useCallback((value) => {
+    // Очищаем scroll state при изменении сортировки
+    clearScrollState();
     updateUrl({ sort_type: value });
-  }, [updateUrl]);
+  }, [updateUrl, clearScrollState]);
 
   const getPageTitle = useCallback(() => {
     if (categoryName) return categoryName;
@@ -170,6 +144,16 @@ const CatalogPage = () => {
   const handleImageChange = useCallback((productId, imageIndex) => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);
   }, []);
+
+  // Определяем, использовать ли виртуализацию
+  // Временно отключаем виртуализацию для отладки
+  const useVirtualization = false;  // products.length >= VIRTUALIZATION_THRESHOLD && !loading;
+  console.log('[CatalogPage] render:', {
+    products: products.length,
+    loading,
+    useVirtualization,
+    hasMore
+  });
 
   return (
       <div className={styles.catalogPage}>
@@ -197,7 +181,7 @@ const CatalogPage = () => {
           )}
 
           <div className={styles.catalogMain}>
-            <div className={styles.catalogHeader}>
+            <div className={styles.catalogHeader} data-catalog-grid>
               <div className={styles.catalogInfo}>
                 <h1 className={styles.catalogTitle}>{getPageTitle()}</h1>
                 {!loading && products.length > 0 && (
@@ -209,14 +193,25 @@ const CatalogPage = () => {
               {!isMobile && <SortDropdown sortBy={urlSortType} onSortChange={handleSortChange} />}
             </div>
 
-            <ProductGrid
-                products={products}
-                loading={loading}
-                loadingMore={loadingMore}
-                hasMore={hasMore}
-                onLoadMore={loadMore}
-                onImageChange={handleImageChange}
-            />
+            {useVirtualization ? (
+              <ProductGridVirtual
+                  products={products}
+                  loading={loading}
+                  loadingMore={loadingMore}
+                  hasMore={hasMore}
+                  onLoadMore={loadMore}
+                  onImageChange={handleImageChange}
+              />
+            ) : (
+              <ProductGrid
+                  products={products}
+                  loading={loading}
+                  loadingMore={loadingMore}
+                  hasMore={hasMore}
+                  onLoadMore={loadMore}
+                  onImageChange={handleImageChange}
+              />
+            )}
 
             {error && <div className={styles.errorMessage}><p>Ошибка загрузки: {error}</p></div>}
           </div>

@@ -1,0 +1,193 @@
+/* ======================
+   Wrapper
+====================== */
+.virtualGridWrapper {
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid {
+  outline: none;
+  flex: 1;
+}
+
+/* ======================
+   Cell
+====================== */
+.cell {
+  padding: 7px;
+  box-sizing: border-box;
+}
+
+.emptyCell {
+  padding: 7px;
+  box-sizing: border-box;
+}
+
+/* ======================
+   Loading more inline
+====================== */
+.loadingMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  color: #777;
+  font-size: 13px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #f0f2f5;
+  border-top-color: #005bff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ======================
+   End of list
+====================== */
+.endOfList {
+  text-align: center;
+  padding: 16px;
+  color: #999;
+  font-size: 13px;
+  border-top: 1px solid #f0f2f5;
+  margin-top: 8px;
+}
+
+/* ======================
+   Skeleton
+====================== */
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 7px;
+}
+
+.skeletonCard {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #f0f2f5;
+  overflow: hidden;
+}
+
+.skeletonImage {
+  width: 100%;
+  padding-top: 100%;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonContent {
+  padding: 10px;
+}
+
+.skeletonTitle {
+  height: 32px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonPrice {
+  height: 18px;
+  width: 70px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonButton {
+  height: 30px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ======================
+   Empty state
+====================== */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  text-align: center;
+  height: 100%;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.emptyTitle {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 13px;
+  color: #777;
+}
+
+/* ======================
+   Responsive
+====================== */
+@media (max-width: 1200px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .virtualGridWrapper {
+    height: calc(100vh - 150px);
+  }
+}

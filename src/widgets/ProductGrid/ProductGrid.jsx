@@ -15,6 +15,12 @@ const ProductGrid = ({
 }) => {
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
+  const loadingMoreRef = useRef(false);
+
+  // Синхронизируем ref с props
+  useEffect(() => {
+    loadingMoreRef.current = loadingMore;
+  }, [loadingMore]);
 
   /**
    * Intersection Observer для infinite scroll
@@ -25,7 +31,9 @@ const ProductGrid = ({
     observerRef.current = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && hasMore && !loadingMore) {
+        if (entry.isIntersecting && hasMore && !loadingMoreRef.current) {
+          // Устанавливаем флаг для предотвращения повторных вызовов
+          loadingMoreRef.current = true;
           onLoadMore();
         }
       },
@@ -45,7 +53,8 @@ const ProductGrid = ({
         observerRef.current.disconnect();
       }
     };
-  }, [loading, loadingMore, hasMore, onLoadMore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, hasMore, onLoadMore]);
 
   /**
    * Skeleton для загрузки
@@ -80,18 +89,14 @@ const ProductGrid = ({
 
   return (
     <div className={styles.productGrid}>
-      {/* Товары - убираем дубликаты по ID */}
-      {products
-        .filter((product, index, self) => 
-          index === self.findIndex(p => p.id === product.id)
-        )
-        .map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onImageChange={onImageChange}
-          />
-        ))}
+      {/* Товары */}
+      {products && products.length > 0 && products.map((product, index) => (
+        <ProductCard
+          key={`${product.id}-${index}`}
+          product={product}
+          onImageChange={onImageChange}
+        />
+      ))}
 
       {/* Skeleton при первой загрузке */}
       {loading && renderSkeleton()}
