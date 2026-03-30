@@ -96,13 +96,28 @@ const CatalogPage = () => {
   useEffect(() => { selectedFiltersRef.current = selectedFilters; }, [selectedFilters]);
 
   // Хук для управления скроллом
-  const { clearScrollState, resetRestoreFlag } = useCatalogScroll({
+  const { clearScrollState, resetRestoreFlag, saveScrollPosition } = useCatalogScroll({
     productsCount: products.length,
     loading,
     categoryId: categoryIdNum?.toString() || 'all',
     productType: productType?.toString() || 'all',
     enableRestore: true,
   });
+
+  // Сохранение скролла при переходе на страницу товара
+  useEffect(() => {
+    return () => {
+      // Сохраняем скролл только при переходе на страницу товара
+      const isProductPage = window.location.pathname.includes('/product/');
+      if (isProductPage) {
+        saveScrollPosition();
+        console.log('[CatalogPage] Going to product page, saved scroll');
+      } else {
+        console.log('[CatalogPage] Leaving to non-product page, clearing scroll state');
+        clearScrollState();
+      }
+    };
+  }, [saveScrollPosition, clearScrollState]);
 
   // Сброс флага восстановления при изменении категории
   useEffect(() => {
