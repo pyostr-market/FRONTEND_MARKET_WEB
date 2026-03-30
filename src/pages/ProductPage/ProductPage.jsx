@@ -106,7 +106,13 @@ const ProductPage = () => {
                   expanded={variantExpanded}
                   setExpanded={setVariantExpanded}
               />
-
+              <ProductVariants
+                  variants={variants}
+                  currentProductId={product.id}
+                  onVariantSelect={handleVariantSelect}
+                  expanded={variantExpanded}
+                  setExpanded={setVariantExpanded}
+              />
               {/* Краткие характеристики */}
               <ProductShortSpecs attributes={product.attributes} />
             </div>
@@ -142,6 +148,17 @@ const ProductPage = () => {
                       __html: DOMPurify.sanitize(product.description),
                     }}
                 />
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(product.description),
+                    }}
+                />
+
               </div>
           )}
 

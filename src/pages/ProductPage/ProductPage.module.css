@@ -49,6 +49,7 @@
   grid-template-columns: 1.1fr 380px 320px;
   gap: var(--space-5); /* 20px */
   margin-bottom: var(--space-6); /* 24px */
+  align-items: start;
 }
 
 /* ======================
@@ -57,25 +58,20 @@
 .gallery {
   border-radius: var(--radius-xl); /* 10px */
   border: 1px solid #eef0f2; /* можно создать --border-light если нужно */
+  position: sticky;
+  top: var(--space-4);
+  align-self: start;
 }
 
 .mainInfo {
   min-width: 0;
+}
+
+/* Buy Block */
+.buyBlock {
   position: sticky;
   top: var(--space-4);
   align-self: start;
-  max-height: calc(100vh - var(--space-8));
-  overflow-y: auto;
-  padding-right: var(--space-2);
-}
-
-.mainInfo::-webkit-scrollbar {
-  width: 4px;
-}
-
-.mainInfo::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 2px;
 }
 
 /* Кнопка избранного */
@@ -131,7 +127,6 @@
   border: 1px solid #e6e8eb;
   border-radius: var(--radius-xl); /* 10px */
   padding: var(--space-4); /* 16px */
-  position: sticky;
   top: var(--space-4); /* 16px */
 }
 
@@ -253,10 +248,19 @@
 
   .gallery {
     max-width: 100%;
+    position: sticky;
+    top: var(--space-4);
+    align-self: start;
   }
 
   .mainInfo {
     min-width: 0;
+  }
+
+  .buyBlock {
+    position: sticky;
+    top: var(--space-4);
+    align-self: start;
   }
 
   .title {
@@ -281,6 +285,7 @@
 
   .gallery {
     max-width: 100%;
+    position: static;
   }
 
   .mainImageWrapper {
@@ -290,6 +295,7 @@
   /* buyBlock вниз */
   .buyBlock {
     grid-column: span 2;
+    position: static;
   }
 
   .buyBox {
