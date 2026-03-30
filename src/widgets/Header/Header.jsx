@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiX } from 'react-icons/fi';
+import { FiUser, FiHeart, FiShoppingCart, FiGrid, FiPackage, FiX, FiLogIn } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../app/store/cartStore';
 import { useWishlist } from '../../app/store/wishlistStore';
@@ -17,6 +17,14 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [isCategoriesVisible, setIsCategoriesVisible] = useState(true);
   const catalogRef = useRef(null);
+
+  // Проверка авторизации при монтировании
+  const [isUserAuthorized, setIsUserAuthorized] = useState(isAuthorized);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    setIsUserAuthorized(!!token);
+  }, []);
 
   // Закрытие при клике вне области
   useEffect(() => {
@@ -103,10 +111,17 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
               <FiPackage size={20} />
               <span className={styles.actionLabel}>Заказы</span>
             </button>
-            <button className={`${styles.headerActionBtn} ${styles.profileBtn}`} title="Профиль" onClick={onProfileClick}>
-              <FiUser size={20} />
-              <span className={styles.actionLabel}>Профиль</span>
-            </button>
+            {isUserAuthorized ? (
+              <Link to={paths.PROFILE} className={`${styles.headerActionBtn} ${styles.profileBtn}`} title="Профиль">
+                <FiUser size={20} />
+                <span className={styles.actionLabel}>Профиль</span>
+              </Link>
+            ) : (
+              <button className={`${styles.headerActionBtn} ${styles.profileBtn}`} title="Войти" onClick={onProfileClick}>
+                <FiLogIn size={20} />
+                <span className={styles.actionLabel}>Войти</span>
+              </button>
+            )}
             <Link to={paths.WISHLIST} className={`${styles.headerActionBtn} ${styles.wishlistBtn}`} title="Избранное">
               <FiHeart size={20} />
               <span className={styles.actionLabel}>Избранное</span>

@@ -6,11 +6,10 @@
 .cartContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-5);
 }
 
 .cartTitle {
-  margin: 0 0 var(--space-6) 0;
+  margin: 0 0 7px 0;
   font-size: 28px;
   font-weight: 700;
   color: var(--text);
@@ -182,7 +181,6 @@
   height: 140px;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background-color: var(--bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -413,7 +411,7 @@
 .cartSummary {
   position: sticky;
   top: var(--space-5);
-  padding: var(--space-6);
+  padding: var(--space-5);
   background-color: var(--surface);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md);
@@ -421,11 +419,11 @@
 }
 
 .summaryTitle {
-  margin: 0 0 var(--space-5) 0;
+  margin: 0 0 var(--space-3) 0;
   font-size: 20px;
   font-weight: 700;
   color: var(--text);
-  padding-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
   border-bottom: 2px solid var(--surface-subtle);
 }
 
@@ -457,7 +455,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-5) 0;
+  padding: var(--space-3) 0;
   margin-top: var(--space-2);
   border-top: 2px solid var(--surface-subtle);
   border-bottom: 2px solid var(--surface-subtle);
@@ -502,9 +500,9 @@
   justify-content: center;
   gap: var(--space-2);
   width: 100%;
-  padding: var(--space-5);
+  padding: var(--space-4);
   margin-top: var(--space-5);
-  background: var(--gradient-primary);
+  background: var(--primary);
   color: var(--surface);
   border: none;
   border-radius: var(--radius-xl);
@@ -513,17 +511,6 @@
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 14px rgba(0, 91, 255, 0.3);
-}
-
-.checkoutButton:hover {
-  background: linear-gradient(135deg, #004ecc 0%, #003d99 100%); /* Можно добавить переменную для hover */
-  box-shadow: 0 6px 20px rgba(0, 91, 255, 0.4);
-  transform: translateY(-2px);
-}
-
-.checkoutButton:active {
-  transform: translateY(0);
 }
 
 /* Loading и Error */

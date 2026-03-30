@@ -5,6 +5,7 @@ import CartPage from '../../pages/CartPage/CartPage';
 import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import WishlistPage from '../../pages/WishlistPage/WishlistPage';
 import AuthPage from '../../pages/AuthPage/AuthPage';
+import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import paths from './paths';
 
 const routes = [
@@ -55,6 +56,13 @@ const routes = [
     component: AuthPage,
     layout: 'main',
     isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.PROFILE,
+    component: ProfilePage,
+    layout: 'main',
+    isPrivate: true,
     showSearch: false,
   },
 ];

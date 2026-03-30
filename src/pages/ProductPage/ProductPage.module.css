@@ -55,9 +55,7 @@
    Blocks
 ====================== */
 .gallery {
-  background: var(--surface);
   border-radius: var(--radius-xl); /* 10px */
-  padding: var(--space-3); /* 12px */
   border: 1px solid #eef0f2; /* можно создать --border-light если нужно */
 }
 

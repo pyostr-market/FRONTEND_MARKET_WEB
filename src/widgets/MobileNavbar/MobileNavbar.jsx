@@ -1,4 +1,5 @@
-import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser, FiLogIn } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../app/store/cartStore';
 import { useWishlist } from '../../app/store/wishlistStore';
@@ -11,13 +12,23 @@ const MobileNavbar = () => {
   const { getTotalCount } = useWishlist();
   const cartCount = getTotalQuantity();
   const wishlistCount = getTotalCount();
+  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    setIsUserAuthorized(!!token);
+  }, []);
 
   const navItems = [
     { path: paths.HOME, icon: FiHome, label: 'Главная' },
     { path: paths.CATALOG, icon: FiGrid, label: 'Каталог' },
     { path: paths.CART, icon: FiShoppingCart, label: 'Корзина', badge: cartCount },
     { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное', badge: wishlistCount },
-    { path: paths.AUTH, icon: FiUser, label: 'Профиль' },
+    {
+      path: isUserAuthorized ? paths.PROFILE : paths.AUTH,
+      icon: isUserAuthorized ? FiUser : FiLogIn,
+      label: isUserAuthorized ? 'Профиль' : 'Войти',
+    },
   ];
 
   return (

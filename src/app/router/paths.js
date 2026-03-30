@@ -6,6 +6,7 @@ const paths = {
   CHECKOUT: '/checkout',
   WISHLIST: '/wishlist',
   AUTH: '/auth',
+  PROFILE: '/profile',
 };
 
 export default paths;
