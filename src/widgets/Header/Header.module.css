@@ -22,8 +22,8 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 6px 20px;
+  gap: 15px;
+  padding: 8px 25px;
   background-color: var(--surface);
   position: relative;
   height: var(--height-header-pc);
@@ -35,7 +35,7 @@
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
   flex: 0 0 auto; /* НЕ тянется */
 }
 
@@ -46,7 +46,7 @@
 }
 
 .logoImage {
-  height: 24px;
+  height: 30px;
   width: auto;
   object-fit: contain;
 }
@@ -55,9 +55,9 @@
 .catalogBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 14px;
+  gap: 8px;
+  height: 45px;
+  padding: 0 18px;
   background-color: var(--primary);
   color: var(--surface);
   border: none;
@@ -82,7 +82,7 @@
 ====================== */
 .headerCenter {
   flex: 1 1 auto;            /* занимает всё доступное */
-  max-width: 700px;          /* ограничение как у маркетплейсов */
+  max-width: 875px;          /* ограничение как у маркетплейсов */
   display: flex;
   align-items: center;
 }
@@ -97,12 +97,12 @@
 /* ВАЖНО: фиксируем высоту */
 .searchBar {
   width: 100%;
-  height: 36px;              /* одинаково с кнопкой каталога */
+  height: 45px;              /* одинаково с кнопкой каталога */
   display: flex;
   align-items: center;
   background-color: var(--primary);
   border-radius: var(--radius-xl);
-  padding: 2px;
+  padding: 3px;
   transition: background-color 0.2s;
 }
 
@@ -114,7 +114,7 @@
 .searchInput {
   flex: 1;
   height: 100%;
-  padding: 0 12px;           /* убрали вертикальный padding */
+  padding: 0 15px;           /* убрали вертикальный padding */
   border: none;
   border-radius: var(--radius-lg);
   font-size: 13px;
@@ -129,7 +129,7 @@
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex: 0 0 auto; /* НЕ тянется */
 }
 
@@ -139,14 +139,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  min-width: 52px;
-  gap: 2px;
+  height: 45px;
+  min-width: 65px;
+  gap: 3px;
   background: none;
   border: none;
   color: var(--text);
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 5px 8px;
   border-radius: var(--radius-lg);
   text-decoration: none;
   transition: background-color 0.2s;
@@ -158,12 +158,12 @@
 }
 
 .headerActionBtn svg {
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
 }
 
 .actionLabel {
-  font-size: 9px;
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -172,16 +172,16 @@
 ====================== */
 .cartBadge {
   position: absolute;
-  top: 2px;
-  right: 6px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 5px;
+  top: 3px;
+  right: 8px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
   background-color: #ff3b30;
   color: #ffffff;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,19 +189,19 @@
 
 /* Позиции бейджей для разных кнопок */
 .cartBtn .cartBadge {
-  right: 6px;
+  right: 8px;
 }
 
 .wishlistBtn .cartBadge {
-  right: 11px;
+  right: 14px;
 }
 
 .profileBtn .cartBadge {
-  right: 11px;
+  right: 14px;
 }
 
 .ordersBtn .cartBadge {
-  right: 7px;
+  right: 9px;
 }
 
 /* ======================
@@ -215,7 +215,7 @@
   width: 100%;
   z-index: 1000;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 15px;
   border: 1px solid #e8e8e8;
   animation: fadeIn 0.2s ease;
 }
@@ -223,7 +223,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    margin-top: -8px;
+    margin-top: -10px;
   }
   to {
     opacity: 1;
@@ -236,7 +236,7 @@
 ====================== */
 .categoriesBar {
   overflow: hidden;
-  max-height: 200px;
+  max-height: 250px;
   transition: opacity 0.25s ease, max-height 0.25s ease;
 }
 
@@ -251,13 +251,13 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 4px 8px 7px;
+  gap: 15px;
+  padding: 0 5px 10px 9px;
   overflow-x: auto;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 19px;
+  border-bottom-right-radius: 19px;
 }
 
 /* ======================
@@ -265,7 +265,7 @@
 ====================== */
 @media (max-width: 930px) {
   .logoImage {
-    width: 100px;
+    width: 125px;
   }
 }
 

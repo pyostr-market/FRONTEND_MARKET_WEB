@@ -66,36 +66,36 @@
     --font-family-base: 'Onest', 'arial', sans-serif;
     --font-family-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
 
-    --max-width-header-pc: 1150px;
-    --max-width-content: 1150px;
+    --max-width-header-pc: 1438px;
+    --max-width-content: 1438px;
 
-    --height-header-pc: 48px;
+    --height-header-pc: 60px;
 
-    --space-1: 4px;
-    --space-2: 8px;
-    --space-3: 12px;
-    --space-4: 16px;
-    --space-5: 20px;
-    --space-6: 24px;
-    --space-7: 28px;
-    --space-8: 32px;
+    --space-1: 5px;
+    --space-2: 10px;
+    --space-3: 15px;
+    --space-4: 20px;
+    --space-5: 25px;
+    --space-6: 30px;
+    --space-7: 35px;
+    --space-8: 40px;
 
-    --radius-sm: 3px;
-    --radius-md: 4px;
-    --radius-lg: 6px;
-    --radius-xl: 10px;
-    --radius-2xl: 12px;
+    --radius-sm: 4px;
+    --radius-md: 5px;
+    --radius-lg: 8px;
+    --radius-xl: 13px;
+    --radius-2xl: 15px;
 
-    --top-1: 10px;
-    --top-2: 20px;
-    --top-3: 30px;
-    --top-4: 40px;
-    --top-5: 50px;
-    --top-6: 60px;
-    --top-7: 70px;
-    --top-8: 75px;
+    --top-1: 13px;
+    --top-2: 25px;
+    --top-3: 38px;
+    --top-4: 50px;
+    --top-5: 63px;
+    --top-6: 75px;
+    --top-7: 88px;
+    --top-8: 94px;
 
-    --bottom-mobile: 120px;
+    --bottom-mobile: 150px;
 
     --bg: #f5f5f5;
     --bg-active-tab: #454545;
@@ -291,6 +291,7 @@ body {
     color: var(--text);
     background: var(--bg);
     font-family: var(--font-family-base);
+    font-size: 16px;
 }
 
 a {
@@ -309,8 +310,8 @@ button {
     background: var(--surface);
     color: var(--text);
     cursor: pointer;
-    padding: var(--space-2) var(--space-3);
-    font-size: 13px;
+    padding: calc(var(--space-2) * 1.25) calc(var(--space-3) * 1.25);
+    font-size: 16px;
     font-weight: 500;
     transition: border-color 0.15s ease, background-color 0.15s ease;
 }
@@ -324,10 +325,10 @@ input {
     width: 100%;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 8px var(--space-3);
+    padding: 10px calc(var(--space-3) * 1.25);
     background: var(--surface);
     color: var(--text);
-    font-size: 13px;
+    font-size: 16px;
 }
 
 input:focus {
@@ -346,8 +347,8 @@ select {
     border-radius: var(--radius-sm);
     background: var(--surface);
     color: var(--text);
-    font-size: 13px;
-    padding: 7px var(--space-3);
+    font-size: 16px;
+    padding: 9px calc(var(--space-3) * 1.25);
     cursor: pointer;
 }
 
@@ -364,24 +365,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 20px;
+    font-size: 25px;
 }
 
 h2 {
-    font-size: 18px;
+    font-size: 23px;
 }
 
 h3 {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 h4 {
-    font-size: 14px;
+    font-size: 18px;
 }
 
 p {
     margin: 0 0 var(--space-3);
-    font-size: 14px;
+    font-size: 18px;
     line-height: 1.5;
 }
 
