@@ -1,6 +1,6 @@
 .stickyBar {
   position: fixed;
-  top: var(--height-header-pc);
+  top: calc(var(--height-header-pc) - 1px);
   transform: translate(-0%, -120%);
   width: 100%;
   max-width: var(--max-width-header-pc);

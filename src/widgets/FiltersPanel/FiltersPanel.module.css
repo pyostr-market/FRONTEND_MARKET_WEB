@@ -3,7 +3,7 @@
 ====================== */
 .filtersPanel {
   position: sticky;
-  top: var(--top-7);
+  top: 72px;
   min-width: 250px;
   background-color: #fff;
   border: 1px solid #e6e8eb;

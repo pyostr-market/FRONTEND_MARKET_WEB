@@ -222,7 +222,11 @@
   margin: var(--space-4) 0;
   border-radius: var(--radius-xl);
 }
-
+@media (max-width: 900px) {
+  .description img {
+    max-width: min(100%, 1000px);
+  }
+}
 .specsTable td {
   padding: var(--space-2) 0; /* 8px 0 */
 }
