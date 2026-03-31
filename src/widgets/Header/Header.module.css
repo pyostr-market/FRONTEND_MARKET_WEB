@@ -62,7 +62,7 @@
   color: var(--surface);
   border: none;
   border-radius: var(--radius-xl);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -117,7 +117,7 @@
   padding: 0 15px;           /* убрали вертикальный padding */
   border: none;
   border-radius: var(--radius-lg);
-  font-size: 13px;
+  font-size: 16px;
   outline: none;
   background-color: var(--surface);
   color: var(--text);

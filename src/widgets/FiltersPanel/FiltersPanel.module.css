@@ -3,8 +3,8 @@
 ====================== */
 .filtersPanel {
   position: sticky;
-  top: 72px;
-  min-width: 200px;
+  top: var(--top-7);
+  min-width: 250px;
   background-color: #fff;
   border: 1px solid #e6e8eb;
   border-radius: 8px;

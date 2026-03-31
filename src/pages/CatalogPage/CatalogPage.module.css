@@ -12,7 +12,6 @@
 .catalogContent {
   display: flex;
   gap: var(--space-4); /* было 16px */
-  max-width: 1360px;
   margin: 0 auto;
 }
 
