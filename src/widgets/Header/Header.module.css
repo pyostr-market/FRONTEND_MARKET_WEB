@@ -15,14 +15,15 @@
 }
 
 /* ======================
-   Container
+   Header Container
 ====================== */
 .headerContainer {
   max-width: var(--max-width-header-pc);
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 20px;
   padding: 8px 25px;
   background-color: var(--surface);
   position: relative;
@@ -35,8 +36,8 @@
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 13px;
-  flex: 0 0 auto; /* НЕ тянется */
+  gap: 15px;
+  flex: 0 0 auto;
 }
 
 .logo {
@@ -51,10 +52,11 @@
   object-fit: contain;
 }
 
-/* Кнопка каталога — фикс по высоте */
+/* Catalog Button */
 .catalogBtn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   height: 45px;
   padding: 0 18px;
@@ -66,43 +68,40 @@
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: background-color 0.2s;
 }
 
-.catalogBtn:hover {
-  background-color: var(--primary-hover);
-}
-
+.catalogBtn:hover,
 .catalogBtnActive {
   background-color: var(--primary-hover);
 }
 
 /* ======================
-   Header Center (ПОИСК)
+   Header Center (Search)
 ====================== */
 .headerCenter {
-  flex: 1 1 auto;            /* занимает всё доступное */
-  max-width: 875px;          /* ограничение как у маркетплейсов */
+  flex: 1 1 auto;
+  max-width: 875px;
   display: flex;
   align-items: center;
+  height: 45px;
 }
 
-/* Обертка поиска */
 .searchWrapper {
   width: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
-/* ВАЖНО: фиксируем высоту */
 .searchBar {
   width: 100%;
-  height: 45px;              /* одинаково с кнопкой каталога */
+  height: 45px;
   display: flex;
   align-items: center;
-  background-color: var(--primary);
+  padding: 4px;
   border-radius: var(--radius-xl);
-  padding: 3px;
+  background-color: var(--primary);
   transition: background-color 0.2s;
 }
 
@@ -110,17 +109,16 @@
   background-color: var(--primary-hover);
 }
 
-/* Сам input */
 .searchInput {
   flex: 1;
   height: 100%;
-  padding: 0 15px;           /* убрали вертикальный padding */
+  padding: 0 16px;
   border: none;
   border-radius: var(--radius-lg);
   font-size: 16px;
-  outline: none;
   background-color: var(--surface);
   color: var(--text);
+  outline: none;
 }
 
 /* ======================
@@ -129,28 +127,27 @@
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex: 0 0 auto; /* НЕ тянется */
+  gap: 10px;
+  flex: 0 0 auto;
 }
 
-/* Кнопки справа — одинаковая высота */
 .headerActionBtn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 3px;
   height: 45px;
   min-width: 65px;
-  gap: 3px;
+  padding: 5px 8px;
+  border-radius: var(--radius-lg);
   background: none;
   border: none;
   color: var(--text);
   cursor: pointer;
-  padding: 5px 8px;
-  border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: background-color 0.2s;
   position: relative;
+  transition: background-color 0.2s;
 }
 
 .headerActionBtn:hover {
@@ -173,12 +170,11 @@
 .cartBadge {
   position: absolute;
   top: 3px;
-  right: 8px;
+  padding: 0 6px;
   min-width: 20px;
   height: 20px;
-  padding: 0 6px;
   background-color: #ff3b30;
-  color: #ffffff;
+  color: #fff;
   font-size: 13px;
   font-weight: 600;
   border-radius: 10px;
@@ -187,22 +183,10 @@
   justify-content: center;
 }
 
-/* Позиции бейджей для разных кнопок */
-.cartBtn .cartBadge {
-  right: 8px;
-}
-
-.wishlistBtn .cartBadge {
-  right: 14px;
-}
-
-.profileBtn .cartBadge {
-  right: 14px;
-}
-
-.ordersBtn .cartBadge {
-  right: 9px;
-}
+.cartBtn .cartBadge { right: 8px; }
+.wishlistBtn .cartBadge { right: 14px; }
+.profileBtn .cartBadge { right: 14px; }
+.ordersBtn .cartBadge { right: 9px; }
 
 /* ======================
    Catalog Dropdown
@@ -211,8 +195,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  max-width: var(--max-width-header-pc);
   width: 100%;
+  max-width: var(--max-width-header-pc);
   z-index: 1000;
   background: #fff;
   border-radius: 15px;
@@ -221,14 +205,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    margin-top: -10px;
-  }
-  to {
-    opacity: 1;
-    margin-top: 0;
-  }
+  from { opacity: 0; margin-top: -10px; }
+  to { opacity: 1; margin-top: 0; }
 }
 
 /* ======================
@@ -252,7 +230,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 0 5px 13px 9px;
+  padding: 0 10px 13px 10px;
   overflow-x: auto;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -264,13 +242,9 @@
    Responsive
 ====================== */
 @media (max-width: 930px) {
-  .logoImage {
-    width: 125px;
-  }
+  .logoImage { width: 125px; }
 }
 
 @media (max-width: 850px) {
-  .logoImage {
-    display: none;
-  }
+  .logoImage { display: none; }
 }
