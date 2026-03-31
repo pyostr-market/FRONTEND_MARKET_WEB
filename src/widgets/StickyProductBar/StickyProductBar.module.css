@@ -34,8 +34,8 @@
 }
 
 .thumbnail {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: var(--radius-md);
   overflow: hidden;
   flex-shrink: 0;
@@ -56,26 +56,26 @@
 }
 
 .productName {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 400px;
+  max-width: 700px;
 }
 
 .wishlistButton {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 9px 10px;
   background-color: var(--bg-secondary);
   border: 1px solid #e0e2e6;
   border-radius: var(--radius-xl);
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
   width: fit-content;

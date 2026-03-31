@@ -24,7 +24,7 @@ const ProductShortSpecs = ({ attributes = [] }) => {
 
   return (
     <div className={styles.specsContainer}>
-      <h3 className={styles.specsTitle}>Краткие характеристики</h3>
+      <h3 className={styles.specsTitle}>О товаре</h3>
       
       <ul className={styles.specsList}>
         {filterableAttrs.map((attr) => (
