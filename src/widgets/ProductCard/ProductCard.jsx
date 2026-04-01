@@ -102,7 +102,7 @@ const ProductCard = ({ product, onImageChange }) => {
             <FiHeart size={20} />
           </button>
         )}
-        
+
         {/* Изображение */}
         <div className={styles.imageContainer}
              onTouchStart={handleTouchStart}
