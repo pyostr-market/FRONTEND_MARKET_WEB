@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   text-decoration: none;
   color: var(--text-muted);
   font-size: 11px;
@@ -38,8 +38,12 @@
   border: none;
   cursor: pointer;
   position: relative;
+  text-align: center;
 }
-
+.mobileNavItem span {
+  width: 100%;
+  text-align: center;
+}
 .navItemContent {
   position: relative;
   display: flex;
