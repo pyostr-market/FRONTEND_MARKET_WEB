@@ -33,34 +33,39 @@ const ProductFullSpecs = ({ attributes = [] }) => {
   return (
     <div className={styles.fullSpecs}>
       <h2 className={styles.title}>Характеристики</h2>
-      
-      <div className={`${styles.specsList} ${!isExpanded ? styles.collapsed : ''}`}>
+
+      <div className={`${styles.specsList} ${!isExpanded && hasMore ? styles.collapsed : ''}`}>
         {displayedAttributes.map((attr, index) => (
-          <div 
-            key={attr.id || index} 
+          <div
+            key={attr.id || index}
             className={`${styles.specItem} ${attr.is_filter ? styles.filterAttribute : ''}`}
           >
             <span className={styles.specName}>{attr.name}</span>
             <span className={styles.specValue}>{attr.value}</span>
           </div>
         ))}
-        
+
         {/* Градиентный оверлей когда свёрнуто */}
         {!isExpanded && hasMore && (
-          <div className={styles.gradientOverlay}></div>
+          <div className={styles.gradientOverlay}>
+            <button
+              className={styles.expandButton}
+              onClick={() => setIsExpanded(true)}
+              type="button"
+            >
+              Развернуть все
+            </button>
+          </div>
         )}
       </div>
 
-      {hasMore && (
-        <button 
-          className={styles.expandButton}
-          onClick={() => setIsExpanded(!isExpanded)}
+      {isExpanded && hasMore && (
+        <button
+          className={styles.expandButtonCollapsed}
+          onClick={() => setIsExpanded(false)}
           type="button"
         >
-          <span>{isExpanded ? 'Свернуть' : 'Развернуть характеристики'}</span>
-          <span className={styles.expandIcon}>
-            {isExpanded ? '↑' : '↓'}
-          </span>
+          Свернуть
         </button>
       )}
     </div>

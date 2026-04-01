@@ -199,7 +199,7 @@
 .specsSection {
   background-color: var(--surface);
   border-radius: var(--radius-xl);
-  padding: var(--space-4 + 2px); /* 18px - чуть больше базового */
+  padding: var(--space-4) + 2px; /* 18px - чуть больше базового */
   margin-bottom: var(--space-5); /* 16px */
   border: 1px solid #eef0f2;
 }

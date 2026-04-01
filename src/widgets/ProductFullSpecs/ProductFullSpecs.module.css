@@ -27,15 +27,66 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 140px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 40%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.6) 60%,
     var(--surface) 100%
   );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   pointer-events: none;
   z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-left: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+/* Кнопка разворачивания на градиенте */
+.expandButton {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  pointer-events: auto;
+  text-align: left;
+}
+
+.expandButton:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Кнопка сворачивания под списком */
+.expandButtonCollapsed {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: var(--space-4) auto 0;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+  border: none;
+  border-radius: var(--radius-xl);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
+}
+
+.expandButtonCollapsed:hover {
+  background: linear-gradient(135deg, #e8f0fe 0%, #d0e0fd 100%);
+  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.15);
+  transform: translateY(-1px);
 }
 
 .specItem {
@@ -76,46 +127,6 @@
   color: var(--text-primary);
   font-weight: 500;
   line-height: 1.5;
-}
-
-/* Кнопка разворачивания */
-.expandButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: var(--space-4) auto 0;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
-  border: none;
-  border-radius: var(--radius-xl);
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
-}
-
-.expandButton:hover {
-  background: linear-gradient(135deg, #e8f0fe 0%, #d0e0fd 100%);
-  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.expandButton:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
-}
-
-.expandIcon {
-  font-size: 12px;
-  font-weight: 700;
-  transition: transform 0.25s ease;
-}
-
-.expandButton:hover .expandIcon {
-  transform: translateY(1px);
 }
 
 /* Мобильная версия */
