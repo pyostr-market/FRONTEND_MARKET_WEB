@@ -11,6 +11,8 @@ import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { StickyProductBar } from '../../widgets/StickyProductBar';
 import { AddToCart } from '../../features/add-to-cart';
 import RecommendationsBlock, { RELATION_TYPES } from '../../widgets/RecommendationsBlock/RecommendationsBlock';
+import RelatedProducts from '../../widgets/RelatedProducts/RelatedProducts';
+import paths from '../../app/router/paths';
 import styles from './ProductPage.module.css';
 import DOMPurify from "dompurify";
 
@@ -209,7 +211,8 @@ const ProductPage = () => {
           {/* Полные характеристики */}
           <ProductFullSpecs attributes={product.attributes} />
 
-
+          {/* Блок "Возможно, будет интересно" */}
+          <RelatedProducts />
 
         </div>
 
