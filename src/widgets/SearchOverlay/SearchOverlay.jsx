@@ -30,7 +30,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
   ];
 
   useEffect(() => {
-    if (query.trim()) {
+    if (query && query.trim()) {
       setIsSearching(true);
       const timer = setTimeout(async () => {
         const filtered = await searchProducts(query);
@@ -40,6 +40,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
       return () => clearTimeout(timer);
     } else {
       setResults([]);
+      setIsSearching(false);
     }
   }, [query]);
 
@@ -56,12 +57,26 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleFocus = () => {
-    setIsOpen(true);
+  /**
+   * Первое нажатие — открывает меню
+   */
+  const handleOpen = () => {
+    if (!isOpen) {
+      setIsOpen(true);
+    }
+  };
+
+  /**
+   * Клик по полю ввода — ставит фокус
+   */
+  const handleInputClick = () => {
+    inputRef.current?.focus();
   };
 
   const handlePopularClick = (product) => {
     setQuery(product);
+    // Ставим фокус на поле ввода, чтобы пользователь мог продолжить поиск
+    inputRef.current?.focus();
   };
 
   /**
@@ -82,6 +97,13 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     setQuery('');
   };
 
+  /**
+   * Кнопка "Отмена" — закрывает меню и сбрасывает query
+   */
+  const handleCancel = () => {
+    handleClose();
+  };
+
   const showMobile = variant === 'mobile';
   const showDesktop = variant === 'desktop';
 
@@ -90,15 +112,29 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
       <div className={styles.searchBar}>
         <div className={styles.searchInputWrapper}>
           <FiSearch className={styles.searchIcon} strokeWidth={3} />
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
-            className={styles.searchInput}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={handleFocus}
-          />
+          
+          {showMobile && !isOpen ? (
+            // Кнопка для мобильной версии (пока не открыта)
+            <button
+              className={styles.searchButton}
+              onClick={handleOpen}
+              type="button"
+            >
+              Поиск
+            </button>
+          ) : (
+            // Поле ввода (для десктопа или для мобильной версии после открытия)
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
+              className={styles.searchInput}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onClick={handleInputClick}
+            />
+          )}
+          
           {query && (
             <button className={styles.clearBtn} onClick={handleClear}>
               <FiX size={18} />
@@ -129,7 +165,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                     </button>
                   ))}
                 </div>
-              ) : query.trim() ? (
+              ) : query && query.trim() ? (
                 <div className={styles.searchEmpty}>
                   <p>Ничего не найдено по запросу "{query}"</p>
                 </div>
@@ -156,7 +192,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
             <div className={styles.mobileDropdown}>
               <div className={styles.mobileHeader}>
                 <span className={styles.mobileTitle}>Поиск</span>
-                <button className={styles.cancelBtn} onClick={handleClose}>
+                <button className={styles.cancelBtn} onClick={handleCancel}>
                   Отмена
                 </button>
               </div>
@@ -179,7 +215,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                       </button>
                     ))}
                   </div>
-                ) : query.trim() ? (
+                ) : query && query.trim() ? (
                   <div className={styles.searchEmpty}>
                     <p>Ничего не найдено по запросу "{query}"</p>
                   </div>
