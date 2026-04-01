@@ -21,8 +21,19 @@
   }
 }
 
-/* Режим 1: Кнопка "Добавить" */
-.addToCartBtn {
+/* Показываем только на мобильных */
+@media (max-width: 768px) {
+  .mobileCartBar {
+    display: flex;
+  }
+}
+
+/* Режим 1: Кнопка "Добавить" (товар не в корзине) */
+.mobileCartBar:has(.addButtonFull) {
+  padding: 12px 16px;
+}
+
+.mobileCartBar .addButtonFull {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,11 +50,16 @@
   transition: background-color 0.2s ease;
 }
 
-.addToCartBtn:hover {
+.mobileCartBar .addButtonFull:hover {
   background-color: #004ecc;
 }
 
-/* Режим 2: Счётчик */
+.mobileCartBar .addButtonFull .cartIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Режим 2: Счётчик (товар в корзине) */
 .cartLink {
   display: flex;
   align-items: center;
@@ -108,45 +124,79 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 40%;
-  justify-content: space-between;
+  width: auto;
+  min-width: 160px;
 }
 
-.quantityBtn {
-  width: 40px;
-  height: 40px;
+/* Стили для AddToCart в мобильной кнопке */
+.quantityControl .addButtonFull,
+.quantityControl .quantityControlFull {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+}
+
+.quantityControl .quantityControlFull {
   background-color: #f0f2f5;
   border: 1px solid #e0e2e6;
   border-radius: 10px;
+  padding: 4px;
+}
+
+.quantityControl .quantityButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #e0e2e6;
+  border-radius: 8px;
   color: #005bff;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 0;
 }
 
-.quantityBtn:hover:not(:disabled) {
+.quantityControl .quantityButton:hover:not(:disabled) {
   background-color: #e4e7eb;
   border-color: #005bff;
 }
 
-.quantityBtn:disabled {
+.quantityControl .quantityButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.quantityValue {
-  min-width: 32px;
+.quantityControl .quantityValue {
+  min-width: 28px;
   text-align: center;
   font-size: 16px;
   font-weight: 600;
   color: #1a1a1a;
 }
 
-/* Показываем только на мобильных */
-@media (max-width: 768px) {
-  .mobileCartBar {
-    display: flex;
-  }
+.quantityControl .addButtonFull {
+  width: 100%;
+  padding: 14px;
+  background-color: #005bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  justify-content: center;
+}
+
+.quantityControl .addButtonFull:hover {
+  background-color: #004ecc;
+}
+
+.quantityControl .addButtonFull .cartIcon {
+  width: 20px;
+  height: 20px;
 }
