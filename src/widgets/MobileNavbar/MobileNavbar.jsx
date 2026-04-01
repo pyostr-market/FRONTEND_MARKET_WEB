@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser, FiLogIn } from 'react-icons/fi';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../../app/store/cartStore';
 import { useWishlist } from '../../app/store/wishlistStore';
 import paths from '../../app/router/paths';
@@ -8,16 +8,45 @@ import styles from './MobileNavbar.module.css';
 
 const MobileNavbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { getTotalQuantity } = useCart();
   const { getTotalCount } = useWishlist();
   const cartCount = getTotalQuantity();
   const wishlistCount = getTotalCount();
   const [isUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [catalogClickCount, setCatalogClickCount] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     setIsUserAuthorized(!!token);
   }, []);
+
+  // Сбрасываем счётчик кликов при переходе на другие страницы
+  useEffect(() => {
+    if (!location.pathname.startsWith('/product/') && location.pathname !== paths.CATALOG) {
+      setCatalogClickCount(0);
+    }
+  }, [location.pathname]);
+
+  const isProductPage = location.pathname.startsWith('/product/');
+  const isCatalogPage = location.pathname === paths.CATALOG;
+
+  /**
+   * Обработка клика по кнопке "Каталог"
+   * Первое нажатие — возврат назад (как кнопка "Назад")
+   * Второе нажатие — переход в начало каталога
+   */
+  const handleCatalogClick = useCallback((e) => {
+    if (isProductPage || (isCatalogPage && catalogClickCount > 0)) {
+      // Первое нажатие с страницы товара или второе нажатие с каталога — идём назад
+      e.preventDefault();
+      navigate(-1);
+      setCatalogClickCount(0);
+    } else {
+      // Обычный переход в каталог
+      setCatalogClickCount((prev) => prev + 1);
+    }
+  }, [isProductPage, isCatalogPage, catalogClickCount, navigate]);
 
   const navItems = [
     { path: paths.HOME, icon: FiHome, label: 'Главная' },
@@ -36,6 +65,26 @@ const MobileNavbar = () => {
       <div className={styles.mobileNavbarContainer}>
         {navItems.map((item) => {
           const { path, icon: Icon, label, badge } = item;
+
+          // Для кнопки "Каталог" используем специальную логику
+          if (path === paths.CATALOG) {
+            return (
+              <a
+                key={path}
+                href={path}
+                className={`${styles.mobileNavItem} ${location.pathname === path ? styles.active : ''}`}
+                onClick={handleCatalogClick}
+              >
+                <div className={styles.navItemContent}>
+                  <Icon size={24} />
+                  {badge > 0 && (
+                    <span className={styles.navBadge}>{badge}</span>
+                  )}
+                </div>
+                <span>{label}</span>
+              </a>
+            );
+          }
 
           return (
             <Link
