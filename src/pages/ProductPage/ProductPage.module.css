@@ -195,19 +195,101 @@
 /* ======================
    Sections
 ====================== */
-.descriptionSection,
-.specsSection {
-  background-color: var(--surface);
+.descriptionSection {
   border-radius: var(--radius-xl);
-  padding: var(--space-4) + 2px; /* 18px - чуть больше базового */
-  margin-bottom: var(--space-5); /* 16px */
+  margin-bottom: var(--space-5);
   border: 1px solid #eef0f2;
+  position: relative;
 }
 
 .sectionTitle {
-  margin: 0 0 var(--space-3) 0; /* 12px */
+  margin: 0 0 var(--space-3) 0;
   font-size: 28px;
   font-weight: 600;
+}
+
+/* Описание с ограничением высоты */
+.descriptionWrapper {
+  position: relative;
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.descriptionWrapper.descriptionCollapsed {
+  max-height: 500px;
+}
+
+.descriptionWrapper:not(.descriptionCollapsed) {
+  max-height: none;
+}
+
+/* Градиентный оверлей для описания */
+.descriptionGradientOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.6) 60%,
+    var(--surface) 100%
+  );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-left: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+/* Кнопка разворачивания описания на градиенте */
+.descriptionExpandButton {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  pointer-events: auto;
+  text-align: left;
+}
+
+.descriptionExpandButton:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Кнопка сворачивания описания под блоком */
+.descriptionCollapseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: var(--space-4) auto 0;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+  border: none;
+  border-radius: var(--radius-xl);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 91, 255, 0.08);
+}
+
+.descriptionCollapseButton:hover {
+  background: linear-gradient(135deg, #e8f0fe 0%, #d0e0fd 100%);
+  box-shadow: 0 4px 16px rgba(0, 91, 255, 0.15);
+  transform: translateY(-1px);
 }
 
 .description {

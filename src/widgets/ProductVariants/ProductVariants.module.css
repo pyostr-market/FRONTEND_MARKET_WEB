@@ -22,7 +22,7 @@
   max-width: 100%;
   box-sizing: border-box;
   min-width: 0;
-  padding: 0 4px 4px 4px;
+  padding: 10px 4px 4px 4px;
   contain: layout;
   position: relative;
 }

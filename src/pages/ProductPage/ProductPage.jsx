@@ -19,6 +19,7 @@ const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
   const urlParams = new URLSearchParams(window.location.search);
   const urlCategoryId = urlParams.get('category');
@@ -142,42 +143,66 @@ const ProductPage = () => {
               relationType={RELATION_TYPES.ACCESSORY}
           />
           {product.description && (
-              <div className="descriptionSection">
+              <div className={styles.descriptionSection}>
                 <h2 className={styles.sectionTitle}>Описание</h2>
-                <div
-                    className={styles.description}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(
-                        (() => {
-                          let desc = product.description;
-                          
-                          // Если объект, извлекаем HTML
-                          if (typeof desc !== 'string') {
-                            return desc?.__html || String(desc);
-                          }
-                          
-                          // Если JSON-строка, парсим
-                          if (desc.startsWith('{') || desc.startsWith('[')) {
-                            try {
-                              const parsed = JSON.parse(desc);
-                              desc = parsed.html || parsed.description || desc;
-                            } catch (e) {
-                              // Не JSON, оставляем как есть
+                <div className={`${styles.descriptionWrapper} ${!descriptionExpanded ? styles.descriptionCollapsed : ''}`}>
+                  <div
+                      className={styles.description}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(
+                          (() => {
+                            let desc = product.description;
+
+                            // Если объект, извлекаем HTML
+                            if (typeof desc !== 'string') {
+                              return desc?.__html || String(desc);
                             }
-                          }
-                          
-                          // Декодируем HTML-сущности если они есть
-                          if (desc.includes('&lt;') || desc.includes('&gt;')) {
-                            const textarea = document.createElement('textarea');
-                            textarea.innerHTML = desc;
-                            desc = textarea.value;
-                          }
-                          
-                          return desc;
-                        })()
-                      ),
-                    }}
-                />
+
+                            // Если JSON-строка, парсим
+                            if (desc.startsWith('{') || desc.startsWith('[')) {
+                              try {
+                                const parsed = JSON.parse(desc);
+                                desc = parsed.html || parsed.description || desc;
+                              } catch (e) {
+                                // Не JSON, оставляем как есть
+                              }
+                            }
+
+                            // Декодируем HTML-сущности если они есть
+                            if (desc.includes('&lt;') || desc.includes('&gt;')) {
+                              const textarea = document.createElement('textarea');
+                              textarea.innerHTML = desc;
+                              desc = textarea.value;
+                            }
+
+                            return desc;
+                          })()
+                        ),
+                      }}
+                  />
+                  {/* Градиентный оверлей когда свёрнуто */}
+                  {!descriptionExpanded && (
+                    <div className={styles.descriptionGradientOverlay}>
+                      <button
+                        className={styles.descriptionExpandButton}
+                        onClick={() => setDescriptionExpanded(true)}
+                        type="button"
+                      >
+                        Развернуть все
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {/* Кнопка сворачивания под описанием (для развёрнутого состояния) */}
+                {/*{descriptionExpanded && (*/}
+                {/*  <button*/}
+                {/*    className={styles.descriptionCollapseButton}*/}
+                {/*    onClick={() => setDescriptionExpanded(false)}*/}
+                {/*    type="button"*/}
+                {/*  >*/}
+                {/*    Свернуть*/}
+                {/*  </button>*/}
+                {/*)}*/}
               </div>
           )}
 
