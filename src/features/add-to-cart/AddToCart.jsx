@@ -6,9 +6,10 @@ import styles from './AddToCart.module.css';
  * Компонент кнопки добавления в корзину
  * @param {Object} props
  * @param {number} props.productId - ID товара
- * @param {Function} [props.onQuantityChange] - Callback при изменении количества
+ * @param {Function} [props.onQuantityChange] - Callback при изменении количества (productId, newQuantity)
+ * @param {boolean} [props.delayedRemoval=false] - Удалять товар с задержкой (для корзины)
  */
-const AddToCart = ({ productId, onQuantityChange }) => {
+const AddToCart = ({ productId, onQuantityChange, delayedRemoval = false }) => {
   const {
     addToCart,
     removeFromCart,
@@ -23,25 +24,30 @@ const AddToCart = ({ productId, onQuantityChange }) => {
   const handleAddToCart = () => {
     if (quantity === 0) {
       addToCart(productId, 1);
-      onQuantityChange?.(1);
+      onQuantityChange?.(productId, 1);
     }
   };
 
   const handleIncrement = () => {
     if (quantity < MAX_ITEM_QUANTITY) {
       incrementQuantity(productId);
-      onQuantityChange?.(quantity + 1);
+      onQuantityChange?.(productId, quantity + 1);
     }
   };
 
   const handleDecrement = () => {
     if (quantity <= 1) {
-      // Удаляем товар из корзины
-      removeFromCart(productId);
-      onQuantityChange?.(0);
+      if (delayedRemoval) {
+        // Для корзины: сообщаем о желании удалить, родитель сам запустит удаление с задержкой
+        onQuantityChange?.(productId, 0);
+      } else {
+        // Для страницы товара: удаляем мгновенно
+        removeFromCart(productId);
+        onQuantityChange?.(productId, 0);
+      }
     } else {
       decrementQuantity(productId);
-      onQuantityChange?.(quantity - 1);
+      onQuantityChange?.(productId, quantity - 1);
     }
   };
 

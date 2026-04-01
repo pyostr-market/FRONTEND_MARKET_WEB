@@ -157,16 +157,13 @@ const CartPage = () => {
   }, [products, startRemoval]);
 
   /**
-   * Обработчик изменения количества
+   * Обработчик для AddToCart - при уменьшении до 0 запускаем удаление
    */
-  const handleQuantityChange = useCallback((productId, newQuantity) => {
-    if (newQuantity <= 0) {
-      // Запускаем процесс удаления
+  const handleAddToCartQuantityChange = useCallback((productId, newQuantity) => {
+    if (newQuantity === 0) {
       startRemoval(productId);
-    } else {
-      setItemQuantity(productId, Math.min(newQuantity, MAX_ITEM_QUANTITY));
     }
-  }, [setItemQuantity, MAX_ITEM_QUANTITY, startRemoval]);
+  }, [startRemoval]);
 
   /**
    * Товары в корзине с количествами
@@ -328,11 +325,8 @@ const CartPage = () => {
                       <div className={styles.addToCartWrapper}>
                         <AddToCart
                           productId={item.id}
-                          onQuantityChange={(newQuantity) => {
-                            if (newQuantity === 0) {
-                              startRemoval(item.id);
-                            }
-                          }}
+                          onQuantityChange={handleAddToCartQuantityChange}
+                          delayedRemoval={true}
                         />
                       </div>
 
