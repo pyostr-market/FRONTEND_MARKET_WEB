@@ -1,29 +1,29 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiShoppingCart } from 'react-icons/fi';
+import { FiShoppingCart, FiCheck, FiMinus, FiPlus } from 'react-icons/fi';
 import { useCart } from '../../app/store/cartStore';
-import { AddToCart } from '../../features/add-to-cart';
 import styles from './MobileCartButton.module.css';
 
 /**
  * Мобильная кнопка корзины
- * Показывает кнопку "Добавить" или счётчик с кнопками +/-
  * @param {Object} props
  * @param {number} props.productId - ID товара
  * @param {number} props.price - Цена товара
  */
 const MobileCartButton = ({ productId, price }) => {
   const {
+    addToCart,
+    removeFromCart,
     getItemQuantity,
-    getTotalQuantity,
+    incrementQuantity,
+    decrementQuantity,
+    MAX_ITEM_QUANTITY,
   } = useCart();
 
   const quantity = getItemQuantity(productId);
-  const totalItems = getTotalQuantity();
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
-  /**
-   * Форматирование цены
-   */
   const formatPrice = useCallback((p) => {
     if (!p) return '0 ₽';
     return new Intl.NumberFormat('ru-RU', {
@@ -33,28 +33,84 @@ const MobileCartButton = ({ productId, price }) => {
     }).format(p);
   }, []);
 
-  // Режим 1: Товар не в корзине
-  if (quantity === 0) {
-    return (
-      <div className={styles.mobileCartBar}>
-        <AddToCart productId={productId} />
-      </div>
-    );
-  }
+  const handleAddToCart = useCallback(() => {
+    addToCart(productId, 1);
+    setIsAnimating(true);
+    setJustAdded(true);
+    setTimeout(() => setIsAnimating(false), 800);
+    setTimeout(() => setJustAdded(false), 1200);
+  }, [productId, addToCart]);
 
-  // Режим 2: Товар в корзине
+  const handleIncrement = useCallback(() => {
+    if (quantity < MAX_ITEM_QUANTITY) {
+      incrementQuantity(productId);
+    }
+  }, [quantity, productId, incrementQuantity, MAX_ITEM_QUANTITY]);
+
+  const handleDecrement = useCallback(() => {
+    if (quantity <= 1) {
+      removeFromCart(productId);
+    } else {
+      decrementQuantity(productId);
+    }
+  }, [quantity, productId, decrementQuantity, removeFromCart]);
+
   const totalPrice = price * quantity;
-  return (
-    <div className={styles.mobileCartBar}>
-      <Link to="/cart" className={styles.cartLink}>
-        <div className={styles.cartInfo}>
-          <span className={styles.cartLabel}>В корзине</span>
-          <span className={styles.cartTotal}>{formatPrice(totalPrice)}</span>
-        </div>
-      </Link>
+  const inCart = quantity > 0;
 
-      <div className={styles.quantityControl}>
-        <AddToCart productId={productId} />
+  return (
+    <div className={`${styles.mobileCartBar} ${isAnimating ? styles.animating : ''}`}>
+      {/* Кнопка, которая превращается */}
+      <div className={`${styles.mainButton} ${inCart ? styles.mainButtonCart : ''}`}>
+        {/* Текст "Добавить в корзину" */}
+        <span className={`${styles.addText} ${inCart ? styles.addTextHidden : ''}`}>
+          <FiShoppingCart size={20} className={styles.buttonIcon} />
+          Добавить в корзину
+        </span>
+        
+        {/* Ссылка "В корзине" + сумма */}
+        <Link to="/cart" className={`${styles.cartText} ${inCart ? styles.cartTextVisible : ''}`}>
+          {justAdded ? (
+            <FiCheck size={18} className={styles.checkIcon} />
+          ) : (
+            <FiShoppingCart size={18} className={styles.miniCartIcon} />
+          )}
+          <span className={styles.cartLabel}>В корзине</span>
+          <span className={styles.cartSum}>{formatPrice(totalPrice)}</span>
+        </Link>
+        
+        {/* Невидимая кнопка для добавления (только когда не в корзине) */}
+        {!inCart && (
+          <button 
+            className={styles.buttonOverlay}
+            onClick={handleAddToCart}
+            type="button"
+          />
+        )}
+      </div>
+
+      {/* Счётчик справа */}
+      <div className={`${styles.quantityControlWrapper} ${inCart ? styles.quantityControlVisible : ''}`}>
+        <div className={styles.quantityControl}>
+          <button
+            className={styles.quantityBtn}
+            onClick={handleDecrement}
+            aria-label="Уменьшить количество"
+            type="button"
+          >
+            <FiMinus size={16} />
+          </button>
+          <span className={styles.quantityValue}>{quantity}</span>
+          <button
+            className={styles.quantityBtn}
+            onClick={handleIncrement}
+            disabled={quantity >= MAX_ITEM_QUANTITY}
+            aria-label="Увеличить количество"
+            type="button"
+          >
+            <FiPlus size={16} />
+          </button>
+        </div>
       </div>
     </div>
   );

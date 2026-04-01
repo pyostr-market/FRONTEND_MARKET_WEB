@@ -8,8 +8,9 @@ import styles from './AddToCart.module.css';
  * @param {number} props.productId - ID товара
  * @param {Function} [props.onQuantityChange] - Callback при изменении количества (productId, newQuantity)
  * @param {boolean} [props.delayedRemoval=false] - Удалять товар с задержкой (для корзины)
+ * @param {boolean} [props.mobile=false] - Мобильная версия (увеличенные размеры)
  */
-const AddToCart = ({ productId, onQuantityChange, delayedRemoval = false }) => {
+const AddToCart = ({ productId, onQuantityChange, delayedRemoval = false, mobile = false }) => {
   const {
     addToCart,
     removeFromCart,
@@ -54,7 +55,7 @@ const AddToCart = ({ productId, onQuantityChange, delayedRemoval = false }) => {
   if (quantity === 0) {
     return (
         <button
-            className={styles.addButtonFull}
+            className={`${styles.addButtonFull} ${mobile ? styles.addButtonFull_mobile : ''}`}
             onClick={handleAddToCart}
             data-add-to-cart={productId}
         >
@@ -65,7 +66,7 @@ const AddToCart = ({ productId, onQuantityChange, delayedRemoval = false }) => {
   }
 
   return (
-      <div className={styles.quantityControlFull}>
+      <div className={`${styles.quantityControlFull} ${mobile ? styles.quantityControlFull_mobile : ''}`}>
         <button className={styles.quantityButton} onClick={handleDecrement}>−</button>
         <span className={styles.quantityValue}>{quantity}</span>
         <button

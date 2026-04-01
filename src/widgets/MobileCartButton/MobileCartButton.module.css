@@ -12,6 +12,8 @@
   box-sizing: border-box;
   align-items: center;
   gap: 12px;
+  overflow: hidden;
+  min-height: 68px;
 }
 
 /* Показываем только на мобильных */
@@ -21,182 +23,212 @@
   }
 }
 
-/* Показываем только на мобильных */
-@media (max-width: 768px) {
-  .mobileCartBar {
-    display: flex;
-  }
-}
-
-/* Режим 1: Кнопка "Добавить" (товар не в корзине) */
-.mobileCartBar:has(.addButtonFull) {
-  padding: 12px 16px;
-}
-
-.mobileCartBar .addButtonFull {
+/* Основная кнопка */
+.mainButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   width: 100%;
-  padding: 14px;
+  height: 44px;
+  padding: 0;
   background-color: #005bff;
   color: #ffffff;
   border: none;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Невидимая кнопка поверх для добавления */
+.buttonOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  z-index: 2;
 }
 
-.mobileCartBar .addButtonFull:hover {
-  background-color: #004ecc;
+.buttonOverlay:disabled {
+  cursor: default;
+  pointer-events: none;
 }
 
-.mobileCartBar .addButtonFull .cartIcon {
-  width: 20px;
-  height: 20px;
+/* Скрываем overlay когда товар в корзине */
+.mainButtonCart .buttonOverlay {
+  display: none;
 }
 
-/* Режим 2: Счётчик (товар в корзине) */
-.cartLink {
+/* Текст "Добавить в корзину" */
+.addText {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  flex: 1;
-  margin: 5px;
-  padding: 8px 8px;
-  background: #10C44C;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
+  gap: 8px;
+  position: absolute;
   width: 100%;
-  max-width: calc(100% - 140px);
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 1;
+  pointer-events: none;
 }
 
-.cartLink:hover {
-  background-color: #e4e7eb;
+.addTextHidden {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
-.cartInfo {
+.buttonIcon {
+  flex-shrink: 0;
+}
+
+/* Текст "В корзине" + сумма (ссылка) */
+.cartText {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  text-align: center;
+  justify-content: center;
+  gap: 6px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  color: #ffffff;
+  text-decoration: none;
+  z-index: 1;
+  pointer-events: none;
+  align-items: center;
+}
 
+.cartTextVisible {
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.cartText:hover {
+  text-decoration: underline;
+}
+
+.checkIcon {
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.miniCartIcon {
+  color: #ffffff;
+  flex-shrink: 0;
 }
 
 .cartLabel {
-  font-size: 16px;
-  color: white;
-  font-weight: 700;
-
-
+  flex-shrink: 0;
 }
 
-.cartTotal {
-  font-size: 14px;
+.cartSum {
   font-weight: 700;
-  color: #f8f8f8;
+  flex-shrink: 0;
 }
 
-.cartBadge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background-color: #ff3b30;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 10px;
+/* Кнопка в состоянии "в корзине" */
+.mainButtonCart {
+  background-color: #10C44C;
+  width: 180px;
+}
+
+.mainButtonCart:hover {
+  background-color: #0ea841;
+}
+
+/* Анимация при добавлении */
+.animating .mainButton {
+  animation: buttonTransform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes buttonTransform {
+  0% {
+    width: 100%;
+    background-color: #005bff;
+  }
+  50% {
+    background-color: #0ea841;
+  }
+  100% {
+    width: 180px;
+    background-color: #10C44C;
+  }
+}
+
+/* Обёртка счётчика */
+.quantityControlWrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
+.quantityControlVisible {
+  opacity: 1;
+  width: auto;
+}
+
+/* Счётчик */
 .quantityControl {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: auto;
-  min-width: 160px;
-}
-
-/* Стили для AddToCart в мобильной кнопке */
-.quantityControl .addButtonFull,
-.quantityControl .quantityControlFull {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.quantityControl .quantityControlFull {
+  gap: 6px;
   background-color: #f0f2f5;
   border: 1px solid #e0e2e6;
   border-radius: 10px;
   padding: 4px;
 }
 
-.quantityControl .quantityButton {
-  width: 36px;
-  height: 36px;
+.quantityBtn {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
   border: 1px solid #e0e2e6;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #005bff;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 16px;
   padding: 0;
+  flex-shrink: 0;
 }
 
-.quantityControl .quantityButton:hover:not(:disabled) {
+.quantityBtn:hover:not(:disabled) {
   background-color: #e4e7eb;
   border-color: #005bff;
 }
 
-.quantityControl .quantityButton:disabled {
+.quantityBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.quantityControl .quantityValue {
-  min-width: 28px;
+.quantityValue {
+  min-width: 24px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #1a1a1a;
-}
-
-.quantityControl .addButtonFull {
-  width: 100%;
-  padding: 14px;
-  background-color: #005bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  justify-content: center;
-}
-
-.quantityControl .addButtonFull:hover {
-  background-color: #004ecc;
-}
-
-.quantityControl .addButtonFull .cartIcon {
-  width: 20px;
-  height: 20px;
+  flex-shrink: 0;
 }
