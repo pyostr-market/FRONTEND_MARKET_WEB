@@ -15,6 +15,9 @@
   .mainContent {
     padding-bottom: var(--bottom-mobile);
     margin: 0;
+  }
 
+  .mainLayout > footer {
+    margin-bottom: var(--bottom-mobile);
   }
 }

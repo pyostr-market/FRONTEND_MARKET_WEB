@@ -1,0 +1,422 @@
+/* ======================
+   Footer - Общие стили
+====================== */
+.footer {
+  background-color: #e8e8e8;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footerContainer {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* ======================
+   Footer Top - Основная часть (Desktop)
+====================== */
+.footerTop {
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.footerContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footerColumnTitle h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.footerLinks li a {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+.footerLinks li a:hover {
+  color: var(--primary);
+}
+
+/* Контакты */
+.footerContacts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.contactItem svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.contactItem a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contactItem a:hover {
+  color: var(--primary);
+}
+
+/* Соцсети */
+.socialLinks {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-muted);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.socialLink:hover {
+  background-color: var(--primary);
+  color: var(--surface);
+}
+
+/* ======================
+   Footer Apps - Блок приложений
+====================== */
+.footerApps {
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface-subtle);
+}
+
+.appsContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.appsText h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.appsText p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.appButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.appStoreBtn {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.appStoreBtn:hover {
+  transform: translateY(-2px);
+}
+
+.appStoreSvg {
+  height: 40px;
+  width: auto;
+}
+
+/* ======================
+   Footer Payment - Блок оплаты
+====================== */
+.footerPayment {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.paymentContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.paymentLabel {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.paymentIcons {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.paymentIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 var(--space-3);
+  background-color: var(--surface-muted);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+/* ======================
+   Footer Bottom - Нижняя часть (Desktop)
+====================== */
+.footerBottom {
+  padding: var(--space-4) 0;
+  width: 100%;
+  background-color: var(--surface-subtle);
+}
+
+.footerBottomContent {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.copyright {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.legalInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.legalInfo span {
+  white-space: nowrap;
+}
+
+/* ======================
+   Мобильная версия - Аккордеон
+====================== */
+.footerMobile {
+  display: none;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobileSection {
+  border-bottom: 1px solid var(--border);
+}
+
+.mobileSection:last-of-type {
+  border-bottom: none;
+}
+
+.mobileSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobileSectionHeader span {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.mobileSectionIcon {
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.mobileSectionIcon.iconOpen {
+  transform: rotate(180deg);
+}
+
+.mobileSectionContent {
+  list-style: none;
+  padding: 0 0 var(--space-3) 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mobileSectionContent li a {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mobileSectionContent li a:hover {
+  color: var(--primary);
+}
+
+/* Мобильные контакты */
+.mobileContacts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.mobileContacts .contactItem {
+  font-size: 14px;
+}
+
+/* Мобильные соцсети */
+.mobileContacts + .socialLinks {
+  padding: var(--space-3) 0;
+}
+
+/* ======================
+   Мобильная нижняя часть
+====================== */
+.footerMobileBottom {
+  display: none;
+  padding: var(--space-4) 0;
+}
+
+.footerMobileBottom .copyright {
+  font-size: 12px;
+  margin-bottom: var(--space-1);
+}
+
+.footerMobileBottom .legalInfo {
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: 12px;
+}
+
+/* ======================
+   Адаптивность
+====================== */
+@media (max-width: 1024px) {
+  .footerContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  .footerColumn:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .appsContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appButtons {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Скрываем десктопную версию */
+  .footerTop,
+  .footerApps,
+  .footerPayment,
+  .footerBottom {
+    display: none;
+  }
+
+  /* Показываем мобильную версию */
+  .footerMobile,
+  .footerMobileBottom {
+    display: block;
+  }
+
+  .footerMobileBottom .legalInfo {
+    display: flex;
+  }
+
+  .footerContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .socialLinks {
+    justify-content: center;
+  }
+
+  .socialLink {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footerContainer {
+    padding: 0 var(--space-3);
+  }
+
+  .paymentContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .paymentIcons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

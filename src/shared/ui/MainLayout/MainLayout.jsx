@@ -3,6 +3,7 @@ import Header from '../../../widgets/Header/Header';
 import MobileHeader from '../../../widgets/MobileHeader/MobileHeader';
 import MobileNavbar from '../../../widgets/MobileNavbar/MobileNavbar';
 import ProfileModal from '../../../widgets/ProfileModal/ProfileModal';
+import Footer from '../../../widgets/Footer/Footer';
 import styles from './MainLayout.module.css';
 
 const MainLayout = ({ children, showSearch = true }) => {
@@ -54,6 +55,7 @@ const MainLayout = ({ children, showSearch = true }) => {
       <main className={styles.mainContent}>
         {children}
       </main>
+      <Footer />
       <MobileNavbar />
       <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </div>
