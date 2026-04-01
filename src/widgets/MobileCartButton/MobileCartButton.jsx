@@ -60,36 +60,40 @@ const MobileCartButton = ({ productId, price }) => {
 
   return (
     <div className={`${styles.mobileCartBar} ${isAnimating ? styles.animating : ''}`}>
-      {/* Кнопка, которая превращается */}
-      <div className={`${styles.mainButton} ${inCart ? styles.mainButtonCart : ''}`}>
-        {/* Текст "Добавить в корзину" */}
-        <span className={`${styles.addText} ${inCart ? styles.addTextHidden : ''}`}>
-          <FiShoppingCart size={20} className={styles.buttonIcon} />
-          Добавить в корзину
-        </span>
-        
-        {/* Ссылка "В корзине" + сумма */}
-        <Link to="/cart" className={`${styles.cartText} ${inCart ? styles.cartTextVisible : ''}`}>
-          {justAdded ? (
-            <FiCheck size={18} className={styles.checkIcon} />
-          ) : (
-            <FiShoppingCart size={18} className={styles.miniCartIcon} />
+      {/* Кнопка, которая превращается (60% ширины) */}
+      <div className={`${styles.mainButtonWrapper} ${inCart ? styles.mainButtonWrapperCart : ''}`}>
+        <div className={`${styles.mainButton} ${inCart ? styles.mainButtonCart : ''}`}>
+          {/* Текст "Добавить в корзину" */}
+          <span className={`${styles.addText} ${inCart ? styles.addTextHidden : ''}`}>
+            <FiShoppingCart size={20} className={styles.buttonIcon} />
+            Добавить в корзину
+          </span>
+          
+          {/* Ссылка "В корзине" + сумма (две строки) */}
+          <Link to="/cart" className={`${styles.cartText} ${inCart ? styles.cartTextVisible : ''}`}>
+            <span className={styles.cartTop}>
+              {justAdded ? (
+                <FiCheck size={16} className={styles.checkIcon} />
+              ) : (
+                <FiShoppingCart size={16} className={styles.miniCartIcon} />
+              )}
+              <span className={styles.cartLabel}>В корзине</span>
+            </span>
+            <span className={styles.cartSum}>{formatPrice(totalPrice)}</span>
+          </Link>
+          
+          {/* Невидимая кнопка для добавления (только когда не в корзине) */}
+          {!inCart && (
+            <button 
+              className={styles.buttonOverlay}
+              onClick={handleAddToCart}
+              type="button"
+            />
           )}
-          <span className={styles.cartLabel}>В корзине</span>
-          <span className={styles.cartSum}>{formatPrice(totalPrice)}</span>
-        </Link>
-        
-        {/* Невидимая кнопка для добавления (только когда не в корзине) */}
-        {!inCart && (
-          <button 
-            className={styles.buttonOverlay}
-            onClick={handleAddToCart}
-            type="button"
-          />
-        )}
+        </div>
       </div>
 
-      {/* Счётчик справа */}
+      {/* Счётчик справа (40% ширины) */}
       <div className={`${styles.quantityControlWrapper} ${inCart ? styles.quantityControlVisible : ''}`}>
         <div className={styles.quantityControl}>
           <button

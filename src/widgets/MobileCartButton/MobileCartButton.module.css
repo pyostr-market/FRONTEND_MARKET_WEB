@@ -11,7 +11,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0);
   box-sizing: border-box;
   align-items: center;
-  gap: 12px;
+  gap: 0;
   overflow: hidden;
   min-height: 68px;
 }
@@ -23,13 +23,26 @@
   }
 }
 
+/* Обёртка кнопки */
+.mainButtonWrapper {
+  flex: 1;
+  max-width: 100%;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Обёртка кнопки когда товар в корзине (60%) */
+.mainButtonWrapperCart {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+
 /* Основная кнопка */
 .mainButton {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 44px;
+  height: 52px;
   padding: 0;
   background-color: #005bff;
   color: #ffffff;
@@ -40,7 +53,6 @@
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  flex-shrink: 0;
 }
 
 /* Невидимая кнопка поверх для добавления */
@@ -91,24 +103,25 @@
   flex-shrink: 0;
 }
 
-/* Текст "В корзине" + сумма (ссылка) */
+/* Текст "В корзине" + сумма (ссылка, две строки) */
 .cartText {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 2px;
   position: absolute;
   width: 100%;
   height: 100%;
   opacity: 0;
   transform: translateX(30px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
   color: #ffffff;
   text-decoration: none;
   z-index: 1;
   pointer-events: none;
-  align-items: center;
+  padding: 4px 8px;
+  box-sizing: border-box;
 }
 
 .cartTextVisible {
@@ -119,7 +132,17 @@
 }
 
 .cartText:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.cartTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .checkIcon {
@@ -137,14 +160,15 @@
 }
 
 .cartSum {
+  font-size: 15px;
   font-weight: 700;
-  flex-shrink: 0;
+  color: #ffffff;
+  line-height: 1;
 }
 
 /* Кнопка в состоянии "в корзине" */
 .mainButtonCart {
   background-color: #10C44C;
-  width: 180px;
 }
 
 .mainButtonCart:hover {
@@ -158,48 +182,49 @@
 
 @keyframes buttonTransform {
   0% {
-    width: 100%;
     background-color: #005bff;
   }
   50% {
     background-color: #0ea841;
   }
   100% {
-    width: 180px;
     background-color: #10C44C;
   }
 }
 
 /* Обёртка счётчика */
 .quantityControlWrapper {
+  flex: 0 0 0;
+  max-width: 0;
   display: flex;
   align-items: center;
   opacity: 0;
-  width: 0;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
 }
 
 .quantityControlVisible {
+  flex: 0 0 40%;
+  max-width: 40%;
   opacity: 1;
-  width: auto;
 }
 
 /* Счётчик */
 .quantityControl {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6px;
   background-color: #f0f2f5;
   border: 1px solid #e0e2e6;
   border-radius: 10px;
   padding: 4px;
+  width: 100%;
 }
 
 .quantityBtn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,10 +250,10 @@
 }
 
 .quantityValue {
-  min-width: 24px;
+  min-width: 32px;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #1a1a1a;
-  flex-shrink: 0;
+  flex: 1;
 }
