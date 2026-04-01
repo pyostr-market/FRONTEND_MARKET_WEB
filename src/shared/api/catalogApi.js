@@ -79,17 +79,37 @@ export const getProductsByIds = async (product_ids, f5 = false) => {
  * Получить товар по ID через загрузку категории
  * @param {Object} params
  * @param {number} params.product_id - ID товара
- * @param {number} params.category_id - ID категории
+ * @param {number} [params.category_id] - ID категории (опционально)
  * @param {boolean} [params.f5=false] - Принудительный сброс кэша
  * @returns {Promise<{success: boolean, data: {item: Object|null}, error: any}>}
  */
 export const getProductById = async ({ product_id, category_id }, f5 = false) => {
-  if (!product_id || !category_id) {
+  if (!product_id) {
     return {
       success: false,
       data: null,
-      error: 'Product ID and Category ID are required',
+      error: 'Product ID is required',
     };
+  }
+
+  // Если категория не указана, пробуем загрузить товар по ID напрямую
+  if (!category_id) {
+    // Пробуем найти товар через API рекомендаций или другой эндпоинт
+    // Для начала пробуем загрузить через getProductsByIds
+    return getProductsByIds([product_id], f5).then((result) => {
+      if (result.success && result.data?.items?.length > 0) {
+        return {
+          success: true,
+          data: { item: result.data.items[0] },
+          error: null,
+        };
+      }
+      return {
+        success: true,
+        data: { item: null },
+        error: null,
+      };
+    });
   }
 
   // Загружаем все товары категории

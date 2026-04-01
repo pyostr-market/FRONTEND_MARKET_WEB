@@ -19,7 +19,7 @@ const useProduct = ({ product_id, category_id }) => {
    * Загрузка товара
    */
   const loadProduct = useCallback(async (id, catId) => {
-    if (!id || !catId) return;
+    if (!id) return;
 
     setLoading(true);
     setError(null);
@@ -116,7 +116,7 @@ const useProduct = ({ product_id, category_id }) => {
    * Загрузка при монтировании
    */
   useEffect(() => {
-    if (!product_id || !category_id) return;
+    if (!product_id) return;
 
     loadProduct(product_id, category_id);
   }, [product_id, category_id, loadProduct]);
