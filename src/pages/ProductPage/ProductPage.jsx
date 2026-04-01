@@ -10,6 +10,7 @@ import { ProductFullSpecs } from '../../widgets/ProductFullSpecs';
 import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { StickyProductBar } from '../../widgets/StickyProductBar';
 import { AddToCart } from '../../features/add-to-cart';
+import RecommendationsBlock, { RELATION_TYPES } from '../../widgets/RecommendationsBlock/RecommendationsBlock';
 import styles from './ProductPage.module.css';
 import DOMPurify from "dompurify";
 
@@ -135,7 +136,11 @@ const ProductPage = () => {
             </div>
 
           </div>
-
+          {/* Блок рекомендаций (похожие товары) */}
+          <RecommendationsBlock
+              productId={product.id}
+              relationType={RELATION_TYPES.ACCESSORY}
+          />
           {product.description && (
               <div className="descriptionSection">
                 <h2 className={styles.sectionTitle}>Описание</h2>
@@ -178,6 +183,8 @@ const ProductPage = () => {
 
           {/* Полные характеристики */}
           <ProductFullSpecs attributes={product.attributes} />
+
+
 
         </div>
 

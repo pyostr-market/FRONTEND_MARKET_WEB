@@ -178,9 +178,49 @@ export const getCatalogFilters = async ({
   });
 };
 
+/**
+ * Получить рекомендации для товара
+ * @param {Object} params
+ * @param {number} params.product_id - ID товара
+ * @param {string} [params.relation_type] - Тип связи (accessory, similar, bundle, upsell)
+ * @param {number} [params.page=1] - Номер страницы
+ * @param {number} [params.limit=20] - Количество элементов
+ * @param {boolean} [params.f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {items: Array, pagination: Object}, error: any}>}
+ */
+export const getProductRecommendations = async ({
+  product_id,
+  relation_type,
+  page = 1,
+  limit = 20,
+  f5 = false,
+} = {}) => {
+  if (!product_id) {
+    return {
+      success: false,
+      data: null,
+      error: 'Product ID is required',
+    };
+  }
+
+  const params = {
+    page,
+    limit,
+  };
+
+  if (relation_type) params.relation_type = relation_type;
+
+  return crmApi.request(`/product/products/${product_id}/recommendations`, {
+    params,
+    f5,
+    useCache: false,
+  });
+};
+
 const catalogApi = {
   getProducts,
   getCatalogFilters,
+  getProductRecommendations,
 };
 
 export default catalogApi;

@@ -1,0 +1,201 @@
+.recommendationsBlock {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-6);
+  min-height: 200px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--primary-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sliderContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scrollContainer {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: var(--space-1);
+  scroll-snap-type: x mandatory;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.recommendationsBlock {
+  scroll-margin-left: var(--space-5);
+  scroll-margin-right: var(--space-5);
+}
+
+.recommendationCard {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* Стрелки */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--surface);
+  border: 1px solid #e0e2e6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.arrow:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.arrow svg {
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+}
+
+.arrow:hover svg {
+  color: white;
+}
+
+.arrowLeft {
+  left: -20px;
+}
+
+.arrowRight {
+  right: -20px;
+}
+
+/* ======================
+   MEDIA QUERIES
+====================== */
+
+/* 1200px - 7 карточек */
+@media (max-width: 1400px) {
+  .scrollContainer {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+/* 1200px - 6 карточек */
+@media (max-width: 1200px) {
+  .scrollContainer {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+}
+
+/* 1000px - 5 карточек */
+@media (max-width: 1000px) {
+  .scrollContainer {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* 850px - 4 карточки */
+@media (max-width: 850px) {
+  .scrollContainer {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sectionTitle {
+    font-size: 19px;
+  }
+
+  .arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .arrowLeft {
+    left: -10px;
+  }
+
+  .arrowRight {
+    right: -10px;
+  }
+}
+
+/* 700px - 3 карточки */
+@media (max-width: 700px) {
+  .scrollContainer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+}
+
+/* 550px - 2 карточки */
+@media (max-width: 550px) {
+  .scrollContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sectionTitle {
+    font-size: 17px;
+    margin-bottom: var(--space-3);
+  }
+
+  .recommendationsBlock {
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .arrow {
+    display: none;
+  }
+}
+
+/* 400px - 2 карточки (минимум) */
+@media (max-width: 400px) {
+  .scrollContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+}
