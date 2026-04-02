@@ -16,6 +16,7 @@ const paths = {
   CONTACTS: '/contacts',
   WARRANTY: '/warranty',
   LEGAL_ENTITY: '/legal-entity',
+  NOT_FOUND: '/404',
 };
 
 export default paths;

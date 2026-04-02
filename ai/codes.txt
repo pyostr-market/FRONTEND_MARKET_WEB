@@ -1,1 +1,0 @@
-Фильтры: qwen --resume 8df55802-5f57-4df1-ac8a-e96c34387f0f

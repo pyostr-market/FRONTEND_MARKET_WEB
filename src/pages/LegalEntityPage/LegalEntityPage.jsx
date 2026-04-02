@@ -6,7 +6,7 @@ const LegalEntityPage = () => {
   const [copiedField, setCopiedField] = useState(null);
 
   const legalInfo = {
-    name: 'ООО Интенрнет технологии',
+    name: 'ООО Интернет технологии',
     inn: '1234 4321 1015',
     ogrnip: '23178 92781 47121',
     address: 'Москва, Мавзолей',

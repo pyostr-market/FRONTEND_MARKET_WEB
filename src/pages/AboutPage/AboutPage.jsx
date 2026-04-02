@@ -79,13 +79,13 @@ const AboutPage = () => {
     <div className={styles.aboutPage}>
       {/* Герой с фото */}
       <div className={styles.heroSection}>
-        <div className={styles.heroImage}>
-          <img
-            src="https://s3.twcstorage.ru/2481cb39-trade/pics/sadasdsda.jpg"
-            alt="О компании"
-            className={styles.heroImageMain}
-          />
-        </div>
+        {/*<div className={styles.heroImage}>*/}
+        {/*  <img*/}
+        {/*    src=""*/}
+        {/*    alt="О компании"*/}
+        {/*    className={styles.heroImageMain}*/}
+        {/*  />*/}
+        {/*</div>*/}
       </div>
 
       {/* Миссия */}

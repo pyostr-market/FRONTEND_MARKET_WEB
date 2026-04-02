@@ -15,6 +15,7 @@ import DeliveryPage from '../../pages/DeliveryPage/DeliveryPage';
 import ContactsPage from '../../pages/ContactsPage/ContactsPage';
 import WarrantyPage from '../../pages/WarrantyPage/WarrantyPage';
 import LegalEntityPage from '../../pages/LegalEntityPage/LegalEntityPage';
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import paths from './paths';
 
 const routes = [
@@ -133,6 +134,13 @@ const routes = [
   {
     path: paths.LEGAL_ENTITY,
     component: LegalEntityPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.NOT_FOUND,
+    component: NotFoundPage,
     layout: 'main',
     isPrivate: false,
     showSearch: false,

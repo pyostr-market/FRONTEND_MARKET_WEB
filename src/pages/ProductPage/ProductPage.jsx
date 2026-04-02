@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FiHeart } from 'react-icons/fi';
 import { useWishlist } from '../../app/store/wishlistStore';
 import useProduct from '../../shared/hooks/useProduct';
@@ -72,7 +72,31 @@ const ProductPage = () => {
   }, []);
 
   if (loading) return <div className={styles.loading}>Загрузка...</div>;
-  if (error || !product) return <div className={styles.error}>Товар не найден</div>;
+  
+  // Если товар не найден или ошибка — перенаправляем на 404
+  if (error || !product) {
+    return (
+      <div className={styles.notFound}>
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>
+            <span className={styles.errorCode}>404</span>
+          </div>
+          <h1 className={styles.title}>Товар не найден</h1>
+          <p className={styles.description}>
+            К сожалению, товар, который вы ищете, не существует или был удалён.
+          </p>
+          <div className={styles.actions}>
+            <button onClick={() => navigate(-1)} className={styles.actionButtonSecondary}>
+              Назад
+            </button>
+            <Link to={paths.CATALOG} className={styles.actionButton}>
+              В каталог
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
       <div className={styles.page}>

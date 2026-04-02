@@ -11,7 +11,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
 
-  const API_BASE_URL = process.env.REACT_APP_USER_SERVICE_BASE_URL || 'http://localhost:8000';
+  const API_BASE_URL = process.env.REACT_APP_USER_SERVICE_BASE_URL;
 
   if (!isOpen) return null;
 
