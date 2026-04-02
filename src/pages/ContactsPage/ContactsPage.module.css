@@ -1,0 +1,362 @@
+.contactsPage {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+}
+
+/* ======================
+   Header
+====================== */
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ======================
+   Stores Section
+====================== */
+.storesSection {
+  margin-bottom: var(--space-8);
+}
+
+.storesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.storeCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.storeCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.storeHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.storeIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.storeCity {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.storeBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.storeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoText {
+  font-size: 15px;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.6;
+  padding-left: 26px;
+}
+
+.infoLink {
+  font-size: 16px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding-left: 26px;
+}
+
+.infoLink:hover {
+  color: var(--primary-hover);
+}
+
+/* Кнопки действий */
+.addressActions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-left: 26px;
+}
+
+.copyButton,
+.mapButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: 1px solid var(--border);
+}
+
+.copyButton {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.copyButton:hover {
+  background: var(--surface-subtle);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.copyButton:active {
+  transform: scale(0.98);
+}
+
+.mapButton {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.mapButton:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: white;
+}
+
+.mapButton:active {
+  transform: scale(0.98);
+}
+
+/* ======================
+   Info Section
+====================== */
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.infoCard {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+}
+
+.infoCardIcon {
+  margin-bottom: var(--space-3);
+  opacity: 0.9;
+}
+
+.infoCard h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.infoCard p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.emailLink {
+  color: white;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.emailLink:hover {
+  opacity: 0.9;
+}
+
+/* ======================
+   Map Section
+====================== */
+.mapSection {
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+  text-align: center;
+}
+
+.mapContainer {
+  width: 100%;
+  height: 500px;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.mapFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ======================
+   Tablet (769px - 1000px)
+====================== */
+@media (max-width: 1200px) {
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .contactsPage {
+    padding: var(--space-4) var(--space-4);
+    padding-bottom: 100px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+  }
+
+  .storesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storeCard {
+    padding: var(--space-4);
+  }
+
+  .storeCity {
+    font-size: 20px;
+  }
+
+  .infoText,
+  .infoLink {
+    padding-left: 0;
+  }
+
+  .addressActions {
+    padding-left: 0;
+    flex-direction: column;
+  }
+
+  .copyButton,
+  .mapButton {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+
+  .infoCard {
+    padding: var(--space-4);
+  }
+
+  .infoCard h3 {
+    font-size: 18px;
+  }
+
+  .infoCard p {
+    font-size: 13px;
+  }
+
+  .mapContainer {
+    height: 300px;
+  }
+}
+
+/* ======================
+   Small Mobile
+====================== */
+@media (max-width: 480px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .storeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .storeIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .copyButton,
+  .mapButton {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .mapContainer {
+    height: 250px;
+  }
+}

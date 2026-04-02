@@ -1,0 +1,405 @@
+.deliveryPage {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+}
+
+/* ======================
+   Header
+====================== */
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ======================
+   Stores Section
+====================== */
+.storesSection {
+  margin-bottom: var(--space-8);
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.sectionDescription {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin: 0 0 var(--space-5) 0;
+}
+
+.storesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.storeCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.storeCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.storeHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.storeIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.storeCity {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.storeBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.storeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infoIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoText {
+  font-size: 15px;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.infoLink {
+  font-size: 15px;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.infoLink:hover {
+  color: var(--primary-hover);
+}
+
+/* ======================
+   Delivery Section
+====================== */
+.deliverySection {
+  margin-bottom: var(--space-8);
+}
+
+.deliveryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.deliveryCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.deliveryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.deliveryIcon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.deliveryTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.deliveryDescription {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.deliveryDetails {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ======================
+   Payment Section
+====================== */
+.paymentSection {
+  margin-bottom: var(--space-8);
+}
+
+.paymentGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.paymentCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.paymentCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.paymentIcon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: var(--space-3);
+}
+
+.paymentTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.paymentMethods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.checkIcon {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.paymentNote {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: var(--space-2) 0 0 0;
+  font-style: italic;
+}
+
+/* ======================
+   Info Section
+====================== */
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.infoCard {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+}
+
+.infoCardIcon {
+  margin-bottom: var(--space-3);
+  opacity: 0.9;
+}
+
+.infoCard h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.infoCard p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* ======================
+   Tablet (769px - 1000px)
+====================== */
+@media (max-width: 1200px) {
+  .deliveryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .paymentGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .deliveryPage {
+    padding: var(--space-4) var(--space-4);
+    padding-bottom: 100px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+  }
+
+  .storesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storeCard {
+    padding: var(--space-4);
+  }
+
+  .storeCity {
+    font-size: 18px;
+  }
+
+  .deliveryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .deliveryIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .deliveryTitle {
+    font-size: 16px;
+  }
+
+  .paymentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentIcon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+
+  .infoCard {
+    padding: var(--space-4);
+  }
+
+  .infoCard h3 {
+    font-size: 18px;
+  }
+
+  .infoCard p {
+    font-size: 13px;
+  }
+}
+
+/* ======================
+   Small Mobile
+====================== */
+@media (max-width: 480px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .storeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .deliveryIcon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .deliveryIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+}

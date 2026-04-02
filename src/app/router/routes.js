@@ -11,6 +11,8 @@ import PrivacyPolicyPage from '../../pages/PrivacyPolicyPage/PrivacyPolicyPage';
 import ConsentPage from '../../pages/ConsentPage/ConsentPage';
 import PublicOfferPage from '../../pages/PublicOfferPage/PublicOfferPage';
 import AboutPage from '../../pages/AboutPage/AboutPage';
+import DeliveryPage from '../../pages/DeliveryPage/DeliveryPage';
+import ContactsPage from '../../pages/ContactsPage/ContactsPage';
 import paths from './paths';
 
 const routes = [
@@ -101,6 +103,20 @@ const routes = [
   {
     path: paths.ABOUT,
     component: AboutPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.DELIVERY,
+    component: DeliveryPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.CONTACTS,
+    component: ContactsPage,
     layout: 'main',
     isPrivate: false,
     showSearch: false,

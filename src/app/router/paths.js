@@ -12,6 +12,8 @@ const paths = {
   CONSENT: '/consent',
   PUBLIC_OFFER: '/public-offer',
   ABOUT: '/about',
+  DELIVERY: '/delivery',
+  CONTACTS: '/contacts',
 };
 
 export default paths;

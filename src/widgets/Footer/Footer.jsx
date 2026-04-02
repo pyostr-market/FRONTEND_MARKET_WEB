@@ -29,10 +29,10 @@ const Footer = () => {
   const buyerLinks = [
     { label: 'Trade-in', href: '/trade-in' },
     { label: 'Ремонт', href: '/repair' },
-    { label: 'Доставка и оплата', href: '/delivery' },
+    { label: 'Доставка и оплата', href: paths.DELIVERY },
     { label: 'Новости', href: '/news' },
     { label: 'О нас', href: paths.ABOUT },
-    { label: 'Контакты', href: '/contacts' },
+    { label: 'Контакты', href: paths.CONTACTS },
     { label: 'Гарантия', href: '/warranty' },
   ];
 
