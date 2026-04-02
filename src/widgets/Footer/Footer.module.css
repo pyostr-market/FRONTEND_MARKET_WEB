@@ -211,7 +211,6 @@
    Footer Bottom - Нижняя часть (Desktop)
 ====================== */
 .footerBottom {
-  padding: var(--space-4) 0;
   width: 100%;
   background-color: var(--surface-subtle);
 }

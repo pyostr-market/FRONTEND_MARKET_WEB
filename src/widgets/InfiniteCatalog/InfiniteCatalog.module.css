@@ -1,0 +1,133 @@
+.infiniteCatalog {
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+/* Сетка товаров */
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-4);
+}
+
+.productCardWrapper {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+}
+
+/* Триггер загрузки */
+.loadMoreTrigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-6);
+  min-height: 100px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--primary-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.endMessage {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-4);
+  font-size: 14px;
+}
+
+/* ======================
+   MEDIA QUERIES
+====================== */
+
+/* 1200px - 6 карточек */
+@media (max-width: 1200px) {
+  .productsGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .sectionTitle {
+    font-size: 24px;
+  }
+}
+
+/* 1000px - 5 карточек */
+@media (max-width: 1000px) {
+  .productsGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* 850px - 4 карточки */
+@media (max-width: 850px) {
+  .productsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sectionTitle {
+    font-size: 19px;
+  }
+}
+
+/* 700px - 3 карточки */
+@media (max-width: 700px) {
+  .productsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+}
+
+/* 550px - 2 карточки (мобильная версия) */
+@media (max-width: 550px) {
+  .infiniteCatalog {
+    margin-bottom: var(--space-4);
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .sectionTitle {
+    font-size: 17px;
+    margin-bottom: var(--space-3);
+  }
+
+  .loadMoreTrigger {
+    min-height: 80px;
+  }
+
+  .loadingSpinner {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* 400px - 2 карточки (минимум) */
+@media (max-width: 400px) {
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+}
