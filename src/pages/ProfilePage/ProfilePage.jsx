@@ -3,6 +3,7 @@ import { FiLogOut, FiUser, FiShoppingBag, FiGift, FiHeart } from 'react-icons/fi
 import { useNavigate } from 'react-router-dom';
 import Tabs from '../../shared/ui/Tabs/Tabs';
 import Spinner from '../../shared/ui/Spinner/Spinner';
+import Toast from '../../shared/ui/Toast/Toast';
 import IndividualProfile from '../../features/profile/IndividualProfile/IndividualProfile';
 import CompanyProfile from '../../features/profile/CompanyProfile/CompanyProfile';
 import useProfile from '../../shared/hooks/useProfile';
@@ -26,6 +27,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [activeSidebarTab, setActiveSidebarTab] = useState('personal');
   const [activeProfileTab, setActiveProfileTab] = useState('individual');
+  const [toast, setToast] = useState({ isOpen: false, type: 'info', message: '' });
 
   const {
     profile,
@@ -52,7 +54,26 @@ const ProfilePage = () => {
 
   const handleSaveProfile = async (payload) => {
     const result = await updateProfile(payload);
+    
+    if (result.success) {
+      setToast({
+        isOpen: true,
+        type: 'success',
+        message: 'Данные успешно сохранены',
+      });
+    } else {
+      setToast({
+        isOpen: true,
+        type: 'error',
+        message: result.error?.message || result.error || 'Ошибка при сохранении',
+      });
+    }
+    
     return result;
+  };
+
+  const handleCloseToast = () => {
+    setToast((prev) => ({ ...prev, isOpen: false }));
   };
 
   // Заглушка для неразработанных разделов
@@ -188,6 +209,15 @@ const ProfilePage = () => {
           {renderContent()}
         </main>
       </div>
+
+      {/* Toast уведомления */}
+      <Toast
+        type={toast.type}
+        message={toast.message}
+        isOpen={toast.isOpen}
+        onClose={handleCloseToast}
+        duration={3000}
+      />
     </div>
   );
 };
