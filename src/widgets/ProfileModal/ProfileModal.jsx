@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import usePhoneInput from '../../shared/hooks/usePhoneInput';
+import paths from '../../app/router/paths';
 import styles from './ProfileModal.module.css';
 
 const ProfileModal = ({ isOpen, onClose }) => {
@@ -123,7 +124,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
           <button className={styles.backBtn} onClick={handleBack}>
             <FiArrowLeft size={18} />
           </button>
-          <h2>{step === 'phone' ? 'Вход в профиль' : 'Ввод кода'}</h2>
+          <h2>{step === 'phone' ? 'Вход' : 'Ввод кода'}</h2>
           <button className={styles.profileModalClose} onClick={onClose}>
             ✕
           </button>
@@ -132,23 +133,6 @@ const ProfileModal = ({ isOpen, onClose }) => {
         <div className={styles.profileModalBody}>
           {step === 'phone' ? (
             <>
-              <div className={styles.profileIconWrapper}>
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
-
-              <h3 className={styles.title}>С возвращением!</h3>
               <p className={styles.subtitle}>
                 Введите номер телефона для входа или регистрации
               </p>
@@ -180,9 +164,9 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
               <p className={styles.termsText}>
                 Нажимая «Продолжить», вы соглашаетесь с{' '}
-                <a href="/terms" className={styles.link}>условиями использования</a>{' '}
+                <a href={paths.PUBLIC_OFFER} className={styles.link}>публичной офертой</a>{' '}
                 и{' '}
-                <a href="/privacy" className={styles.link}>политикой конфиденциальности</a>
+                <a href={paths.PRIVACY_POLICY} className={styles.link}>политикой конфиденциальности</a>
               </p>
             </>
           ) : (

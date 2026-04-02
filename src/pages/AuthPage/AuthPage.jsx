@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import usePhoneInput from '../../shared/hooks/usePhoneInput';
+import paths from '../../app/router/paths';
 import styles from './AuthPage.module.css';
 
 const AuthPage = () => {
@@ -184,9 +185,9 @@ const AuthPage = () => {
 
               <p className={styles.termsText}>
                 Нажимая «Продолжить», вы соглашаетесь с{' '}
-                <a href="/terms" className={styles.link}>условиями использования</a>{' '}
+                <a href={paths.PUBLIC_OFFER} className={styles.link}>публичной офертой</a>{' '}
                 и{' '}
-                <a href="/privacy" className={styles.link}>политикой конфиденциальности</a>
+                <a href={paths.PRIVACY_POLICY} className={styles.link}>политикой конфиденциальности</a>
               </p>
             </>
           ) : (
