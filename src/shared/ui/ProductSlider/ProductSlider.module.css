@@ -18,6 +18,16 @@
   border: 1px solid var(--border);
   max-height: 520px;
   min-height: 200px;
+  touch-action: pan-y; /* Разрешить вертикальный скролл */
+}
+
+.imageTrack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform; /* Оптимизация производительности */
 }
 
 .mainImage {
@@ -25,6 +35,8 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
+  user-select: none; /* Запрет выделения */
+  -webkit-user-drag: none; /* Запрет перетаскивания */
 }
 
 /* ======================

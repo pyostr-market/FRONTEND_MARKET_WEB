@@ -778,7 +778,7 @@
   .cartContent {
     grid-template-columns: 1fr;
     gap: var(--space-3);
-    padding-bottom: 220px;
+    /*padding-bottom: 220px;*/
   }
 
   .cartItems {
@@ -1035,7 +1035,7 @@
 @media (max-width: 576px) {
   .cartPage {
     padding: 0;
-    padding-bottom: 220px;
+    /*padding-bottom: 220px;*/
     background-color: var(--bg);
   }
 
@@ -1070,7 +1070,7 @@
   }
 
   .cartContent {
-    padding-bottom: 240px;
+    padding-bottom: 0;
   }
 
   .cartItem {

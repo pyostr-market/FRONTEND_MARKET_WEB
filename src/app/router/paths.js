@@ -8,6 +8,10 @@ const paths = {
   AUTH: '/auth',
   PROFILE: '/profile',
   COOKIE_POLICY: '/cookie-policy',
+  PRIVACY_POLICY: '/privacy-policy',
+  CONSENT: '/consent',
+  PUBLIC_OFFER: '/public-offer',
+  ABOUT: '/about',
 };
 
 export default paths;

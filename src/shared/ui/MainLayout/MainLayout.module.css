@@ -13,11 +13,12 @@
 
 @media (max-width: 767px) {
   .mainContent {
-    padding-bottom: var(--bottom-mobile);
+    /*padding-bottom: var(--bottom-mobile);*/
     margin: 0;
   }
 
   .mainLayout > footer {
-    margin-bottom: var(--bottom-mobile);
+    /*margin-bottom: var(--bottom-mobile);*/
+    margin-bottom: 0;
   }
 }

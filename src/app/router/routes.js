@@ -7,6 +7,10 @@ import WishlistPage from '../../pages/WishlistPage/WishlistPage';
 import AuthPage from '../../pages/AuthPage/AuthPage';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import CookiePolicyPage from '../../pages/CookiePolicyPage/CookiePolicyPage';
+import PrivacyPolicyPage from '../../pages/PrivacyPolicyPage/PrivacyPolicyPage';
+import ConsentPage from '../../pages/ConsentPage/ConsentPage';
+import PublicOfferPage from '../../pages/PublicOfferPage/PublicOfferPage';
+import AboutPage from '../../pages/AboutPage/AboutPage';
 import paths from './paths';
 
 const routes = [
@@ -69,6 +73,34 @@ const routes = [
   {
     path: paths.COOKIE_POLICY,
     component: CookiePolicyPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.PRIVACY_POLICY,
+    component: PrivacyPolicyPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.CONSENT,
+    component: ConsentPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.PUBLIC_OFFER,
+    component: PublicOfferPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.ABOUT,
+    component: AboutPage,
     layout: 'main',
     isPrivate: false,
     showSearch: false,

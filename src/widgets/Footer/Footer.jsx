@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronDown, FiMapPin, FiPhone, FiMail, FiClock } from 'react-icons/fi';
 import { FaVk, FaTelegram, FaYoutube } from 'react-icons/fa';
+import paths from '../../app/router/paths';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -19,10 +20,10 @@ const Footer = () => {
   };
 
   const legalLinks = [
-    { label: 'Политика использования файлов cookie', href: '/cookie-policy' },
-    { label: 'Политика конфиденциальности', href: '/privacy-policy' },
-    { label: 'Согласие на обработку персональных данных', href: '/personal-data' },
-    { label: 'Публичная оферта', href: '/offer' },
+    { label: 'Политика использования файлов cookie', href: paths.COOKIE_POLICY },
+    { label: 'Политика конфиденциальности', href: paths.PRIVACY_POLICY },
+    { label: 'Согласие на обработку персональных данных', href: paths.CONSENT },
+    { label: 'Публичная оферта', href: paths.PUBLIC_OFFER },
   ];
 
   const buyerLinks = [
@@ -30,7 +31,7 @@ const Footer = () => {
     { label: 'Ремонт', href: '/repair' },
     { label: 'Доставка и оплата', href: '/delivery' },
     { label: 'Новости', href: '/news' },
-    { label: 'О нас', href: '/about' },
+    { label: 'О нас', href: paths.ABOUT },
     { label: 'Контакты', href: '/contacts' },
     { label: 'Гарантия', href: '/warranty' },
   ];
