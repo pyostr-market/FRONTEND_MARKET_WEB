@@ -6,6 +6,7 @@ import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import WishlistPage from '../../pages/WishlistPage/WishlistPage';
 import AuthPage from '../../pages/AuthPage/AuthPage';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
+import CookiePolicyPage from '../../pages/CookiePolicyPage/CookiePolicyPage';
 import paths from './paths';
 
 const routes = [
@@ -63,6 +64,13 @@ const routes = [
     component: ProfilePage,
     layout: 'main',
     isPrivate: true,
+    showSearch: false,
+  },
+  {
+    path: paths.COOKIE_POLICY,
+    component: CookiePolicyPage,
+    layout: 'main',
+    isPrivate: false,
     showSearch: false,
   },
 ];

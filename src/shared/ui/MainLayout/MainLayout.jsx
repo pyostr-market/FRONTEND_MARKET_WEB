@@ -4,6 +4,7 @@ import MobileHeader from '../../../widgets/MobileHeader/MobileHeader';
 import MobileNavbar from '../../../widgets/MobileNavbar/MobileNavbar';
 import ProfileModal from '../../../widgets/ProfileModal/ProfileModal';
 import Footer from '../../../widgets/Footer/Footer';
+import CookieBanner from '../CookieBanner/CookieBanner';
 import styles from './MainLayout.module.css';
 
 const MainLayout = ({ children, showSearch = true }) => {
@@ -57,6 +58,7 @@ const MainLayout = ({ children, showSearch = true }) => {
       </main>
       <Footer />
       <MobileNavbar />
+      <CookieBanner />
       <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </div>
   );

@@ -1,0 +1,143 @@
+.cookieBanner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  max-width: 400px;
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: var(--space-4);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  animation: slideInLeft 0.3s ease-out;
+  border: 1px solid var(--border);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--primary-hover);
+}
+
+.acceptButton {
+  align-self: flex-start;
+  padding: 10px 24px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.acceptButton:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.closeButton {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--surface-subtle);
+  color: var(--text);
+}
+
+/* ======================
+   Mobile version
+====================== */
+.cookieBanner.mobile {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  right: 20px;
+  max-width: calc(100% - 40px);
+  border-radius: var(--radius-lg);
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.cookieBanner.mobile .content {
+  gap: var(--space-2);
+}
+
+.cookieBanner.mobile .text {
+  font-size: 13px;
+}
+
+.cookieBanner.mobile .acceptButton {
+  width: 100%;
+  padding: 12px 24px;
+}
+
+.cookieBanner.mobile .closeButton {
+  width: 28px;
+  height: 28px;
+}
+
+/* ======================
+   Small mobile
+====================== */
+@media (max-width: 480px) {
+  .cookieBanner.mobile {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}

@@ -7,6 +7,7 @@ const paths = {
   WISHLIST: '/wishlist',
   AUTH: '/auth',
   PROFILE: '/profile',
+  COOKIE_POLICY: '/cookie-policy',
 };
 
 export default paths;
