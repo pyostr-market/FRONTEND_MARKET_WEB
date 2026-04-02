@@ -1,0 +1,259 @@
+.legalEntityPage {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+}
+
+/* ======================
+   Header
+====================== */
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.headerIcon {
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ======================
+   Info Section
+====================== */
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.infoCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.cardIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoValue {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.infoValueWithCopy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.infoValueWithCopy .infoValue {
+  flex: 1;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--surface-subtle);
+  color: var(--text);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.copyButton:hover {
+  background: var(--surface-muted);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.copyButton:active {
+  transform: scale(0.98);
+}
+
+/* ======================
+   Note Section
+====================== */
+.noteSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.noteCard {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+}
+
+.noteIcon {
+  margin-bottom: var(--space-3);
+  opacity: 0.9;
+}
+
+.noteCard h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.noteCard p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* ======================
+   Tablet (769px - 1000px)
+====================== */
+@media (max-width: 1200px) {
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+
+  .noteSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .legalEntityPage {
+    padding: var(--space-4) var(--space-4);
+    padding-bottom: 100px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .headerIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .infoCard {
+    padding: var(--space-4);
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+
+  .infoValue {
+    font-size: 14px;
+  }
+
+  .infoValueWithCopy {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .noteSection {
+    grid-template-columns: 1fr;
+  }
+
+  .noteCard {
+    padding: var(--space-4);
+  }
+
+  .noteCard h3 {
+    font-size: 16px;
+  }
+
+  .noteCard p {
+    font-size: 13px;
+  }
+}
+
+/* ======================
+   Small Mobile
+====================== */
+@media (max-width: 480px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copyButton {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}

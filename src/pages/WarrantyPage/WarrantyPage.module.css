@@ -1,0 +1,485 @@
+.warrantyPage {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+/* ======================
+   Header
+====================== */
+.headerSection {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.headerIcon {
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ======================
+   Periods Section
+====================== */
+.periodsSection {
+  margin-bottom: var(--space-8);
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-5) 0;
+  text-align: center;
+}
+
+.periodsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.periodCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.periodCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.periodBadge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-3);
+}
+
+.periodCategory {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.periodValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.periodDescription {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ======================
+   Info Section
+====================== */
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.infoCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.infoCardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.infoCardText {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ======================
+   Refusal Section
+====================== */
+.refusalSection {
+  margin-bottom: var(--space-8);
+}
+
+.refusalGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.refusalCard {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.refusalCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.refusalIcon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.refusalTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.refusalDescription {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ======================
+   Terms Section
+====================== */
+.termsSection {
+  margin-bottom: var(--space-8);
+}
+
+.termsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.termItem {
+  display: flex;
+  gap: var(--space-3);
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.termNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.termText {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+  padding-top: 8px;
+}
+
+/* ======================
+   Apple Section
+====================== */
+.appleSection {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.appleHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.appleIcon {
+  color: #007aff;
+  flex-shrink: 0;
+}
+
+.appleTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.appleIntro {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 var(--space-4) 0;
+  opacity: 0.95;
+}
+
+.appleList {
+  list-style: none;
+  margin: 0 0 var(--space-4) 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.appleListItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.appleCheckIcon {
+  color: #00c853;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.appleNote {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+}
+
+.appleNoteIcon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.appleNote p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.appleNote strong {
+  color: #f59e0b;
+}
+
+/* ======================
+   Conclusion
+====================== */
+.conclusionSection {
+  text-align: center;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.conclusionIcon {
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+}
+
+.conclusionText {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ======================
+   Tablet (769px - 1000px)
+====================== */
+@media (max-width: 1200px) {
+  .periodsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .refusalGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .warrantyPage {
+    padding: var(--space-4) var(--space-4);
+    padding-bottom: 100px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+  }
+
+  .headerIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .periodsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  .periodCard {
+    padding: var(--space-4);
+  }
+
+  .periodBadge {
+    width: 50px;
+    height: 50px;
+  }
+
+  .periodCategory {
+    font-size: 14px;
+    min-height: unset;
+  }
+
+  .periodValue {
+    font-size: 24px;
+  }
+
+  .infoSection {
+    grid-template-columns: 1fr;
+  }
+
+  .refusalGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .refusalIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .refusalIcon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .termsList {
+    gap: var(--space-2);
+  }
+
+  .termItem {
+    padding: var(--space-3);
+  }
+
+  .termNumber {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .termText {
+    font-size: 14px;
+  }
+
+  .appleSection {
+    padding: var(--space-4);
+  }
+
+  .appleHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appleTitle {
+    font-size: 20px;
+  }
+
+  .appleIntro {
+    font-size: 14px;
+  }
+
+  .appleListItem {
+    font-size: 13px;
+  }
+
+  .appleNote {
+    flex-direction: column;
+    padding: var(--space-3);
+  }
+
+  .conclusionText {
+    font-size: 15px;
+  }
+}
+
+/* ======================
+   Small Mobile
+====================== */
+@media (max-width: 480px) {
+  .periodsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .periodValue {
+    font-size: 28px;
+  }
+
+  .appleIcon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .conclusionIcon {
+    width: 32px;
+    height: 32px;
+  }
+}

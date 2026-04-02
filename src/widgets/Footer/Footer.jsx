@@ -24,6 +24,7 @@ const Footer = () => {
     { label: 'Политика конфиденциальности', href: paths.PRIVACY_POLICY },
     { label: 'Согласие на обработку персональных данных', href: paths.CONSENT },
     { label: 'Публичная оферта', href: paths.PUBLIC_OFFER },
+    { label: 'Информация о юр. лице', href: paths.LEGAL_ENTITY },
   ];
 
   const buyerLinks = [
@@ -33,7 +34,7 @@ const Footer = () => {
     { label: 'Новости', href: '/news' },
     { label: 'О нас', href: paths.ABOUT },
     { label: 'Контакты', href: paths.CONTACTS },
-    { label: 'Гарантия', href: '/warranty' },
+    { label: 'Гарантия', href: paths.WARRANTY },
   ];
 
   const companyLinks = [

@@ -14,6 +14,8 @@ const paths = {
   ABOUT: '/about',
   DELIVERY: '/delivery',
   CONTACTS: '/contacts',
+  WARRANTY: '/warranty',
+  LEGAL_ENTITY: '/legal-entity',
 };
 
 export default paths;

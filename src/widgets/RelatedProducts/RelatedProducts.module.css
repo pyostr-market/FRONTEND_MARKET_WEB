@@ -13,7 +13,7 @@
 /* Сетка товаров */
 .productsGrid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* Одинаковая ширина для всех карточек */
+  grid-template-columns: repeat(6, 1fr); /* Одинаковая ширина для всех карточек */
   gap: var(--space-4);
   align-items: stretch; /* Растягиваем карточки по высоте */
   width: 100%;
@@ -64,7 +64,7 @@
 /* 1400px - 7 карточек */
 @media (max-width: 1400px) {
   .productsGrid {
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 

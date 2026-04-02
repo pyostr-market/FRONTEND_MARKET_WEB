@@ -13,6 +13,8 @@ import PublicOfferPage from '../../pages/PublicOfferPage/PublicOfferPage';
 import AboutPage from '../../pages/AboutPage/AboutPage';
 import DeliveryPage from '../../pages/DeliveryPage/DeliveryPage';
 import ContactsPage from '../../pages/ContactsPage/ContactsPage';
+import WarrantyPage from '../../pages/WarrantyPage/WarrantyPage';
+import LegalEntityPage from '../../pages/LegalEntityPage/LegalEntityPage';
 import paths from './paths';
 
 const routes = [
@@ -117,6 +119,20 @@ const routes = [
   {
     path: paths.CONTACTS,
     component: ContactsPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.WARRANTY,
+    component: WarrantyPage,
+    layout: 'main',
+    isPrivate: false,
+    showSearch: false,
+  },
+  {
+    path: paths.LEGAL_ENTITY,
+    component: LegalEntityPage,
     layout: 'main',
     isPrivate: false,
     showSearch: false,
