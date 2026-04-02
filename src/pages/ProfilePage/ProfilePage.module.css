@@ -2,98 +2,114 @@
   min-height: 100vh;
   background-color: var(--bg);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
 .profileContainer {
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background-color: var(--surface);
-  min-height: 100vh;
+  max-width: var(--max-width-content);
   display: flex;
-  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
 }
 
-/* Header */
-.profileHeader {
-  padding: var(--space-4) var(--space-4);
-  border-bottom: 1px solid var(--border);
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
   background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: fit-content;
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: calc(var(--space-4) + 80px);
 }
 
-.title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* Body */
-.profileBody {
-  flex: 1;
-  padding: var(--space-6) var(--space-4);
+.sidebarHeader {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-/* Placeholder */
-.profilePlaceholder {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-10) var(--space-4);
-  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5);
+  border-bottom: 1px solid var(--border);
 }
 
-.placeholderIcon {
+.userAvatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  background: var(--gradient-avatar);
   color: var(--surface);
-  margin-bottom: var(--space-5);
+  font-weight: 600;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-.placeholderTitle {
-  margin: 0 0 var(--space-2);
-  font-size: 20px;
+.avatarText {
+  text-transform: uppercase;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-size: 16px;
   font-weight: 600;
   color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.placeholderText {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  max-width: 280px;
+.verifiedBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gradient-success);
+  color: var(--surface);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-/* Logout button */
+.sidebarNav {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+}
+
+.sidebarFooter {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--border);
+}
+
 .logoutBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   width: 100%;
-  padding: 14px;
-  background-color: var(--surface);
+  padding: var(--space-3) var(--space-4);
+  background-color: transparent;
   color: var(--danger);
   border: 2px solid var(--danger);
   border-radius: var(--radius-xl);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .logoutBtn:hover {
@@ -101,18 +117,181 @@
   color: var(--surface);
 }
 
-/* Адаптив для больших экранов */
-@media (min-width: 481px) {
-  .profileContainer {
-    margin: var(--space-8) auto;
-    min-height: auto;
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
+/* Main Content */
+.mainContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.tabContent {
+  /* Контент вкладок */
+}
+
+/* Loading & Error states */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  gap: var(--space-4);
+}
+
+.loadingText {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.errorText {
+  margin: 0;
+  font-size: 16px;
+  color: var(--danger);
+}
+
+.retryButton {
+  padding: var(--space-3) var(--space-5);
+  background-color: var(--primary);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Placeholder для неразработанных разделов */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  min-height: 400px;
+}
+
+.placeholderIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: var(--surface);
+  margin-bottom: var(--space-5);
+}
+
+.placeholderTitle {
+  margin: 0 0 var(--space-2);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.placeholderText {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .profilePage {
+    padding: 0;
   }
 
-  .profilePage {
-    align-items: center;
-    justify-content: center;
+  .profileContainer {
+    flex-direction: column;
+    margin-top: 0;
   }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sidebarHeader {
+    padding: var(--space-4);
+  }
+
+  .sidebarNav {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .sidebarFooter {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .mainContent {
+    padding: var(--space-4);
+  }
+
+  .profileContent {
+    gap: var(--space-3);
+  }
+}
+
+/* Адаптив для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+}
+
+/* Состояние загрузки для форм */
+.loadingOverlay {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.loadingOverlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--surface);
+  opacity: 0.5;
+  z-index: 10;
 }

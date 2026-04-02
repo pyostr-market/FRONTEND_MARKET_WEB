@@ -225,12 +225,19 @@ export async function request(
     }
 
     // 4️⃣ Выполнение запроса через axios
+    // Получаем токен авторизации из localStorage
+    const token = localStorage.getItem('access_token');
+    const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+    
     const requestPromise = axios({
         url: `${baseUrl}${endpoint}`,
         method,
         params,
         data,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            ...authHeaders
+        },
     })
         .then((response) => {
             const result = {
