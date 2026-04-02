@@ -13,14 +13,16 @@
 /* Сетка товаров */
 .productsGrid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(7, 1fr); /* Одинаковая ширина для всех карточек */
   gap: var(--space-4);
   align-items: stretch; /* Растягиваем карточки по высоте */
+  width: 100%;
 }
 
 .productCardWrapper {
-  min-width: 0;
+  width: 100%; /* Карточка занимает всю ширину ячейки */
   height: 100%; /* Растягиваем на всю высоту ячейки */
+  min-width: 0; /* Разрешаем сжиматься меньше контента */
   display: flex; /* Чтобы ProductCard занял всю высоту */
 }
 
@@ -62,14 +64,14 @@
 /* 1400px - 7 карточек */
 @media (max-width: 1400px) {
   .productsGrid {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(7, 1fr);
   }
 }
 
 /* 1200px - 6 карточек */
 @media (max-width: 1200px) {
   .productsGrid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .sectionTitle {
@@ -80,14 +82,14 @@
 /* 1000px - 5 карточек */
 @media (max-width: 1000px) {
   .productsGrid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
 /* 850px - 4 карточки */
 @media (max-width: 850px) {
   .productsGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .sectionTitle {
@@ -98,7 +100,7 @@
 /* 700px - 3 карточки */
 @media (max-width: 700px) {
   .productsGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .sectionTitle {
@@ -109,7 +111,7 @@
 /* 550px - 2 карточки (мобильная версия) */
 @media (max-width: 550px) {
   .productsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
   }
 
@@ -136,7 +138,7 @@
 /* 400px - 2 карточки (минимум) */
 @media (max-width: 400px) {
   .productsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
   }
 }

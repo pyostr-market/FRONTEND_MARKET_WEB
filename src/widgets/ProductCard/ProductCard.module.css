@@ -11,6 +11,7 @@
   overflow: hidden;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   height: 100%; /* Растягиваем на всю высоту ячейки */
+  width: 100%; /* Растягиваем на всю ширину ячейки */
 }
 
 /* ======================
