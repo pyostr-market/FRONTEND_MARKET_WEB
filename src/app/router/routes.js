@@ -15,7 +15,7 @@ const routes = [
     component: HomePage,
     layout: 'main',
     isPrivate: false,
-    showSearch: false,
+    showSearch: true,
   },
   {
     path: paths.CATALOG,
