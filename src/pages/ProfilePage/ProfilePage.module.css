@@ -348,7 +348,6 @@
 
   .mobileContentActive {
     display: flex;
-    animation: slideIn 0.25s ease;
   }
 
   /* --- Mobile Sections --- */
