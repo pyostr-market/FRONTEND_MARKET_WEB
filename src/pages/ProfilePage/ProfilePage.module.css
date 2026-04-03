@@ -312,6 +312,7 @@
 @media (max-width: 768px) {
   .profilePage {
     padding: 0;
+    padding-bottom: 60px;
   }
 
   .profileContainer {

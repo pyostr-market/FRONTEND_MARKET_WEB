@@ -1,37 +1,36 @@
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
-import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser, FiLogIn } from 'react-icons/fi';
+import { memo, useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useCart } from '../../app/store/cartStore';
-import { useWishlist } from '../../app/store/wishlistStore';
+import { FiHome, FiGrid, FiShoppingCart, FiHeart, FiUser, FiLogIn } from 'react-icons/fi';
+import CartBadge from './CartBadge';
+import WishlistBadge from './WishlistBadge';
 import paths from '../../app/router/paths';
 import styles from './MobileNavbar.module.css';
+
+/**
+ * Проверка авторизации — читаем напрямую из localStorage
+ */
+const checkAuth = () => {
+  try {
+    return !!localStorage.getItem('access_token');
+  } catch {
+    return false;
+  }
+};
 
 const MobileNavbar = memo(() => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { getTotalQuantity } = useCart();
-  const { getTotalCount } = useWishlist();
-  const cartCount = getTotalQuantity();
-  const wishlistCount = getTotalCount();
-  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
+  const isUserAuthorized = checkAuth();
   const [catalogClickCount, setCatalogClickCount] = useState(0);
 
-  useEffect(() => {
-    try {
-      const token = localStorage.getItem('access_token');
-      setIsUserAuthorized(!!token);
-    } catch (e) {
-      // Игнорируем ошибки localStorage
-    }
-  }, []);
-
-  const isProductPage = location.pathname.startsWith('/product/');
-  const isCatalogPage = location.pathname === paths.CATALOG;
+  const pathname = location.pathname;
+  const isProductPage = pathname.startsWith('/product/');
+  const isCatalogPage = pathname === paths.CATALOG;
 
   /**
-   * Обработка клика по кнопке "Каталог"
-   * Первое нажатие — возврат назад (как кнопка "Назад")
-   * Второе нажатие — переход в начало каталога
+   * Обработка клика по кнопке "Каталог":
+   * - С товарной страницы или второе нажатие — назад
+   * - С других страниц — обычный переход в каталог
    */
   const handleCatalogClick = useCallback((e) => {
     if (isProductPage || (isCatalogPage && catalogClickCount > 0)) {
@@ -43,72 +42,85 @@ const MobileNavbar = memo(() => {
     }
   }, [isProductPage, isCatalogPage, catalogClickCount, navigate]);
 
-  // Сбрасываем счётчик кликов только при переходе на страницы, не связанные с каталогом
+  // Сброс счётчика при переходе на страницы, не связанные с каталогом
   useEffect(() => {
-    const isUnrelatedPage = !isProductPage && !isCatalogPage;
-    if (isUnrelatedPage && catalogClickCount > 0) {
+    if (!isProductPage && !isCatalogPage && catalogClickCount > 0) {
       setCatalogClickCount(0);
     }
   }, [isProductPage, isCatalogPage, catalogClickCount]);
 
-  const isActive = useCallback((path) => {
-    return location.pathname === path;
-  }, [location.pathname]);
+  const profilePath = isUserAuthorized ? paths.PROFILE : paths.AUTH;
+  const ProfileIcon = isUserAuthorized ? FiUser : FiLogIn;
+  const profileLabel = isUserAuthorized ? 'Профиль' : 'Войти';
 
-  const navItems = useMemo(() => [
-    { path: paths.HOME, icon: FiHome, label: 'Главная' },
-    { path: paths.CATALOG, icon: FiGrid, label: 'Каталог' },
-    { path: paths.CART, icon: FiShoppingCart, label: 'Корзина', badge: cartCount },
-    { path: paths.WISHLIST, icon: FiHeart, label: 'Избранное', badge: wishlistCount },
-    {
-      path: isUserAuthorized ? paths.PROFILE : paths.AUTH,
-      icon: isUserAuthorized ? FiUser : FiLogIn,
-      label: isUserAuthorized ? 'Профиль' : 'Войти',
-    },
-  ], [cartCount, wishlistCount, isUserAuthorized]);
+  // Определяем активный путь
+  const homeActive = pathname === paths.HOME || pathname === '/';
+  const catalogActive = pathname === paths.CATALOG;
+  const cartActive = pathname === paths.CART;
+  const wishlistActive = pathname === paths.WISHLIST;
+  // Профиль — может быть с query params (?tab=orders)
+  const profileActive = pathname === paths.PROFILE || pathname.startsWith(paths.PROFILE + '?');
 
   return (
     <nav className={styles.mobileNavbar} aria-label="Мобильная навигация">
       <div className={styles.mobileNavbarContainer}>
-        {navItems.map((item) => {
-          const { path, icon: Icon, label, badge } = item;
+        {/* Главная */}
+        <Link
+          to={paths.HOME}
+          className={`${styles.mobileNavItem}${homeActive ? ' ' + styles.active : ''}`}
+        >
+          <div className={styles.navItemContent}>
+            <FiHome size={24} />
+          </div>
+          <span>Главная</span>
+        </Link>
 
-          // Для кнопки "Каталог" используем специальную логику
-          if (path === paths.CATALOG) {
-            return (
-              <a
-                key={path}
-                href={path}
-                className={`${styles.mobileNavItem}${isActive(path) ? ' ' + styles.active : ''}`}
-                onClick={handleCatalogClick}
-              >
-                <div className={styles.navItemContent}>
-                  <Icon size={24} />
-                  {badge > 0 && (
-                    <span className={styles.navBadge}>{badge}</span>
-                  )}
-                </div>
-                <span>{label}</span>
-              </a>
-            );
-          }
+        {/* Каталог */}
+        <Link
+          to={paths.CATALOG}
+          className={`${styles.mobileNavItem}${catalogActive ? ' ' + styles.active : ''}`}
+          onClick={handleCatalogClick}
+        >
+          <div className={styles.navItemContent}>
+            <FiGrid size={24} />
+          </div>
+          <span>Каталог</span>
+        </Link>
 
-          return (
-            <Link
-              key={path}
-              to={path}
-              className={`${styles.mobileNavItem}${isActive(path) ? ' ' + styles.active : ''}`}
-            >
-              <div className={styles.navItemContent}>
-                <Icon size={24} />
-                {badge > 0 && (
-                  <span className={styles.navBadge}>{badge}</span>
-                )}
-              </div>
-              <span>{label}</span>
-            </Link>
-          );
-        })}
+        {/* Корзина */}
+        <Link
+          to={paths.CART}
+          className={`${styles.mobileNavItem}${cartActive ? ' ' + styles.active : ''}`}
+        >
+          <div className={styles.navItemContent}>
+            <FiShoppingCart size={24} />
+            <CartBadge />
+          </div>
+          <span>Корзина</span>
+        </Link>
+
+        {/* Избранное */}
+        <Link
+          to={paths.WISHLIST}
+          className={`${styles.mobileNavItem}${wishlistActive ? ' ' + styles.active : ''}`}
+        >
+          <div className={styles.navItemContent}>
+            <FiHeart size={24} />
+            <WishlistBadge />
+          </div>
+          <span>Избранное</span>
+        </Link>
+
+        {/* Профиль / Войти */}
+        <Link
+          to={profilePath}
+          className={`${styles.mobileNavItem}${profileActive ? ' ' + styles.active : ''}`}
+        >
+          <div className={styles.navItemContent}>
+            <ProfileIcon size={24} />
+          </div>
+          <span>{profileLabel}</span>
+        </Link>
       </div>
     </nav>
   );

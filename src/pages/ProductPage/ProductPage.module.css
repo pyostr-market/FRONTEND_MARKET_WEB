@@ -449,6 +449,10 @@
    TABLET PORTRAIT (≤768px)
 ====================== */
 @media (max-width: 768px) {
+  .productPage {
+    padding-bottom: 60px;
+  }
+
   .productContent {
     grid-template-columns: 1fr;
   }

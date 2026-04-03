@@ -202,6 +202,10 @@
    Responsive
 ====================== */
 @media (max-width: 768px) {
+  .catalogPage {
+    padding-bottom: 60px;
+  }
+
   .mobileTopBar {
     display: flex;
   }

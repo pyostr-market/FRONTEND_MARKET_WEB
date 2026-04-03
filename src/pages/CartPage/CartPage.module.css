@@ -739,6 +739,7 @@
 @media (max-width: 992px) {
   .cartPage {
     background-color: var(--bg);
+    padding-bottom: 100px;
   }
 
   .cartContainer {

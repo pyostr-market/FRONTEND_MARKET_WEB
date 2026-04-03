@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from '../../../widgets/Header/Header';
 import MobileHeader from '../../../widgets/MobileHeader/MobileHeader';
-import MobileNavbar from '../../../widgets/MobileNavbar/MobileNavbar';
 import ProfileModal from '../../../widgets/ProfileModal/ProfileModal';
 import Footer from '../../../widgets/Footer/Footer';
 import CookieBanner from '../CookieBanner/CookieBanner';
@@ -23,7 +22,7 @@ const MainLayout = ({ children, showSearch = true }) => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 767);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -57,7 +56,6 @@ const MainLayout = ({ children, showSearch = true }) => {
         {children}
       </main>
       <Footer />
-      <MobileNavbar />
       <CookieBanner />
       <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </div>
