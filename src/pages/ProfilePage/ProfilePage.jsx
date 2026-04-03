@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FiLogOut, FiUser, FiShoppingBag, FiGift, FiHeart, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiLogOut, FiUser, FiShoppingBag, FiGift, FiHeart, FiMonitor, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Tabs from '../../shared/ui/Tabs/Tabs';
 import Spinner from '../../shared/ui/Spinner/Spinner';
 import Toast from '../../shared/ui/Toast/Toast';
 import IndividualProfile from '../../features/profile/IndividualProfile/IndividualProfile';
 import CompanyProfile from '../../features/profile/CompanyProfile/CompanyProfile';
+import SessionsList from '../../features/profile/SessionsList/SessionsList';
 import useProfile from '../../shared/hooks/useProfile';
 import styles from './ProfilePage.module.css';
 
@@ -13,8 +14,9 @@ import styles from './ProfilePage.module.css';
 const SIDEBAR_TABS = [
   { key: 'personal', label: 'Личные данные', icon: <FiUser size={18} />, accent: 'blue' },
   { key: 'orders', label: 'Заказы', icon: <FiShoppingBag size={18} />, accent: 'purple' },
-  { key: 'referrals', label: 'Реферальная система', icon: <FiGift size={18} />, accent: 'orange' },
-  { key: 'loyalty', label: 'Программа лояльности', icon: <FiHeart size={18} />, accent: 'green' },
+  { key: 'sessions', label: 'Активные сессии', icon: <FiMonitor size={18} />, accent: 'orange' },
+  { key: 'referrals', label: 'Реферальная система', icon: <FiGift size={18} />, accent: 'green' },
+  { key: 'loyalty', label: 'Программа лояльности', icon: <FiHeart size={18} />, accent: 'blue' },
 ];
 
 // Вкладки личных данных
@@ -36,6 +38,7 @@ const ProfilePage = () => {
     error,
     saving,
     updateProfile,
+    refreshProfile,
     getDefaultTab,
   } = useProfile();
 
@@ -92,6 +95,59 @@ const ProfilePage = () => {
     navigate('/');
   };
 
+  /**
+   * Извлекает текстовое сообщение из объекта ошибки
+   */
+  const extractErrorMessage = (err) => {
+    if (!err) return 'Произошла ошибка';
+    if (typeof err === 'string') return err;
+    if (typeof err === 'object') {
+      return err.message || err.detail || err.error?.message || JSON.stringify(err);
+    }
+    return 'Произошла ошибка';
+  };
+
+  const handleTerminateSession = async (sessionId) => {
+    const { terminateSession } = await import('../../shared/api/userApi');
+    const result = await terminateSession(sessionId);
+    if (result.success) {
+      setToast({
+        isOpen: true,
+        type: 'success',
+        message: 'Сессия завершена',
+      });
+      await refreshProfile();
+    } else {
+      const errMsg = extractErrorMessage(result.error);
+      setToast({
+        isOpen: true,
+        type: 'error',
+        message: errMsg,
+      });
+    }
+  };
+
+  const handleTerminateAllSessions = async () => {
+    const { terminateAllSessions } = await import('../../shared/api/userApi');
+    const result = await terminateAllSessions();
+    if (result.success) {
+      const count = result.data?.terminated_count || 0;
+      setToast({
+        isOpen: true,
+        type: 'success',
+        message: `Завершено сессий: ${count}`,
+      });
+      await refreshProfile();
+    } else {
+      const errMsg = extractErrorMessage(result.error);
+      setToast({
+        isOpen: true,
+        type: 'error',
+        message: errMsg,
+      });
+    }
+  };
+
   const handleSaveProfile = async (payload) => {
     const result = await updateProfile(payload);
 
@@ -105,7 +161,7 @@ const ProfilePage = () => {
       setToast({
         isOpen: true,
         type: 'error',
-        message: result.error?.message || result.error || 'Ошибка при сохранении',
+        message: extractErrorMessage(result.error),
       });
     }
 
@@ -141,9 +197,7 @@ const ProfilePage = () => {
     }
 
     if (error) {
-      const errorMessage = typeof error === 'object'
-        ? error?.detail || error?.message || 'Произошла ошибка'
-        : error;
+      const errorMessage = extractErrorMessage(error);
 
       return (
         <div className={styles.errorContainer}>
@@ -192,6 +246,17 @@ const ProfilePage = () => {
 
       case 'orders':
         return renderPlaceholder('Заказы', <FiShoppingBag size={32} />, 'purple');
+
+      case 'sessions':
+        return (
+          <SessionsList
+            sessions={profile?.sessions || []}
+            currentSessionId={null}
+            onTerminateSession={handleTerminateSession}
+            onTerminateAll={handleTerminateAllSessions}
+            onRefresh={refreshProfile}
+          />
+        );
 
       case 'referrals':
         return renderPlaceholder('Реферальная система', <FiGift size={32} />, 'orange');

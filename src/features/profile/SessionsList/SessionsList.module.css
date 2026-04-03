@@ -1,0 +1,333 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.headerInfo {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.headerActions {
+  flex-shrink: 0;
+}
+
+.confirmBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.confirmText {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Sessions list */
+.sessionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Session card */
+.sessionCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  transition: border-color 0.2s ease;
+}
+
+.sessionCard:hover {
+  border-color: var(--border-strong);
+}
+
+.sessionCardCurrent {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(0, 91, 255, 0.03) 0%, rgba(0, 91, 255, 0.01) 100%);
+}
+
+.sessionCardTop {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.sessionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--surface-subtle);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.sessionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.sessionDevice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 4px;
+}
+
+.sessionDeviceName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.currentBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  background-color: var(--primary);
+  color: var(--surface);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sessionMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: 6px;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.sessionDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.detailItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Actions */
+.sessionCardActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+.terminateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-lg);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.terminateBtn:hover:not(:disabled) {
+  background-color: var(--danger);
+  color: var(--surface);
+}
+
+.terminateBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  background-color: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  min-height: 300px;
+  color: var(--text-muted);
+}
+
+.emptyTitle {
+  margin: var(--space-3) 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ==================== Mobile ==================== */
+@media (max-width: 768px) {
+  .container {
+    gap: var(--space-3);
+  }
+
+  .header {
+    padding: var(--space-4);
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .headerActions {
+    align-self: flex-end;
+  }
+
+  .confirmBlock {
+    gap: var(--space-2);
+  }
+
+  .confirmText {
+    font-size: 12px;
+  }
+
+  .sessionsList {
+    gap: 8px;
+  }
+
+  .sessionCard {
+    padding: var(--space-3);
+    gap: var(--space-2);
+    border-radius: var(--radius-lg);
+  }
+
+  .sessionCardTop {
+    gap: var(--space-2);
+  }
+
+  .sessionIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .sessionDeviceName {
+    font-size: 14px;
+  }
+
+  .currentBadge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .metaItem {
+    font-size: 12px;
+  }
+
+  .detailItem {
+    font-size: 11px;
+  }
+
+  .terminateBtn {
+    padding: 5px 12px;
+    font-size: 12px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .empty {
+    min-height: 240px;
+    padding: var(--space-6);
+  }
+
+  .emptyTitle {
+    font-size: 16px;
+  }
+
+  .emptyText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 14px;
+  }
+
+  .sessionCard {
+    padding: 12px;
+  }
+
+  .sessionIcon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}

@@ -8,7 +8,8 @@
       "Bash(rm *)",
       "Bash(pkill *)",
       "Bash(sleep *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(mkdir *)"
     ]
   },
   "$version": 3
