@@ -56,3 +56,24 @@
   color: var(--danger);
   margin-top: calc(-1 * var(--space-1));
 }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .label {
+    gap: 6px;
+  }
+
+  .labelText {
+    font-size: 13px;
+  }
+
+  .input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .errorText {
+    font-size: 12px;
+  }
+}

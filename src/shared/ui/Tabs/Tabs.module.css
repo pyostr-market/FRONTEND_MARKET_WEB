@@ -91,12 +91,21 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .tabList {
+    gap: 3px;
+    padding: 3px;
+  }
+
   .tab {
-    padding: 8px 12px;
+    padding: 8px 10px;
     font-size: 13px;
   }
 
   .tabIcon {
     font-size: 14px;
+  }
+
+  .vertical .tab {
+    padding: 9px 12px;
   }
 }

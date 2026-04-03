@@ -236,18 +236,15 @@ const ProfilePage = () => {
         {/* Мобильный вид: выбор разделов (скрыт на десктопе) */}
         <div className={`${styles.mobileSections} ${!isMobileContentVisible ? styles.mobileSectionsActive : ''}`}>
           <h1 className={styles.mobileSectionsTitle}>Профиль</h1>
-          <div className={styles.mobileSectionsGrid}>
+          <div className={styles.mobileSectionsList}>
             {SIDEBAR_TABS.map((tab) => (
               <button
                 key={tab.key}
-                className={`${styles.mobileSectionCard} ${styles[`mobileSectionCard--${tab.accent}`]} ${activeSidebarTab === tab.key ? styles.mobileSectionCardActive : ''}`}
+                className={styles.mobileSectionRow}
                 onClick={() => handleSidebarTabChange(tab.key)}
               >
-                <div className={`${styles.mobileSectionCardIcon} ${styles[`mobileSectionCardIcon--${tab.accent}`]}`}>
-                  {tab.icon}
-                </div>
-                <span className={styles.mobileSectionCardLabel}>{tab.label}</span>
-                <FiChevronRight size={16} className={styles.mobileSectionCardArrow} />
+                <span className={styles.mobileSectionRowLabel}>{tab.label}</span>
+                <FiChevronRight size={18} className={styles.mobileSectionRowArrow} />
               </button>
             ))}
           </div>
