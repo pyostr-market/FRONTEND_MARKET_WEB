@@ -6,9 +6,13 @@
   right: 0;
   background-color: var(--surface);
   border-top: 1px solid var(--border);
-  z-index: 100;
+  z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom, 0);
   height: 50px;
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 @media (max-width: 767px) {
@@ -23,6 +27,7 @@
   display: flex;
   justify-content: space-around;
   padding: 8px 0;
+  transform: translateZ(0);
 }
 
 .mobileNavItem {
@@ -33,17 +38,22 @@
   text-decoration: none;
   color: var(--text-muted);
   font-size: 11px;
-  transition: color 0.2s;
+  transition: color 0.15s ease;
   background: none;
   border: none;
   cursor: pointer;
   position: relative;
   text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
+
 .mobileNavItem span {
   width: 100%;
   text-align: center;
 }
+
 .navItemContent {
   position: relative;
   display: flex;
@@ -66,11 +76,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateZ(0);
 }
 
 .mobileNavItem svg {
   color: var(--text-secondary);
-  transition: color 0.2s;
+  transition: color 0.15s ease;
 }
 
 .mobileNavItem.active {

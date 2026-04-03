@@ -13,6 +13,8 @@
   gap: var(--space-3);
   animation: slideInLeft 0.3s ease-out;
   border: 1px solid var(--border);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @keyframes slideInLeft {
@@ -94,22 +96,23 @@
 .cookieBanner.mobile {
   left: 50%;
   right: auto;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
   bottom: 20px;
   max-width: calc(100% - 40px);
   width: auto;
   border-radius: var(--radius-lg);
   animation: slideInUp 0.3s ease-out;
+  backface-visibility: hidden;
 }
 
 @keyframes slideInUp {
   from {
     opacity: 0;
-    transform: translate(-50%, 100%);
+    transform: translate(-50%, 100%) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0) translateZ(0);
   }
 }
 

@@ -17,8 +17,12 @@ const MobileNavbar = memo(() => {
   const [catalogClickCount, setCatalogClickCount] = useState(0);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    setIsUserAuthorized(!!token);
+    try {
+      const token = localStorage.getItem('access_token');
+      setIsUserAuthorized(!!token);
+    } catch (e) {
+      // Игнорируем ошибки localStorage
+    }
   }, []);
 
   const isProductPage = location.pathname.startsWith('/product/');
@@ -31,12 +35,10 @@ const MobileNavbar = memo(() => {
    */
   const handleCatalogClick = useCallback((e) => {
     if (isProductPage || (isCatalogPage && catalogClickCount > 0)) {
-      // Первое нажатие с страницы товара или второе нажатие с каталога — идём назад
       e.preventDefault();
       navigate(-1);
       setCatalogClickCount(0);
     } else {
-      // Обычный переход в каталог
       setCatalogClickCount((prev) => prev + 1);
     }
   }, [isProductPage, isCatalogPage, catalogClickCount, navigate]);
@@ -48,6 +50,10 @@ const MobileNavbar = memo(() => {
       setCatalogClickCount(0);
     }
   }, [isProductPage, isCatalogPage, catalogClickCount]);
+
+  const isActive = useCallback((path) => {
+    return location.pathname === path;
+  }, [location.pathname]);
 
   const navItems = useMemo(() => [
     { path: paths.HOME, icon: FiHome, label: 'Главная' },
@@ -62,7 +68,7 @@ const MobileNavbar = memo(() => {
   ], [cartCount, wishlistCount, isUserAuthorized]);
 
   return (
-    <nav className={styles.mobileNavbar}>
+    <nav className={styles.mobileNavbar} aria-label="Мобильная навигация">
       <div className={styles.mobileNavbarContainer}>
         {navItems.map((item) => {
           const { path, icon: Icon, label, badge } = item;
@@ -73,7 +79,7 @@ const MobileNavbar = memo(() => {
               <a
                 key={path}
                 href={path}
-                className={`${styles.mobileNavItem} ${location.pathname === path ? styles.active : ''}`}
+                className={`${styles.mobileNavItem}${isActive(path) ? ' ' + styles.active : ''}`}
                 onClick={handleCatalogClick}
               >
                 <div className={styles.navItemContent}>
@@ -91,7 +97,7 @@ const MobileNavbar = memo(() => {
             <Link
               key={path}
               to={path}
-              className={`${styles.mobileNavItem} ${location.pathname === path ? styles.active : ''}`}
+              className={`${styles.mobileNavItem}${isActive(path) ? ' ' + styles.active : ''}`}
             >
               <div className={styles.navItemContent}>
                 <Icon size={24} />
@@ -107,5 +113,7 @@ const MobileNavbar = memo(() => {
     </nav>
   );
 });
+
+MobileNavbar.displayName = 'MobileNavbar';
 
 export default MobileNavbar;
