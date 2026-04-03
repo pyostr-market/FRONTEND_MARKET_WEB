@@ -679,7 +679,7 @@
 
   .mobileSummary {
     padding: 6px;
-    padding-bottom: calc(6px + 36px);
+    padding-bottom: var(--bottom-mobile-nav);
     transform: translateZ(0);
     backface-visibility: hidden;
   }
