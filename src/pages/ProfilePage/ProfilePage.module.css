@@ -13,9 +13,9 @@
   margin-top: var(--space-4);
 }
 
-/* Sidebar */
+/* ==================== Sidebar (desktop) ==================== */
 .sidebar {
-  width: 280px;
+  width: 220px;
   flex-shrink: 0;
   background-color: var(--surface);
   border-radius: var(--radius-2xl);
@@ -28,70 +28,13 @@
   top: calc(var(--space-4) + 80px);
 }
 
-.sidebarHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-5) var(--space-5);
-  border-bottom: 1px solid var(--border);
-}
-
-.userAvatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--gradient-avatar);
-  color: var(--surface);
-  font-weight: 600;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.avatarText {
-  text-transform: uppercase;
-}
-
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex: 1;
-  min-width: 0;
-}
-
-.userName {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.verifiedBadge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--gradient-success);
-  color: var(--surface);
-  font-size: 12px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
 .sidebarNav {
   flex: 1;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-2);
 }
 
 .sidebarFooter {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-3);
   border-top: 1px solid var(--border);
 }
 
@@ -101,12 +44,12 @@
   justify-content: center;
   gap: var(--space-2);
   width: 100%;
-  padding: var(--space-3) var(--space-4);
+  padding: 10px var(--space-3);
   background-color: transparent;
   color: var(--danger);
-  border: 2px solid var(--danger);
-  border-radius: var(--radius-xl);
-  font-size: 15px;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-lg);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -117,7 +60,7 @@
   color: var(--surface);
 }
 
-/* Main Content */
+/* ==================== Main Content ==================== */
 .mainContent {
   flex: 1;
   min-width: 0;
@@ -136,7 +79,7 @@
   /* Контент вкладок */
 }
 
-/* Loading & Error states */
+/* ==================== Loading & Error ==================== */
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -151,7 +94,7 @@
 
 .loadingText {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-secondary);
 }
 
@@ -170,17 +113,17 @@
 
 .errorText {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--danger);
 }
 
 .retryButton {
-  padding: var(--space-3) var(--space-5);
+  padding: 10px var(--space-4);
   background-color: var(--primary);
   color: var(--surface);
   border: none;
   border-radius: var(--radius-lg);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -190,48 +133,93 @@
   background-color: var(--primary-hover);
 }
 
-/* Placeholder для неразработанных разделов */
+/* ==================== Placeholder ==================== */
 .placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-10);
+  padding: var(--space-8);
   background-color: var(--surface);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-sm);
   text-align: center;
-  min-height: 400px;
+  min-height: 360px;
 }
 
 .placeholderIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;
-  height: 100px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: var(--gradient-primary);
   color: var(--surface);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
+  transition: background 0.2s ease;
+}
+
+.placeholderIcon--blue {
+  background: var(--gradient-primary);
+}
+
+.placeholderIcon--purple {
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+}
+
+.placeholderIcon--orange {
+  background: var(--gradient-accent);
+}
+
+.placeholderIcon--green {
+  background: var(--gradient-success);
 }
 
 .placeholderTitle {
   margin: 0 0 var(--space-2);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text);
 }
 
 .placeholderText {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.5;
-  max-width: 320px;
+  max-width: 280px;
 }
 
-/* Адаптив для мобильных */
+/* ==================== Mobile Sections (разделы) ==================== */
+/* По умолчанию скрыты — видны только на мобильном */
+.mobileSections {
+  display: none;
+}
+
+.mobileSectionsFooter {
+  margin-top: var(--space-5);
+  padding: 0 var(--space-1);
+}
+
+/* ==================== Mobile Content (содержимое раздела) ==================== */
+/* По умолчанию скрыты — видны только на мобильном */
+.mobileContent {
+  display: none;
+}
+
+.mobileContentBody {
+  flex: 1;
+}
+
+/* ==================== Tablet ==================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+
+/* ==================== Mobile ==================== */
 @media (max-width: 768px) {
   .profilePage {
     padding: 0;
@@ -240,44 +228,259 @@
   .profileContainer {
     flex-direction: column;
     margin-top: 0;
+    padding: var(--space-1);
   }
 
+  /* Скрываем десктопные элементы */
   .sidebar {
-    width: 100%;
-    position: static;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .sidebarHeader {
-    padding: var(--space-4);
-  }
-
-  .sidebarNav {
-    padding: var(--space-2) var(--space-3);
-  }
-
-  .sidebarFooter {
-    padding: var(--space-3) var(--space-4);
+    display: none;
   }
 
   .mainContent {
-    padding: var(--space-4);
+    display: none;
   }
 
+  /* Показываем мобильные блоки */
+  .mobileSections {
+    display: none;
+    flex-direction: column;
+  }
+
+  .mobileSectionsActive {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .mobileContent {
+    display: none;
+    flex-direction: column;
+  }
+
+  .mobileContentActive {
+    display: flex;
+    animation: slideIn 0.25s ease;
+  }
+
+  /* --- Mobile Sections styles --- */
+  .mobileSectionsTitle {
+    margin: 0 0 var(--space-4);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    padding: 0 var(--space-1);
+  }
+
+  .mobileSectionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .mobileSectionCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-3);
+    background-color: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-2xl);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    min-height: 120px;
+    justify-content: center;
+  }
+
+  .mobileSectionCard:active {
+    transform: scale(0.97);
+  }
+
+  .mobileSectionCardActive {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 91, 255, 0.15);
+  }
+
+  .mobileSectionCardIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--surface);
+    font-size: 20px;
+  }
+
+  .mobileSectionCardIcon--blue {
+    background: var(--gradient-primary);
+  }
+
+  .mobileSectionCardIcon--purple {
+    background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  }
+
+  .mobileSectionCardIcon--orange {
+    background: var(--gradient-accent);
+  }
+
+  .mobileSectionCardIcon--green {
+    background: var(--gradient-success);
+  }
+
+  .mobileSectionCardLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .mobileSectionCardArrow {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--text-muted);
+  }
+
+  /* --- Mobile Content header --- */
+  .mobileContentHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-1);
+    margin-bottom: var(--space-3);
+  }
+
+  .mobileContentBack {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .mobileContentBack:hover {
+    background-color: var(--surface-subtle);
+    color: var(--text);
+  }
+
+  .mobileContentTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* --- Content adjustments --- */
   .profileContent {
     gap: var(--space-3);
   }
-}
 
-/* Адаптив для планшетов */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .sidebar {
-    width: 240px;
+  .mobileSectionsGrid {
+    gap: 10px;
+  }
+
+  .mobileSectionCard {
+    min-height: 110px;
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .mobileSectionCardIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .mobileSectionCardLabel {
+    font-size: 12px;
+  }
+
+  .placeholder {
+    min-height: 300px;
+    padding: var(--space-6);
+  }
+
+  .placeholderIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .placeholderTitle {
+    font-size: 18px;
+  }
+
+  .placeholderText {
+    font-size: 13px;
   }
 }
 
-/* Состояние загрузки для форм */
+/* ==================== Small mobile ==================== */
+@media (max-width: 380px) {
+  .mobileSectionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobileSectionCard {
+    flex-direction: row;
+    min-height: auto;
+    padding: var(--space-3) var(--space-4);
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  .mobileSectionCardIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .mobileSectionCardLabel {
+    text-align: left;
+    flex: 1;
+  }
+
+  .mobileSectionCardArrow {
+    position: static;
+    flex-shrink: 0;
+  }
+}
+
+/* ==================== Animations ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==================== Loading overlay ==================== */
 .loadingOverlay {
   position: relative;
   pointer-events: none;

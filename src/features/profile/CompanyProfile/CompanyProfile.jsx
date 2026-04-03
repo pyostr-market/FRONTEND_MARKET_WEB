@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FiBriefcase } from 'react-icons/fi';
 import Input from '../../../shared/ui/Input/Input';
 import Button from '../../../shared/ui/Button/Button';
 import styles from './CompanyProfile.module.css';
@@ -91,15 +90,10 @@ const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.header}>
-        <div className={styles.iconWrapper}>
-          <FiBriefcase size={24} />
-        </div>
-        <div className={styles.titleBlock}>
-          <h2 className={styles.title}>Юридическое лицо</h2>
-          <p className={styles.subtitle}>
-            Реквизиты организации для выставления счетов и документов
-          </p>
-        </div>
+        <h2 className={styles.title}>Юридическое лицо</h2>
+        <p className={styles.subtitle}>
+          Реквизиты организации для выставления счетов и документов
+        </p>
       </div>
 
       <div className={styles.fields}>
@@ -155,7 +149,7 @@ const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
         <Button
           type="submit"
           variant="primary"
-          size="large"
+          size="medium"
           loading={saving}
           disabled={disabled}
         >

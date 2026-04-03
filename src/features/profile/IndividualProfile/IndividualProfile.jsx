@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FiUser } from 'react-icons/fi';
 import Input from '../../../shared/ui/Input/Input';
 import Button from '../../../shared/ui/Button/Button';
 import styles from './IndividualProfile.module.css';
@@ -84,15 +83,10 @@ const IndividualProfile = ({ profileData, disabled, saving, onSave }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.header}>
-        <div className={styles.iconWrapper}>
-          <FiUser size={24} />
-        </div>
-        <div className={styles.titleBlock}>
-          <h2 className={styles.title}>Физическое лицо</h2>
-          <p className={styles.subtitle}>
-            Личные данные для оформления заказов и доставки
-          </p>
-        </div>
+        <h2 className={styles.title}>Физическое лицо</h2>
+        <p className={styles.subtitle}>
+          Личные данные для оформления заказов и доставки
+        </p>
       </div>
 
       <div className={styles.fields}>
@@ -136,7 +130,7 @@ const IndividualProfile = ({ profileData, disabled, saving, onSave }) => {
         <Button
           type="submit"
           variant="primary"
-          size="large"
+          size="medium"
           loading={saving}
           disabled={disabled}
         >
