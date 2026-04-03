@@ -317,7 +317,7 @@
   .profileContainer {
     flex-direction: column;
     margin-top: 0;
-    padding: var(--space-3) var(--space-3) calc(var(--space-3) + var(--bottom-mobile-nav));
+    padding: 0 var(--space-2) ;
   }
 
   /* Скрываем десктопные элементы */
@@ -396,12 +396,20 @@
 
   /* --- Mobile Content header --- */
   .mobileContentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: var(--space-2) 0;
     margin-bottom: var(--space-3);
   }
 
   .mobileContentTitle {
     font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: right;
+    flex: 1;
+    padding-left: var(--space-3);
   }
 
   /* --- Content adjustments --- */
