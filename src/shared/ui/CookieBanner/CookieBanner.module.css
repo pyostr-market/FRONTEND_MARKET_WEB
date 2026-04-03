@@ -93,10 +93,11 @@
 ====================== */
 .cookieBanner.mobile {
   left: 50%;
+  right: auto;
   transform: translateX(-50%);
   bottom: 20px;
-  right: 20px;
   max-width: calc(100% - 40px);
+  width: auto;
   border-radius: var(--radius-lg);
   animation: slideInUp 0.3s ease-out;
 }
@@ -135,9 +136,10 @@
 ====================== */
 @media (max-width: 480px) {
   .cookieBanner.mobile {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    max-width: calc(100% - 20px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: 16px;
+    max-width: calc(100% - 32px);
   }
 }
