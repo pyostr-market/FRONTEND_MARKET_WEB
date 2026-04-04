@@ -191,66 +191,121 @@
   max-width: 280px;
 }
 
-/* ==================== Mobile Sections (разделы) ==================== */
-/* По умолчанию скрыты — видны только на мобильном */
+/* ==================== Modern Mobile Sections ==================== */
 .mobileSections {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
 }
 
 .mobileSectionsTitle {
-  margin: 0 0 var(--space-4);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text);
+  padding: 0 var(--space-4);
 }
 
 .mobileSectionsList {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  background-color: var(--surface);
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
 }
 
 .mobileSectionRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 14px 16px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 14px var(--space-3);
+  box-shadow: var(--shadow-xs);
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
-.mobileSectionRow:last-child {
-  border-bottom: none;
+.mobileSectionRow:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  background-color: var(--surface-hover);
 }
 
 .mobileSectionRow:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
   background-color: var(--surface-subtle);
+}
+
+.mobileSectionRowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: var(--surface);
+  font-size: 18px;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
 }
 
 .mobileSectionRowLabel {
   font-size: 16px;
   font-weight: 500;
   color: var(--text);
-  text-align: left;
+  flex: 1;
 }
 
-
 .mobileSectionRowArrow {
+  font-size: 18px;
   color: var(--text-muted);
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.mobileSectionRowArrow.open {
+  transform: rotate(90deg);
 }
 
 .mobileSectionsFooter {
   margin-top: var(--space-5);
-  padding: 0 var(--space-1);
+  padding: 0 var(--space-4);
+}
+
+/* Logout button modernized */
+.mobileSectionsFooter .logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px var(--space-3);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  background-color: var(--surface);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  transition: all 0.2s ease;
+}
+
+.mobileSectionsFooter .logoutBtn:hover {
+  background-color: var(--danger);
+  color: var(--surface);
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 380px) {
+  .mobileSectionRowLabel {
+    font-size: 15px;
+  }
+
+  .mobileSectionRowIcon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
 }
 
 /* ==================== Mobile Content (содержимое раздела) ==================== */

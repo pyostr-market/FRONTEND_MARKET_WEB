@@ -27,6 +27,8 @@
   max-width: var(--max-width-header-pc);
   background-color: var(--surface);
   border-bottom: 1px solid #e8e8e8;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
