@@ -1,0 +1,327 @@
+/* ======================
+   Overlay
+====================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ======================
+   Container
+====================== */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+}
+
+/* ======================
+   Close Button
+====================== */
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  z-index: 100001;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.closeButton:active {
+  transform: scale(0.95);
+}
+
+.closeButton svg {
+  stroke-width: 2.5;
+}
+
+/* ======================
+   Image Container
+====================== */
+.imageContainer {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: zoom-in;
+  padding: 20px;
+}
+
+.imageContainer.imageZoomed {
+  cursor: grab;
+}
+
+.imageContainer.imageZoomed:active {
+  cursor: grabbing;
+}
+
+.imageWrapper {
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainImage {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ======================
+   Navigation Buttons
+====================== */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+}
+
+.navButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navButtonLeft {
+  left: 20px;
+}
+
+.navButtonRight {
+  right: 20px;
+}
+
+/* ======================
+   Counter
+====================== */
+.counter {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 14px;
+  border-radius: 20px;
+  user-select: none;
+}
+
+/* ======================
+   Zoom Controls
+====================== */
+.zoomControls {
+  position: absolute;
+  bottom: 120px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 24px;
+  user-select: none;
+}
+
+.zoomButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.zoomButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.zoomLevel {
+  color: white;
+  font-size: 14px;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* ======================
+   Thumbnails
+====================== */
+.thumbnailsContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.thumbnailsScroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  justify-content: center;
+}
+
+.thumbnailsScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.thumbnail:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.thumbnailActive {
+  border-color: white;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .closeButton {
+    top: 15px;
+    right: 15px;
+    width: 48px;
+    height: 48px;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .navButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navButtonLeft {
+    left: 10px;
+  }
+
+  .navButtonRight {
+    right: 10px;
+  }
+
+  .imageContainer {
+    padding: 10px;
+  }
+
+  .mainImage {
+    max-height: 70vh;
+  }
+
+  .counter {
+    bottom: 100px;
+    font-size: 13px;
+  }
+
+  .zoomControls {
+    bottom: 100px;
+    right: 10px;
+    padding: 6px 12px;
+  }
+
+  .thumbnailsContainer {
+    bottom: 10px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .thumbnailsScroll {
+    gap: 6px;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+}

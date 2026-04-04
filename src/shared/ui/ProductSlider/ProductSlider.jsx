@@ -1,16 +1,19 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, Fragment } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LazyImage from '../LazyImage';
+import ProductImageLightbox from '../ProductImageLightbox/ProductImageLightbox';
 import { DEFAULT_IMAGES } from '../../config/appConfig';
 import styles from './ProductSlider.module.css';
 
 /**
  * Слайдер товара с главным изображением и миниатюрами
  * На десктопе: одно изображение + миниатюры справа
- * На мобильном: CSS Scroll Snap карусель с показом соседних изображений
+ * На мобильном: CSS Scroll Snap карусель
+ * При клике: открывается полноэкранный лайтбокс
  */
 const ProductSlider = ({ images = [], alt = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const scrollContainerRef = useRef(null);
   const isScrollingProgrammatically = useRef(false);
 
@@ -20,6 +23,20 @@ const ProductSlider = ({ images = [], alt = '' }) => {
   ];
 
   const hasMultipleImages = displayImages.length > 1;
+
+  /**
+   * Открыть лайтбокс
+   */
+  const openLightbox = useCallback(() => {
+    setIsLightboxOpen(true);
+  }, []);
+
+  /**
+   * Закрыть лайтбокс
+   */
+  const closeLightbox = useCallback(() => {
+    setIsLightboxOpen(false);
+  }, []);
 
   /**
    * Обновляем currentIndex при скролле (для мобильной версии)
@@ -92,7 +109,8 @@ const ProductSlider = ({ images = [], alt = '' }) => {
   }, [goToSlide]);
 
   return (
-    <div className={styles.sliderContainer}>
+    <Fragment>
+      <div className={styles.sliderContainer}>
       {/* Главное изображение */}
       <div className={styles.mainImageWrapper}>
         {/* Карусель для мобильной версии с CSS Scroll Snap */}
@@ -105,35 +123,36 @@ const ProductSlider = ({ images = [], alt = '' }) => {
             <div 
               key={img.upload_id || index}
               className={styles.carouselItem}
+              onClick={index === currentIndex ? openLightbox : undefined}
             >
               <LazyImage
                 src={img.image_url}
                 alt={`${alt} - изображение ${index + 1}`}
-                className={styles.mainImage}
+                className={`${styles.mainImage} ${index === currentIndex ? styles.mainImageClickable : ''}`}
               />
             </div>
           ))}
         </div>
 
         {/* Кнопки навигации (десктоп) */}
-        {hasMultipleImages && (
-          <>
-            <button
-              className={`${styles.navButton} ${styles.navButtonLeft}`}
-              onClick={handlePrev}
-              aria-label="Предыдущее изображение"
-            >
-              <FiChevronLeft size={20} />
-            </button>
-            <button
-              className={`${styles.navButton} ${styles.navButtonRight}`}
-              onClick={handleNext}
-              aria-label="Следующее изображение"
-            >
-              <FiChevronRight size={20} />
-            </button>
-          </>
-        )}
+        {/*{hasMultipleImages && (*/}
+        {/*  <>*/}
+        {/*    <button*/}
+        {/*      className={`${styles.navButton} ${styles.navButtonLeft}`}*/}
+        {/*      onClick={handlePrev}*/}
+        {/*      aria-label="Предыдущее изображение"*/}
+        {/*    >*/}
+        {/*      <FiChevronLeft size={20} />*/}
+        {/*    </button>*/}
+        {/*    <button*/}
+        {/*      className={`${styles.navButton} ${styles.navButtonRight}`}*/}
+        {/*      onClick={handleNext}*/}
+        {/*      aria-label="Следующее изображение"*/}
+        {/*    >*/}
+        {/*      <FiChevronRight size={20} />*/}
+        {/*    </button>*/}
+        {/*  </>*/}
+        {/*)}*/}
 
         {/* Счётчик изображений (десктоп) */}
         {hasMultipleImages && (
@@ -181,6 +200,17 @@ const ProductSlider = ({ images = [], alt = '' }) => {
         </div>
       )}
     </div>
+
+    {/* Полноэкранный лайтбокс */}
+    {isLightboxOpen && (
+      <ProductImageLightbox
+        images={displayImages}
+        initialIndex={currentIndex}
+        alt={alt}
+        onClose={closeLightbox}
+      />
+    )}
+    </Fragment>
   );
 };
 

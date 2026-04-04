@@ -68,6 +68,15 @@
   border-radius: var(--radius-xl);
 }
 
+/* Курсор-подсказка что можно кликнуть для открытия */
+.mainImageClickable {
+  cursor: zoom-in;
+}
+
+.mainImageClickable:hover {
+  opacity: 0.9;
+}
+
 /* ======================
    Navigation Buttons
 ====================== */
