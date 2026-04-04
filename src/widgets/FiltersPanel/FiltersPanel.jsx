@@ -151,7 +151,6 @@ const FiltersPanel = ({
         <button
           className={styles.resetBtn}
           onClick={onReset}
-          disabled={getSelectedCount() === 0}
         >
           Сбросить
         </button>

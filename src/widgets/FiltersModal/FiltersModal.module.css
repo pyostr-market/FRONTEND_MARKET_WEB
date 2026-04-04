@@ -48,6 +48,7 @@
   padding: 16px 20px;
   border-bottom: 1px solid #f0f2f5;
   flex-shrink: 0;
+  position: relative;
 }
 
 .modalTitle {
@@ -61,19 +62,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
-  border-radius: 8px;
-  color: #666;
+  border-radius: 10px;
+  color: #1a1a1a;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  z-index: 10;
+  margin-right: -4px;
 }
 
 .closeBtn:hover {
   background-color: #f0f2f5;
-  color: #1a1a1a;
+  color: #000;
+}
+
+.closeBtn:active {
+  background-color: #e4e7eb;
+  transform: scale(0.95);
 }
 
 .selectedBadge {
@@ -260,11 +269,6 @@
 
 .resetBtn:hover {
   background-color: #e4e7eb;
-}
-
-.resetBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .applyBtn {

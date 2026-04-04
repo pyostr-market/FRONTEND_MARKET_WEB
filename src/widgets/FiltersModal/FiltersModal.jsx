@@ -67,6 +67,14 @@ const FiltersModal = ({
   };
 
   /**
+   * Обработчик сброса
+   */
+  const handleReset = () => {
+    onReset();
+    onClose();
+  };
+
+  /**
    * Закрытие по ESC
    */
   useCallback(
@@ -216,8 +224,7 @@ const FiltersModal = ({
         <div className={styles.modalFooter}>
           <button
             className={styles.resetBtn}
-            onClick={onReset}
-            disabled={getSelectedCount() === 0}
+            onClick={handleReset}
           >
             Сбросить
           </button>
