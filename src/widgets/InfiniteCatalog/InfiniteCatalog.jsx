@@ -12,29 +12,39 @@ const ITEMS_PER_PAGE = 21;
 const InfiniteCatalog = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [initialized, setInitialized] = useState(false);
 
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
+  
+  // Используем ref для предотвращения бесконечного цикла
+  const loadingRef = useRef(false);
+  const hasMoreRef = useRef(true);
+  const offsetRef = useRef(0);
+  const loadProductsRef = useRef(null);
+
+  // Синхронизируем ref с состояниями
+  useEffect(() => {
+    hasMoreRef.current = hasMore;
+  }, [hasMore]);
 
   /**
    * Загрузка товаров
    */
-  const loadProducts = useCallback(async () => {
-    if (loading || !hasMore) return;
+  const loadProducts = useCallback(async (currentOffset) => {
+    if (loadingRef.current || !hasMoreRef.current) return;
 
+    loadingRef.current = true;
     setLoading(true);
     try {
       const result = await getProducts({
         limit: ITEMS_PER_PAGE,
-        offset,
+        offset: currentOffset,
       });
 
       if (result.success && result.data?.items) {
         const newItems = result.data.items;
-        
+
         setProducts((prev) => {
           // Фильтруем дубликаты
           const existingIds = new Set(prev.map((p) => p.id));
@@ -54,57 +64,55 @@ const InfiniteCatalog = () => {
       setHasMore(false);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
-  }, [offset, loading, hasMore]);
+  }, []);
 
-  /**
-   * Инициализация загрузки при появлении в зоне видимости
-   */
+  // Сохраняем функцию в ref
   useEffect(() => {
-    if (!initialized) {
-      setInitialized(true);
-      loadProducts();
-    }
-  }, [initialized, loadProducts]);
+    loadProductsRef.current = loadProducts;
+  }, [loadProducts]);
+
+  // Начальная загрузка
+  useEffect(() => {
+    loadProductsRef.current(0);
+  }, []);
 
   /**
    * Observer для бесконечного скролла
    */
   useEffect(() => {
-    if (loading || !hasMore) return;
-
-    const options = {
-      root: null,
-      rootMargin: '200px',
-      threshold: 0,
-    };
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting && !loading && hasMore) {
-        setOffset((prev) => prev + ITEMS_PER_PAGE);
+    // Даём время DOM обновиться после первого рендера
+    const timer = setTimeout(() => {
+      if (!loadMoreRef.current) {
+        return;
       }
-    }, options);
 
-    if (loadMoreRef.current) {
+      const options = {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0,
+      };
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !loadingRef.current && hasMoreRef.current) {
+          const newOffset = offsetRef.current + ITEMS_PER_PAGE;
+          offsetRef.current = newOffset;
+          loadProductsRef.current(newOffset);
+        }
+      }, options);
+
       observerRef.current.observe(loadMoreRef.current);
-    }
+    }, 200);
 
     return () => {
+      clearTimeout(timer);
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
     };
-  }, [loading, hasMore]);
-
-  /**
-   * Загрузка при изменении offset
-   */
-  useEffect(() => {
-    if (offset > 0) {
-      loadProducts();
-    }
-  }, [offset, loadProducts]);
+  }, []);
 
   if (products.length === 0 && !loading) {
     return null;

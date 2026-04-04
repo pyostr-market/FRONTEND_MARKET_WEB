@@ -12,41 +12,75 @@ const ITEMS_PER_PAGE = 21;
 const RelatedProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [initialized, setInitialized] = useState(false);
 
   const observerRef = useRef(null);
   const loadMoreRef = useRef(null);
+  
+  // Используем ref для предотвращения бесконечного цикла
+  const loadingRef = useRef(false);
+  const hasMoreRef = useRef(true);
+  const offsetRef = useRef(0);
+  const loadProductsRef = useRef(null);
+
+  // Синхронизируем ref с состояниями
+  useEffect(() => {
+    hasMoreRef.current = hasMore;
+  }, [hasMore]);
 
   /**
    * Загрузка товаров
    */
-  const loadProducts = useCallback(async () => {
-    if (loading || !hasMore) return;
+  const loadProducts = useCallback(async (currentOffset) => {
+    if (loadingRef.current || !hasMoreRef.current) {
+      console.log('[RelatedProducts] Skipping load:', {
+        loading: loadingRef.current,
+        hasMore: hasMoreRef.current,
+        offset: currentOffset
+      });
+      return;
+    }
 
+    console.log('[RelatedProducts] Loading products at offset:', currentOffset);
+    
+    loadingRef.current = true;
     setLoading(true);
+    
     try {
       const result = await getProducts({
         limit: ITEMS_PER_PAGE,
-        offset,
+        offset: currentOffset,
       });
+
+      console.log('[RelatedProducts] Response:', result);
 
       if (result.success && result.data?.items) {
         const newItems = result.data.items;
-        
+        const totalItems = result.data.total;
+
+        console.log('[RelatedProducts] Got items:', newItems.length, 'Total:', totalItems, 'Current offset:', currentOffset);
+
         setProducts((prev) => {
           // Фильтруем дубликаты
           const existingIds = new Set(prev.map((p) => p.id));
           const uniqueItems = newItems.filter((item) => !existingIds.has(item.id));
-          return [...prev, ...uniqueItems];
+          const newProducts = [...prev, ...uniqueItems];
+          console.log('[RelatedProducts] Products count after merge:', newProducts.length);
+          return newProducts;
         });
 
         // Если товаров меньше, чем запрашивали — значит достигли конца
         if (newItems.length < ITEMS_PER_PAGE) {
+          console.log('[RelatedProducts] No more items (got less than limit)');
           setHasMore(false);
+        } else if (currentOffset + ITEMS_PER_PAGE >= totalItems) {
+          console.log('[RelatedProducts] No more items (offset + limit >= total)');
+          setHasMore(false);
+        } else {
+          console.log('[RelatedProducts] Has more items available');
         }
       } else {
+        console.log('[RelatedProducts] No items in response');
         setHasMore(false);
       }
     } catch (error) {
@@ -54,57 +88,68 @@ const RelatedProducts = () => {
       setHasMore(false);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
-  }, [offset, loading, hasMore]);
+  }, []);
 
-  /**
-   * Инициализация загрузки при появлении в зоне видимости
-   */
+  // Сохраняем функцию в ref
   useEffect(() => {
-    if (!initialized) {
-      setInitialized(true);
-      loadProducts();
-    }
-  }, [initialized, loadProducts]);
+    loadProductsRef.current = loadProducts;
+  }, [loadProducts]);
+
+  // Начальная загрузка
+  useEffect(() => {
+    loadProductsRef.current(0);
+  }, []);
 
   /**
    * Observer для бесконечного скролла
    */
   useEffect(() => {
-    if (loading || !hasMore) return;
-
-    const options = {
-      root: null,
-      rootMargin: '200px',
-      threshold: 0,
-    };
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting && !loading && hasMore) {
-        setOffset((prev) => prev + ITEMS_PER_PAGE);
+    // Даём время DOM обновиться после первого рендера
+    const timer = setTimeout(() => {
+      console.log('[RelatedProducts] Observer useEffect, loadMoreRef:', loadMoreRef.current);
+      
+      if (!loadMoreRef.current) {
+        console.warn('[RelatedProducts] loadMoreRef.current is NULL after timeout, observer not set up');
+        return;
       }
-    }, options);
+      
+      const options = {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0,
+      };
 
-    if (loadMoreRef.current) {
+      observerRef.current = new IntersectionObserver((entries) => {
+        const [entry] = entries;
+        console.log('[RelatedProducts] Observer triggered:', {
+          isIntersecting: entry.isIntersecting,
+          loading: loadingRef.current,
+          hasMore: hasMoreRef.current,
+          offset: offsetRef.current
+        });
+        if (entry.isIntersecting && !loadingRef.current && hasMoreRef.current) {
+          const newOffset = offsetRef.current + ITEMS_PER_PAGE;
+          console.log('[RelatedProducts] Will load more at offset:', newOffset);
+          offsetRef.current = newOffset;
+          loadProductsRef.current(newOffset);
+        } else {
+          console.log('[RelatedProducts] Observer skipped load');
+        }
+      }, options);
+
       observerRef.current.observe(loadMoreRef.current);
-    }
+      console.log('[RelatedProducts] Observer set up on loadMoreRef');
+    }, 200);
 
     return () => {
+      clearTimeout(timer);
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
     };
-  }, [loading, hasMore]);
-
-  /**
-   * Загрузка при изменении offset
-   */
-  useEffect(() => {
-    if (offset > 0) {
-      loadProducts();
-    }
-  }, [offset, loadProducts]);
+  }, []);
 
   if (products.length === 0 && !loading) {
     return null;

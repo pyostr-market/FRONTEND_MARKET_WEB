@@ -169,7 +169,7 @@ const ProductPage = () => {
               relationType={RELATION_TYPES.ACCESSORY}
           />
           {product.description && (
-              <div className={styles.descriptionSection}>
+              <div className={styles.descriptionSection} data-section="description">
                 <h2 className={styles.sectionTitle}>Описание</h2>
                 <div className={`${styles.descriptionWrapper} ${!descriptionExpanded ? styles.descriptionCollapsed : ''}`}>
                   <div

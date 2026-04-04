@@ -26,27 +26,41 @@ const StickyProductBar = ({ product }) => {
   }, []);
 
   useEffect(() => {
-    // Находим секцию с описанием
-    const descriptionSection = document.querySelector('.descriptionSection');
+    let cleanupFn = null;
     
-    if (!descriptionSection) return;
+    // Даём время DOM обновиться после рендера
+    const timer = setTimeout(() => {
+      // Находим секцию с описанием по data-атрибуту
+      const descriptionSection = document.querySelector('[data-section="description"]');
 
-    const handleScroll = () => {
-      const descriptionTop = descriptionSection.getBoundingClientRect().top;
-      const shouldBeVisible = descriptionTop < 100;
-      // Показываем плашку, когда описание заходит за верх экрана
-      setIsVisible(shouldBeVisible);
-    };
+      if (!descriptionSection) {
+        console.warn('[StickyProductBar] descriptionSection not found');
+        return;
+      }
 
-    // Первичная проверка
-    handleScroll();
+      const handleScroll = () => {
+        const descriptionTop = descriptionSection.getBoundingClientRect().top;
+        const shouldBeVisible = descriptionTop < 100;
+        // Показываем плашку, когда описание заходит за верх экрана
+        setIsVisible(shouldBeVisible);
+      };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+      // Первичная проверка
+      handleScroll();
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      // Сохраняем cleanup функцию
+      cleanupFn = () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, 100);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+      if (cleanupFn) cleanupFn();
     };
-  }, []);
+  }, [product]); // Добавляем product как зависимость, чтобы пересоздать listener после загрузки продукта
 
   if (!product) return null;
 
