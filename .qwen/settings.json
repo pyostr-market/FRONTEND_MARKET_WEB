@@ -9,7 +9,8 @@
       "Bash(pkill *)",
       "Bash(sleep *)",
       "Bash(curl *)",
-      "Bash(mkdir *)"
+      "Bash(mkdir *)",
+      "Bash(npx *)"
     ]
   },
   "$version": 3

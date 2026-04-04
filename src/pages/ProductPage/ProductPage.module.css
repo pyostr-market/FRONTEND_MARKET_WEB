@@ -88,6 +88,13 @@
   align-self: start;
 }
 
+/* Общий wrapper для buyBox и платёжного блока */
+.purchaseWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 /* Кнопка избранного */
 .wishlistButton {
   display: inline-flex;
@@ -140,6 +147,134 @@
   border: 1px solid #e6e8eb;
   border-radius: var(--radius-xl); /* 10px */
   padding: var(--space-4); /* 16px */
+}
+
+/* Основные кнопки */
+.mainButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: 0;
+}
+
+/* Кнопка «В корзину» — увеличенная */
+.addToCartButton {
+  background-color: var(--accent-orange);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 18px 24px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 56px;
+}
+
+.addToCartButton:hover {
+  background-color: #e68a00;
+  transform: translateY(-1px);
+}
+
+.addToCartButton:active {
+  transform: translateY(0);
+}
+
+/* Кнопка «Рассрочка» */
+.installmentButton {
+  background-color: var(--surface-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 14px;
+  font-size: 14px;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Кнопка «Купить в 1 клик» */
+.buyNowButton {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  min-height: 50px;
+}
+
+.buyNowButton:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Цена и наличие — теперь вверху buyBox */
+.priceStock {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid #eef0f2;
+}
+
+.priceStock .price {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+  line-height: 1.2;
+}
+
+.priceStock .stock {
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Plyte Widget — отдельный блок под buyBox */
+.plyteWidget {
+  background-color: #f8f5ff;
+  border: 1px solid #d6cfff;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.plyteHeader {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.plyteLogo {
+  color: #6b3eff;
+}
+
+.plyteHelp {
+  color: #6b3eff;
+  cursor: pointer;
+}
+
+.plyteText {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.plyteLine {
+  height: 2px;
+  background-color: #6b3eff;
+  border-radius: 1px;
+  margin: var(--space-2) 0;
+}
+
+.plyteFooter {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+  color: #6b3eff;
 }
 
 /* ======================
@@ -345,6 +480,39 @@
    MEDIA QUERIES
 ====================== */
 
+/* LARGE LAPTOP (1201px - 1450px) — плавное сужение сетки */
+@media (max-width: 1450px) and (min-width: 1201px) {
+  .productContent {
+    grid-template-columns: 1fr 360px 300px;
+    gap: var(--space-4);
+  }
+
+  .gallery {
+    max-width: 100%;
+  }
+
+  .buyBlock {
+    position: sticky;
+    top: var(--top-8);
+    align-self: start;
+  }
+
+  .priceStock .price {
+    font-size: 28px;
+  }
+
+  .addToCartButton {
+    padding: 16px 20px;
+    font-size: 16px;
+    min-height: 52px;
+  }
+
+  .buyNowButton {
+    padding: 14px;
+    min-height: 48px;
+  }
+}
+
 /* LARGE LAPTOP (1001px - 1200px) - немного сжимаем сетку */
 @media (max-width: 1200px) and (min-width: 1001px) {
   .productContent {
@@ -373,11 +541,26 @@
     font-size: 19px;
   }
 
-  .price {
-    font-size: 24px;
+  .priceStock .price {
+    font-size: 26px;
   }
 
   .buyBox {
+    padding: var(--space-3);
+  }
+
+  .addToCartButton {
+    padding: 14px 18px;
+    font-size: 15px;
+    min-height: 50px;
+  }
+
+  .buyNowButton {
+    padding: 13px;
+    min-height: 46px;
+  }
+
+  .plyteWidget {
     padding: var(--space-3);
   }
 }
@@ -412,7 +595,7 @@
     font-size: 18px;
   }
 
-  .price {
+  .priceStock .price {
     font-size: 24px;
   }
 
@@ -425,6 +608,17 @@
   .wishlistButton svg {
     width: 18px;
     height: 18px;
+  }
+
+  .addToCartButton {
+    padding: 14px 16px;
+    font-size: 15px;
+    min-height: 48px;
+  }
+
+  .buyNowButton {
+    padding: 12px;
+    min-height: 44px;
   }
 }
 
@@ -449,7 +643,7 @@
     font-size: 17px;
   }
 
-  .price {
+  .priceStock .price {
     font-size: 22px;
   }
 
@@ -483,6 +677,10 @@
     margin-top: 12px;
   }
 
+  .purchaseWrapper {
+    gap: var(--space-2);
+  }
+
   .gallery {
     max-width: 100%;
   }
@@ -499,7 +697,7 @@
     font-size: 16px;
   }
 
-  .price {
+  .priceStock .price {
     font-size: 22px;
   }
 
@@ -512,6 +710,21 @@
   .wishlistButton svg {
     width: 16px;
     height: 16px;
+  }
+
+  .addToCartButton {
+    padding: 14px 16px;
+    font-size: 15px;
+    min-height: 50px;
+  }
+
+  .buyNowButton {
+    padding: 12px;
+    min-height: 46px;
+  }
+
+  .plyteWidget {
+    padding: var(--space-3);
   }
 }
 
@@ -572,7 +785,7 @@
     border: none;
   }
 
-  .price {
+  .priceStock .price {
     font-size: 22px;
   }
   .price_mobile {

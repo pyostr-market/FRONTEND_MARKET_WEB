@@ -413,47 +413,48 @@ const ProductPage = () => {
 
 
             <div className={cx('buyBlock')}>
-              <div className={cx('buyBox')}>
+              {/* Общий wrapper для buyBox и платёжного блока */}
+              <div className={cx('purchaseWrapper')}>
 
                 {/* =========================
-        Основные кнопки
-    ========================= */}
-                <div className={cx('mainButtons')}>
-                  {/* Кнопка "В корзину" с счетчиком */}
-                  <AddToCart
-                      productId={activeProduct.id}
-                      className={cx('addToCartButton')}
-                  />
+                    BUY BOX: цена, наличие, кнопки
+                ========================= */}
+                <div className={cx('buyBox')}>
 
-                  {/* Кнопка "Рассрочка" */}
-                  <button className={cx('installmentButton')} disabled>
-                    Рассрочка
-                  </button>
-
-                  {/* Кнопка "Купить в 1 клик" */}
-                  <button
-                      className={cx('buyNowButton')}
-                      onClick={() => {
-                        // Добавляем товар в корзину и сразу редирект
-                        AddToCart(product.id);
-                        navigate(paths.CART);
-                      }}
-                  >
-                    Купить в 1 клик
-                  </button>
-                </div>
-
-
-                <div className={cx('priceStock')}>
-                  <div className={cx('price')}>
-                    {formatPrice(activeProduct.price)}
+                  {/* Цена и наличие — в самом верху */}
+                  <div className={cx('priceStock')}>
+                    <div className={cx('price')}>
+                      {formatPrice(activeProduct.price)}
+                    </div>
+                    <div className={cx('stock')}>В наличии</div>
                   </div>
-                  <div className={cx('stock')}>В наличии</div>
+
+                  {/* Основные кнопки */}
+                  <div className={cx('mainButtons')}>
+                    <AddToCart
+                        productId={activeProduct.id}
+                        className={cx('addToCartButton')}
+                    />
+
+                    <button className={cx('installmentButton')} disabled>
+                      Рассрочка
+                    </button>
+
+                    <button
+                        className={cx('buyNowButton')}
+                        onClick={() => {
+                          navigate(paths.CART);
+                        }}
+                    >
+                      Купить в 1 клик
+                    </button>
+                  </div>
+
                 </div>
 
                 {/* =========================
-                    Под блоком: виджет рассрочки Plyte
-                    ========================= */}
+                    Платёжный блок Plyte — отдельным блоком под buyBox
+                ========================= */}
                 <div className={cx('plyteWidget')}>
                   <div className={cx('plyteHeader')}>
                     <span className={cx('plyteLogo')}>Plyte</span>

@@ -1,4 +1,28 @@
 /* ======================
+   LARGE LAPTOP (1201px - 1450px) — плавное сужение сетки
+====================== */
+@media (max-width: 1450px) and (min-width: 1201px) {
+    .productContent {
+        grid-template-columns: 1fr 360px 300px;
+        gap: var(--space-4);
+    }
+
+    .gallery {
+        max-width: 100%;
+    }
+
+    .buyBlock {
+        position: sticky;
+        top: var(--top-8);
+        align-self: start;
+    }
+
+    .priceStock .price {
+        font-size: 28px;
+    }
+}
+
+/* ======================
    LARGE LAPTOP (1001px - 1200px)
 ====================== */
 @media (max-width: 1200px) and (min-width: 1001px) {
@@ -28,8 +52,8 @@
         font-size: 19px;
     }
 
-    .price {
-        font-size: 24px;
+    .priceStock .price {
+        font-size: 26px;
     }
 
     .buyBox {
@@ -68,7 +92,7 @@
         font-size: 18px;
     }
 
-    .price {
+    .priceStock .price {
         font-size: 24px;
     }
 
@@ -105,7 +129,7 @@
         font-size: 17px;
     }
 
-    .price {
+    .priceStock .price {
         font-size: 22px;
     }
 
@@ -155,7 +179,7 @@
         font-size: 16px;
     }
 
-    .price {
+    .priceStock .price {
         font-size: 22px;
     }
 
