@@ -3,7 +3,6 @@
 ====================== */
 .sliderContainer {
   display: flex;
-  gap: var(--space-3);
 }
 
 /* ======================
@@ -17,6 +16,7 @@
   overflow: hidden;
   border: 1px solid var(--border);
   max-height: 520px;
+  max-width: 500px;
   min-height: 200px;
 }
 
