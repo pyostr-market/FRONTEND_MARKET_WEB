@@ -104,7 +104,7 @@
   justify-content: center;
   font-size: 12px;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .variantSpecs {
@@ -122,7 +122,7 @@
 }
 
 /* ======================
-   TABLET (769px - 1000px) - уменьшаем варианты
+   TABLET (769px - 1000px)
 ====================== */
 @media (max-width: 1000px) and (min-width: 769px) {
   .variantCard {
@@ -143,31 +143,8 @@
 }
 
 /* ======================
-   SMALL TABLET (≤900px)
+   Десктоп сетка (≥768px) — 3 колонки по умолчанию
 ====================== */
-@media (max-width: 900px) and (min-width: 769px) {
-  .variantCard {
-    width: 70px;
-    max-width: 70px;
-    padding: 8px;
-    gap: 6px;
-  }
-
-  .variantImage {
-    width: 50px;
-    height: 50px;
-  }
-
-  .specItem {
-    font-size: 9px;
-  }
-
-  .variantsTitle {
-    font-size: 15px;
-  }
-}
-
-/* Десктоп сетка с анимацией */
 @media (min-width: 768px) {
   .variantList {
     display: grid;
@@ -179,11 +156,11 @@
   }
 
   .collapsed {
-    max-height: 140px; /* 1 ряд + чуть виден второй */
+    max-height: 140px;
   }
 
   .expanded {
-    max-height: 1000px; /* достаточно для всех */
+    max-height: 1000px;
     padding: 5px;
   }
 
@@ -193,7 +170,11 @@
     right: 0;
     bottom: 0;
     height: 60px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
     z-index: 1;
     cursor: pointer;
   }
@@ -204,12 +185,51 @@
     bottom: 12px;
     z-index: 2;
     padding: 6px 10px;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 6px;
     border: none;
     color: #005bff;
     font-weight: 500;
     cursor: pointer;
+  }
+}
+
+/* ========== 850px – 949px: 2 колонки ========== */
+@media (min-width: 850px) and (max-width: 949px) {
+  .variantList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .variantCard {
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* ========== 769px – 849px: 2 колонки ========== */
+@media (min-width: 769px) and (max-width: 849px) {
+  .variantList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .variantCard {
+    width: auto;
+    max-width: none;
+    padding: 10px;
+  }
+
+  .variantImage {
+    width: 60px;
+    height: 60px;
+  }
+
+  .specItem {
+    font-size: 10px;
+  }
+
+  .variantsTitle {
+    font-size: 15px;
   }
 }
 

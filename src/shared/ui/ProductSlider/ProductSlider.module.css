@@ -140,7 +140,7 @@
    Mobile Indicators
 ====================== */
 .mobileIndicators {
-  position: absolute;       /* над главным изображением */
+  position: absolute;
   bottom: var(--space-3);
   left: 50%;
   transform: translateX(-50%);
@@ -148,7 +148,7 @@
   gap: 2px;
   align-items: center;
 }
-@media (max-width: 756px) {
+@media (max-width: 768px) {
   .mobileIndicators {
     display: flex;
   }

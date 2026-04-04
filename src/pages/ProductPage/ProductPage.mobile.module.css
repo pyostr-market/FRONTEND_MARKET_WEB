@@ -1,291 +1,342 @@
 /* ======================
-   LARGE LAPTOP (1201px - 1450px) — плавное сужение сетки
+   LARGE LAPTOP (1200px - 1400px)
 ====================== */
-@media (max-width: 1450px) and (min-width: 1201px) {
-    .productContent {
-        grid-template-columns: 1fr 360px 300px;
-        gap: var(--space-4);
-    }
+@media (max-width: 1400px) and (min-width: 1200px) {
+  .productContent {
+    grid-template-columns: 1fr 360px 300px;
+    gap: var(--space-4);
+  }
 
-    .gallery {
-        max-width: 100%;
-    }
+  .gallery {
+    max-width: 100%;
+  }
 
-    .buyBlock {
-        position: sticky;
-        top: var(--top-8);
-        align-self: start;
-    }
+  .buyBlock {
+    position: sticky;
+    top: var(--top-8);
+    align-self: start;
+  }
 
-    .priceStock .price {
-        font-size: 28px;
-    }
+  .price {
+    font-size: 28px;
+  }
 }
 
 /* ======================
-   LARGE LAPTOP (1001px - 1200px)
+   LARGE LAPTOP (1050px - 1199px)
 ====================== */
-@media (max-width: 1200px) and (min-width: 1001px) {
-    .productContent {
-        grid-template-columns: 1fr 340px 280px;
-        gap: var(--space-4);
-    }
+@media (max-width: 1199px) and (min-width: 1050px) {
+  .productContent {
+    grid-template-columns: 1fr 320px 280px;
+    gap: var(--space-4);
+  }
 
-    .gallery {
-        max-width: 100%;
-        position: sticky;
-        top: 80px;
-        align-self: start;
-    }
+  .gallery {
+    max-width: 100%;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
 
-    .mainInfo {
-        min-width: 0;
-    }
+  .mainInfo {
+    min-width: 0;
+  }
 
-    .buyBlock {
-        position: sticky;
-        top: 80px;
-        align-self: start;
-    }
+  .buyBlock {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
 
-    .title {
-        font-size: 19px;
-    }
+  .title {
+    font-size: 20px;
+  }
 
-    .priceStock .price {
-        font-size: 26px;
-    }
+  .price {
+    font-size: 26px;
+  }
 
-    .buyBox {
-        padding: var(--space-3);
-    }
+  .buyBox {
+    padding: var(--space-3);
+  }
 }
 
 /* ======================
-   MEDIUM LAPTOP (≤1000px)
+   MEDIUM LAPTOP (950px - 1049px)
 ====================== */
-@media (max-width: 1000px) {
-    .productContent {
-        grid-template-columns: minmax(0, 1fr) 300px;
-        gap: var(--space-4);
-    }
+@media (max-width: 1049px) and (min-width: 950px) {
+  .productContent {
+    grid-template-columns: 1.3fr 300px 280px;
+    gap: var(--space-3);
+  }
 
-    .gallery {
-        max-width: 100%;
-        position: static;
-    }
+  .gallery {
+    max-width: 100%;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
 
-    .mainImageWrapper {
-        max-height: 420px;
-    }
+  .mainInfo {
+    min-width: 0;
+  }
 
-    .buyBlock {
-        grid-column: span 2;
-        position: static;
-    }
+  .buyBlock {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
 
-    .buyBox {
-        position: static;
-    }
+  .title {
+    font-size: 19px;
+  }
 
-    .title {
-        font-size: 18px;
-    }
+  .price {
+    font-size: 25px;
+  }
 
-    .priceStock .price {
-        font-size: 24px;
-    }
+  .buyBox {
+    padding: var(--space-3);
+  }
 
-    .wishlistButton {
-        padding: 8px 14px;
-        font-size: 13px;
-        margin-bottom: var(--space-4);
-    }
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: var(--space-4);
+  }
 
-    .wishlistButton svg {
-        width: 18px;
-        height: 18px;
-    }
+  .wishlistButton svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* ======================
-   SMALL LAPTOP (≤900px)
+   SMALL LAPTOP (850px - 949px) — 2 колонки
 ====================== */
-@media (max-width: 900px) {
-    .productContainer {
-        padding: var(--space-4) var(--space-4) 120px;
-    }
+@media (max-width: 949px) and (min-width: 850px) {
+  .productContent {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--space-3);
+  }
 
-    .productContent {
-        grid-template-columns: minmax(0, 1fr) 280px;
-        gap: var(--space-3);
-    }
+  .gallery {
+    max-width: 100%;
+    position: static;
+  }
 
-    .mainImageWrapper {
-        max-height: 380px;
-    }
+  .mainImageWrapper {
+    max-height: 400px;
+  }
 
-    .title {
-        font-size: 17px;
-    }
+  .buyBlock {
+    grid-column: span 2;
+    position: static;
+  }
 
-    .priceStock .price {
-        font-size: 22px;
-    }
+  .buyBox {
+    position: static;
+  }
 
-    .rating {
-        font-size: 12px;
-    }
+  .title {
+    font-size: 18px;
+  }
 
-    .buyBox {
-        padding: var(--space-3);
-    }
+  .price {
+    font-size: 24px;
+  }
+
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: var(--space-4);
+  }
+
+  .wishlistButton svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ======================
+   COMPACT (769px - 849px)
+====================== */
+@media (max-width: 849px) and (min-width: 769px) {
+  .productContainer {
+    padding: var(--space-4) var(--space-4) 120px;
+  }
+
+  .productContent {
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-3);
+  }
+
+  .mainImageWrapper {
+    max-height: 350px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+
+  .price {
+    font-size: 22px;
+  }
+
+  .rating {
+    font-size: 12px;
+  }
+
+  .buyBox {
+    padding: var(--space-3);
+  }
 }
 
 /* ======================
    TABLET PORTRAIT (≤768px)
 ====================== */
 @media (max-width: 768px) {
-    .productPage {
-        padding-bottom: 60px;
-    }
+  .productPage {
+    padding-bottom: 60px;
+  }
 
-    .productContent {
-        grid-template-columns: 1fr;
-    }
+  .productContent {
+    grid-template-columns: 1fr;
+  }
 
-    .buyBlock {
-        grid-column: auto;
-    }
+  .buyBlock {
+    grid-column: auto;
+  }
 
-    .buyBox {
-        position: static;
-        margin-top: 12px;
-    }
+  .buyBox {
+    position: static;
+    margin-top: 12px;
+  }
 
-    .gallery {
-        max-width: 100%;
-    }
+  .gallery {
+    max-width: 100%;
+  }
 
-    .mainImageWrapper {
-        max-height: 340px;
-    }
+  .mainImageWrapper {
+    max-height: 340px;
+  }
 
-    .mainInfo {
-        padding: 0 var(--space-3);
-    }
+  .mainInfo {
+    padding: 0 var(--space-3);
+  }
 
-    .title {
-        font-size: 16px;
-    }
+  .title {
+    font-size: 16px;
+  }
 
-    .priceStock .price {
-        font-size: 22px;
-    }
+  .price {
+    font-size: 22px;
+  }
 
-    .wishlistButton {
-        padding: 8px 12px;
-        font-size: 13px;
-        margin-bottom: var(--space-3);
-    }
+  .wishlistButton {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: var(--space-3);
+  }
 
-    .wishlistButton svg {
-        width: 16px;
-        height: 16px;
-    }
+  .wishlistButton svg {
+    width: 16px;
+    height: 16px;
+  }
 
-    .productContainer {
-        padding: 0;
-    }
+  .productContainer {
+    padding: 0;
+  }
 
-    .gallery {
-        border-radius: 0;
-        border: none;
-        padding: 8px;
-    }
+  .gallery {
+    border-radius: 0;
+    border: none;
+    padding: 8px;
+    position: inherit;
+  }
 
-    .mainInfo {
-        padding: 0 12px;
-    }
+  .mainInfo {
+    padding: 0 12px;
+  }
 
-    .breadcrumbs {
-        padding: 0 12px;
-    }
+  .breadcrumbs {
+    padding: 0 12px;
+  }
 
-    .descriptionSection,
-    .specsSection {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
+  .descriptionSection,
+  .specsSection {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
 
-    .buyBlock {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #fff;
-        padding: 10px;
-        box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
-        display: none;
-    }
+  .buyBlock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
 
-    .buyBox {
-        padding: 0;
-        border: none;
-    }
+  .buyBox {
+    padding: 0;
+    border: none;
+  }
 
-    .price_mobile {
-        display: inline-block;
-        font-size: 27px;
-        font-weight: 700;
-        letter-spacing: 0;
-        color: white;
-        background: #10C44C;
-        padding: 1px 12px;
-        border-radius: 12px;
-        margin-bottom: 10px;
-    }
+  .price_mobile {
+    display: inline-block;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: white;
+    background: #10c44c;
+    padding: 1px 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
 
-    .notFound {
-        min-height: calc(100vh - 150px);
-        padding: var(--space-4);
-    }
+  .notFound {
+    min-height: calc(100vh - 150px);
+    padding: var(--space-4);
+  }
 
-    .errorCode {
-        font-size: 80px;
-    }
+  .errorCode {
+    font-size: 80px;
+  }
 
-    .title {
-        font-size: 22px;
-    }
+  .title {
+    font-size: 22px;
+  }
 
-    .description {
-        font-size: 14px;
-    }
+  .description {
+    font-size: 14px;
+  }
 
-    .actions {
-        flex-direction: column;
-        width: 100%;
-    }
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
 
-    .actionButton,
-    .actionButtonSecondary {
-        width: 100%;
-        justify-content: center;
-    }
+  .actionButton,
+  .actionButtonSecondary {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ======================
    MOBILE (≤480px)
 ====================== */
 @media (max-width: 480px) {
-    .errorCode {
-        font-size: 60px;
-    }
+  .errorCode {
+    font-size: 60px;
+  }
 
-    .emptyIcon {
-        width: 150px;
-        height: 150px;
-    }
+  .emptyIcon {
+    width: 150px;
+    height: 150px;
+  }
 }

@@ -23,7 +23,7 @@
 .productContainer {
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-5) 120px; /* 16px 20px -> var-space */
+  padding: var(--space-4) var(--space-5) 120px;
   box-sizing: border-box;
 }
 
@@ -33,8 +33,8 @@
 .breadcrumbs {
   display: flex;
   align-items: center;
-  gap: var(--space-2); /* 6px */
-  margin-bottom: var(--space-4); /* 16px */
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
   font-size: 13px;
 }
 
@@ -43,8 +43,8 @@
   border: none;
   color: var(--primary);
   cursor: pointer;
-  padding: var(--space-1) var(--space-2); /* 2px 6px */
-  border-radius: var(--radius-md); /* 4px */
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
 }
 
 .crumb:hover {
@@ -52,17 +52,17 @@
 }
 
 .crumbSeparator {
-  color: #aaa; /* Можно оставить или создать переменную --text-muted-light */
+  color: #aaa;
 }
 
 /* ======================
-   GRID LAYOUT
+   GRID LAYOUT — 3 колонки
 ====================== */
 .productContent {
   display: grid;
   grid-template-columns: 1.1fr 380px 320px;
-  gap: var(--space-5); /* 20px */
-  margin-bottom: var(--space-6); /* 24px */
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
   align-items: start;
 }
 
@@ -70,11 +70,20 @@
    Blocks
 ====================== */
 .gallery {
-  border-radius: var(--radius-xl); /* 10px */
-  border: 1px solid #eef0f2; /* можно создать --border-light если нужно */
+  border-radius: var(--radius-xl);
+  border: 1px solid #eef0f2;
   position: sticky;
   top: var(--top-8);
   align-self: start;
+  max-width: 100%;
+}
+
+.gallery img,
+.gallery video,
+.gallery canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .mainInfo {
@@ -93,60 +102,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-}
-
-/* Кнопка избранного */
-.wishlistButton {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3); /* 8px */
-  padding: 10px 18px; /* можно var-space-* для соответствия */
-  background-color: var(--bg-secondary);
-  border: 1px solid #e0e2e6;
-  border-radius: var(--radius-xl); /* 10px */
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-5); /* 16px */
-}
-
-/* Ховер только на устройствах с мышью */
-@media (hover: hover) and (pointer: fine) {
-  .wishlistButton:hover {
-    background-color: var(--danger-bg);
-    border-color: var(--danger);
-    color: var(--danger);
-  }
-
-  .wishlistButton.wishlistActive:hover {
-    background-color: var(--danger-bg);
-  }
-}
-
-.wishlistButton.wishlistActive {
-  background-color: #fff5f5;
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.wishlistButton svg {
-  transition: all 0.2s ease;
-}
-
-.wishlistButton.wishlistActive svg {
-  fill: var(--danger);
-}
-
-/* ======================
-   Buy Box
-====================== */
-.buyBox {
-  background-color: var(--surface);
-  border: 1px solid #e6e8eb;
-  border-radius: var(--radius-xl); /* 10px */
-  padding: var(--space-4); /* 16px */
 }
 
 /* Основные кнопки */
@@ -277,26 +232,79 @@
   color: #6b3eff;
 }
 
+/* Кнопка избранного */
+.wishlistButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 18px;
+  background-color: var(--bg-secondary);
+  border: 1px solid #e0e2e6;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wishlistButton:hover {
+    background-color: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .wishlistButton.wishlistActive:hover {
+    background-color: var(--danger-bg);
+  }
+}
+
+.wishlistButton.wishlistActive {
+  background-color: #fff5f5;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.wishlistButton svg {
+  transition: all 0.2s ease;
+}
+
+.wishlistButton.wishlistActive svg {
+  fill: var(--danger);
+}
+
+/* ======================
+   Buy Box
+====================== */
+.buyBox {
+  background-color: var(--surface);
+  border: 1px solid #e6e8eb;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+}
+
 /* ======================
    Text
 ====================== */
 .title {
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: var(--space-2); /* 8px */
+  margin-bottom: var(--space-2);
   color: var(--text-primary);
 }
 
 .rating {
   font-size: 13px;
-  margin-bottom: var(--space-5); /* 16px */
+  margin-bottom: var(--space-5);
   color: var(--text-secondary);
 }
 
 .price {
   font-size: 26px;
   font-weight: 700;
-  margin-bottom: var(--space-3); /* 10px */
+  margin-bottom: var(--space-3);
 }
 
 .price_mobile {
@@ -306,40 +314,40 @@
 .stock {
   color: var(--success);
   font-size: 13px;
-  margin-bottom: var(--space-3); /* 10px */
+  margin-bottom: var(--space-3);
 }
 
 /* ======================
-   Buttons
+   Buttons (old)
 ====================== */
 .buyNow {
   width: 100%;
-  padding: var(--space-3); /* 12px */
+  padding: var(--space-3);
   background-color: var(--accent-orange);
   border: none;
-  border-radius: var(--radius-md); /* 8px */
+  border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: var(--space-2); /* 8px */
+  margin-bottom: var(--space-2);
 }
 
 .buyNow:hover {
-  background-color: #e68a00; /* можно создать переменную --accent-orange-hover */
+  background-color: #e68a00;
 }
 
 .addToCartSection {
-  margin-top: var(--space-2); /* 8px */
+  margin-top: var(--space-2);
 }
 
 .delivery {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-top: var(--space-2); /* 8px */
+  margin-top: var(--space-2);
 }
 
 .features {
-  margin-top: var(--space-2_5); /* 10px - можно оставить 10px или var-space-2 + 2px */
-  padding-left: var(--space-3_5); /* 14px, можно создать кастомную переменную */
+  margin-top: var(--space-2_5);
+  padding-left: var(--space-3_5);
   font-size: 12px;
   color: var(--text-secondary);
 }
@@ -360,7 +368,6 @@
   font-weight: 600;
 }
 
-/* Описание с ограничением высоты */
 .descriptionWrapper {
   position: relative;
   max-height: 500px;
@@ -376,7 +383,6 @@
   max-height: none;
 }
 
-/* Градиентный оверлей для описания */
 .descriptionGradientOverlay {
   position: absolute;
   bottom: 0;
@@ -384,11 +390,11 @@
   right: 0;
   height: 140px;
   background: linear-gradient(
-          to bottom,
-          transparent 0%,
-          rgba(255, 255, 255, 0.2) 30%,
-          rgba(255, 255, 255, 0.6) 60%,
-          var(--surface) 100%
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.6) 60%,
+    var(--surface) 100%
   );
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -401,7 +407,6 @@
   padding-bottom: var(--space-3);
 }
 
-/* Кнопка разворачивания описания на градиенте */
 .descriptionExpandButton {
   background: none;
   border: none;
@@ -419,7 +424,6 @@
   text-decoration: underline;
 }
 
-/* Кнопка сворачивания описания под блоком */
 .descriptionCollapseButton {
   display: inline-flex;
   align-items: center;
@@ -462,12 +466,12 @@
   }
 }
 .specsTable td {
-  padding: var(--space-2) 0; /* 8px 0 */
+  padding: var(--space-2) 0;
 }
 
 .specName {
   font-size: 13px;
-  color: #777; /* можно var(--text-muted) */
+  color: #777;
   width: 40%;
 }
 
@@ -477,11 +481,11 @@
 }
 
 /* ======================
-   MEDIA QUERIES
+   MEDIA QUERIES — 768px – 1400px
 ====================== */
 
-/* LARGE LAPTOP (1201px - 1450px) — плавное сужение сетки */
-@media (max-width: 1450px) and (min-width: 1201px) {
+/* 1200px – 1400px: плавное сужение */
+@media (max-width: 1400px) and (min-width: 1200px) {
   .productContent {
     grid-template-columns: 1fr 360px 300px;
     gap: var(--space-4);
@@ -489,12 +493,6 @@
 
   .gallery {
     max-width: 100%;
-  }
-
-  .buyBlock {
-    position: sticky;
-    top: var(--top-8);
-    align-self: start;
   }
 
   .priceStock .price {
@@ -513,10 +511,10 @@
   }
 }
 
-/* LARGE LAPTOP (1001px - 1200px) - немного сжимаем сетку */
-@media (max-width: 1200px) and (min-width: 1001px) {
+/* 1050px – 1199px: уменьшаем правые колонки */
+@media (max-width: 1199px) and (min-width: 1050px) {
   .productContent {
-    grid-template-columns: 1fr 340px 280px;
+    grid-template-columns: 1fr 320px 280px;
     gap: var(--space-4);
   }
 
@@ -538,7 +536,7 @@
   }
 
   .title {
-    font-size: 19px;
+    font-size: 20px;
   }
 
   .priceStock .price {
@@ -565,11 +563,80 @@
   }
 }
 
-/* MEDIUM LAPTOP (≤1000px) - перестройка в 2 колонки */
-@media (max-width: 1000px) {
+/* 950px – 1049px: галерея шире, правые колонки уже */
+@media (max-width: 1049px) and (min-width: 950px) {
+  .productContent {
+    grid-template-columns: 1.3fr 300px 280px;
+    gap: var(--space-3);
+  }
+
+  .gallery {
+    max-width: 100%;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
+
+  .mainInfo {
+    min-width: 0;
+  }
+
+  .buyBlock {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
+
+  .title {
+    font-size: 19px;
+  }
+
+  .priceStock .price {
+    font-size: 25px;
+  }
+
+  .buyBox {
+    padding: var(--space-3);
+  }
+
+  .addToCartButton {
+    padding: 13px 16px;
+    font-size: 14px;
+    min-height: 48px;
+  }
+
+  .buyNowButton {
+    padding: 12px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .installmentButton {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .plyteWidget {
+    padding: var(--space-3);
+  }
+
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: var(--space-4);
+  }
+
+  .wishlistButton svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* 850px – 949px: две колонки, buyBlock внизу */
+@media (max-width: 949px) and (min-width: 850px) {
   .productContent {
     grid-template-columns: minmax(0, 1fr) 300px;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .gallery {
@@ -578,10 +645,9 @@
   }
 
   .mainImageWrapper {
-    max-height: 420px;
+    max-height: 400px;
   }
 
-  /* buyBlock вниз */
   .buyBlock {
     grid-column: span 2;
     position: static;
@@ -599,17 +665,6 @@
     font-size: 24px;
   }
 
-  .wishlistButton {
-    padding: 8px 14px;
-    font-size: 13px;
-    margin-bottom: var(--space-4);
-  }
-
-  .wishlistButton svg {
-    width: 18px;
-    height: 18px;
-  }
-
   .addToCartButton {
     padding: 14px 16px;
     font-size: 15px;
@@ -620,23 +675,47 @@
     padding: 12px;
     min-height: 44px;
   }
+
+  .wishlistButton {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin-bottom: var(--space-4);
+  }
+
+  .wishlistButton svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
-/* ======================
-   SMALL LAPTOP (≤900px)
-====================== */
-@media (max-width: 900px) {
+/* 769px – 849px: компактный режим */
+@media (max-width: 849px) and (min-width: 769px) {
   .productContainer {
     padding: var(--space-4) var(--space-4) 120px;
   }
 
   .productContent {
-    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-columns: 1fr 280px;
     gap: var(--space-3);
   }
 
+  .gallery {
+    max-width: 100%;
+    position: static;
+  }
+
   .mainImageWrapper {
-    max-height: 380px;
+    max-height: 350px;
+  }
+
+  .buyBlock {
+    grid-column: span 2;
+    position: static;
+  }
+
+  .buyBox {
+    position: static;
+    padding: var(--space-3);
   }
 
   .title {
@@ -651,8 +730,32 @@
     font-size: 12px;
   }
 
-  .buyBox {
-    padding: var(--space-3);
+  .addToCartButton {
+    padding: 13px 16px;
+    font-size: 14px;
+    min-height: 46px;
+  }
+
+  .buyNowButton {
+    padding: 11px;
+    min-height: 42px;
+    font-size: 14px;
+  }
+
+  .installmentButton {
+    padding: 11px;
+    font-size: 13px;
+  }
+
+  .wishlistButton {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-bottom: var(--space-3);
+  }
+
+  .wishlistButton svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -662,6 +765,10 @@
 @media (max-width: 768px) {
   .productPage {
     padding-bottom: 60px;
+  }
+
+  .productContainer {
+    padding: 0;
   }
 
   .productContent {
@@ -682,7 +789,12 @@
   }
 
   .gallery {
+    border-radius: 0;
+    border: none;
+    padding: 8px;
     max-width: 100%;
+    position: static;
+    overflow: visible;
   }
 
   .mainImageWrapper {
@@ -690,7 +802,7 @@
   }
 
   .mainInfo {
-    padding: 0 var(--space-3);
+    padding: 0 12px;
   }
 
   .title {
@@ -712,6 +824,17 @@
     height: 16px;
   }
 
+  .breadcrumbs {
+    padding: 0 12px;
+  }
+
+  .descriptionSection,
+  .specsSection {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
   .addToCartButton {
     padding: 14px 16px;
     font-size: 15px;
@@ -726,47 +849,6 @@
   .plyteWidget {
     padding: var(--space-3);
   }
-}
-
-/* ======================
-   MOBILE
-====================== */
-@media (max-width: 768px) {
-  .productContainer {
-    padding: 0;
-  }
-
-  .gallery {
-    border-radius: 0;
-    border: none;
-    padding: 8px;
-  }
-
-  .mainInfo {
-    padding: 0 12px;
-  }
-
-  .wishlistButton {
-    padding: 8px 14px;
-    font-size: 13px;
-    margin-bottom: 12px;
-  }
-
-  .wishlistButton svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .breadcrumbs {
-    padding: 0 12px;
-  }
-
-  .descriptionSection,
-  .specsSection {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-  }
 
   /* фиксированный buy bar */
   .buyBlock {
@@ -776,7 +858,7 @@
     right: 0;
     background: #fff;
     padding: 10px;
-    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
     display: none;
   }
 
@@ -788,13 +870,14 @@
   .priceStock .price {
     font-size: 22px;
   }
+
   .price_mobile {
     display: inline-block;
     font-size: 27px;
     font-weight: 700;
     letter-spacing: 0;
     color: white;
-    background: #10C44C;
+    background: #10c44c;
     padding: 1px 12px;
     border-radius: 12px;
     margin-bottom: 10px;
