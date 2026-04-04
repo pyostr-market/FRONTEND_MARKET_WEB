@@ -295,10 +295,39 @@
   color: var(--text-primary);
 }
 
+/* Новый общий контейнер для рейтинга и бейджа */
+.ratingAndBadge {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* расстояние между рейтингом и оригинальным товаром */
+  margin-bottom: var(--space-4); /* отступ снизу до кнопки "избранное" */
+}
+
+/* Стили для рейтинга */
 .rating {
-  font-size: 13px;
-  margin-bottom: var(--space-5);
+  font-size: 14px;
   color: var(--text-secondary);
+  line-height: 1.4; /* чтобы было примерно по высоте с бейджем */
+  white-space: nowrap;
+}
+
+/* Стили для бейджа "Оригинальный товар" */
+.originalBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* расстояние между иконкой и текстом */
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  padding: 2px 8px; /* немного компактнее */
+}
+
+.originalCheck {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 .price {
@@ -317,6 +346,21 @@
   margin-bottom: var(--space-3);
 }
 
+.originalBadge {
+  display: flex;       /* Горизонтальное расположение элементов */
+  align-items: center;        /* Выравнивание по вертикали */
+  gap: 8px;                   /* Расстояние между иконкой и текстом */
+  background-color: #f5f5f5;  /* Можно задать фон */
+  border-radius: 12px;        /* Закругленные углы */
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.originalCheck {
+  flex-shrink: 0;             /* Чтобы SVG не сжимался */
+  display: block;
+}
 /* ======================
    Buttons (old)
 ====================== */

@@ -297,9 +297,33 @@
 }
 
 .rating {
-  font-size: 13px;
-  margin-bottom: var(--space-5);
+  font-size: 15px;
+  margin-bottom: var(--space-3);
   color: var(--text-secondary);
+}
+
+/* Бейдж «Оригинальный товар» */
+.originalBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background-color: var(--success-bg);
+  border: 1px solid var(--success);
+  border-radius: 20px;
+  margin-bottom: var(--space-5);
+}
+
+.originalBadge svg {
+  display: block;
+  vertical-align: middle;
+}
+
+.originalBadge span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--success);
+  line-height: 1;
 }
 
 .price {
@@ -347,8 +371,8 @@
 }
 
 .features {
-  margin-top: var(--space-2_5);
-  padding-left: var(--space-3_5);
+  margin-top: var(--space-2);
+  padding-left: var(--space-3);
   font-size: 12px;
   color: var(--text-secondary);
 }

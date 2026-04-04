@@ -380,23 +380,24 @@ const ProductPage = () => {
                 {activeProduct.name}
               </h1>
 
-              <div className={cx('rating')}>
-                ⭐ 4.8 (120 отзывов)
+              <div className={cx('ratingAndBadge')}>
+                <div className={cx('rating')}>⭐ 4.8 (120 отзывов)</div>
+                <div className={cx('originalBadge')}>
+                  <svg className={cx('originalCheck')} width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <circle cx="9" cy="9" r="9" fill="#10C44C"/>
+                    <path d="M5.5 9L7.5 11L12 7" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span>Оригинальный товар</span>
+                </div>
               </div>
 
-
-
               <button
-                  className={`${cx('wishlistButton')} ${
-                      inWishlist ? desktop.wishlistActive : ''
-                  }`}
+                  className={`${cx('wishlistButton')} ${inWishlist ? desktop.wishlistActive : ''}`}
                   onClick={handleWishlistToggle}
                   type="button"
               >
                 <FiHeart size={20} />
-                <span>
-                {inWishlist ? 'В избранном' : 'В избранное'}
-              </span>
+                <span>{inWishlist ? 'В избранном' : 'В избранное'}</span>
               </button>
 
 

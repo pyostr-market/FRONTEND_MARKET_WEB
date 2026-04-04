@@ -168,7 +168,9 @@ const ProductCard = ({ product, onImageChange }) => {
             {Array.from({ length: 5 }, (_, i) => (
                 <span key={i}>{i < Math.floor(stars) ? '★' : i < stars ? '☆' : '☆'}</span>
             ))}
+
             <span className={styles.reviewCount}>({reviews})</span>
+
           </div>
 
           {/* Кнопка Добавить / счётчик */}
