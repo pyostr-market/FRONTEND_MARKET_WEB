@@ -1,19 +1,24 @@
 .stickyBar {
   position: fixed;
   top: calc(var(--height-header-pc) - 1px);
-  transform: translate(-0%, -120%);
+  left: 0;
+  right: 0;
+  transform: translateY(calc(-100% - 10px));
   width: 100%;
   max-width: var(--max-width-header-pc);
   background-color: var(--surface);
   border-bottom: 1px solid #e8e8e8;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s;
+  z-index: 1000;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  pointer-events: none;
 }
 
 .stickyBarVisible {
-  transform: translate(-0%, 0);
+  transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 
 .stickyBarInner {

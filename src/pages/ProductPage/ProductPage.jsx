@@ -142,7 +142,7 @@ const ProductPage = () => {
             </div>
 
             {/* Блок покупки */}
-            <div className={styles.buyBlock}>
+            <div className={styles.buyBlock} data-section="buy">
               <div className={styles.buyBox}>
                 <div className={styles.price}>{formatPrice(product.price)}</div>
 

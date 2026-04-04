@@ -27,40 +27,88 @@ const StickyProductBar = ({ product }) => {
 
   useEffect(() => {
     let cleanupFn = null;
-    
+
     // Даём время DOM обновиться после рендера
     const timer = setTimeout(() => {
-      // Находим секцию с описанием по data-атрибуту
-      const descriptionSection = document.querySelector('[data-section="description"]');
-
-      if (!descriptionSection) {
-        console.warn('[StickyProductBar] descriptionSection not found');
-        return;
+      // Пробуем найти элементы по data-атрибутам или используем fallback
+      let triggerElement = document.querySelector('[data-section="description"]');
+      
+      if (!triggerElement) {
+        // Fallback: пробуем найти buyBlock по data-атрибуту
+        triggerElement = document.querySelector('[data-section="buy"]');
       }
 
-      const handleScroll = () => {
-        const descriptionTop = descriptionSection.getBoundingClientRect().top;
-        const shouldBeVisible = descriptionTop < 100;
-        // Показываем плашку, когда описание заходит за верх экрана
-        setIsVisible(shouldBeVisible);
-      };
+      if (triggerElement) {
+        // Гистерезис: появляется позже при скролле вниз, убирается раньше при скролле вверх
+        let currentlyVisible = false;
+        let lastScrollY = window.scrollY;
+        
+        const handleScroll = () => {
+          const elementTop = triggerElement.getBoundingClientRect().top;
+          const currentScrollY = window.scrollY;
+          
+          let shouldBeVisible;
+          
+          if (currentlyVisible) {
+            // Плашка уже видна — убираем когда buyBlock возвращается к верху экрана (-100px)
+            shouldBeVisible = elementTop < -100;
+          } else {
+            // Плашка ещё скрыта — показываем только когда buyBlock полностью ушёл за экран (-600px)
+            shouldBeVisible = elementTop < -600;
+          }
+          
+          if (shouldBeVisible !== currentlyVisible) {
+            currentlyVisible = shouldBeVisible;
+          }
+          
+          lastScrollY = currentScrollY;
+          setIsVisible(shouldBeVisible);
+        };
 
-      // Первичная проверка
-      handleScroll();
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        cleanupFn = () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      } else {
+        // Финальный fallback: используем простой порог скролла с гистерезисом
+        let currentlyVisible = false;
+        let lastScrollY = window.scrollY;
+        
+        const handleScroll = () => {
+          const currentScrollY = window.scrollY || window.pageYOffset;
+          const scrollingDown = currentScrollY > lastScrollY;
+          let shouldBeVisible;
+          
+          if (currentlyVisible) {
+            // Уже видно — убираем РАНЬШЕ при скролле ВВЕРХ
+            shouldBeVisible = currentScrollY > 200;
+          } else {
+            // Ещё не видно — показываем ПОЗЖЕ при скролле ВНИЗ
+            shouldBeVisible = currentScrollY > 500;
+          }
+          
+          if (shouldBeVisible !== currentlyVisible) {
+            currentlyVisible = shouldBeVisible;
+          }
+          
+          lastScrollY = currentScrollY;
+          setIsVisible(shouldBeVisible);
+        };
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-
-      // Сохраняем cleanup функцию
-      cleanupFn = () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, 100);
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        cleanupFn = () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }
+    }, 300);
 
     return () => {
       clearTimeout(timer);
       if (cleanupFn) cleanupFn();
     };
-  }, [product]); // Добавляем product как зависимость, чтобы пересоздать listener после загрузки продукта
+  }, [product]);
 
   if (!product) return null;
 
