@@ -28,6 +28,7 @@ const ProductPage = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [productLoading, setProductLoading] = useState(false);
   const [previousProduct, setPreviousProduct] = useState(null);
+  const [selectedVariantId, setSelectedVariantId] = useState(null);
 
   const urlParams = new URLSearchParams(window.location.search);
   const urlCategoryId = urlParams.get('category');
@@ -49,10 +50,11 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
-  // Инициализируем currentProduct при загрузке основного товара
+  // Инициализируем currentProduct и selectedVariantId при загрузке основного товара
   useEffect(() => {
     if (product && !currentProduct) {
       setCurrentProduct(product);
+      setSelectedVariantId(product.id);
     }
   }, [product, currentProduct]);
 
@@ -73,6 +75,9 @@ const ProductPage = () => {
    */
   const handleVariantSelect = useCallback(async (variant) => {
     if (variant.id === activeProduct?.id) return;
+
+    // Сразу обновляем выбранный ID для подсветки
+    setSelectedVariantId(variant.id);
 
     // Сохраняем текущий товар как previous чтобы показать его во время загрузки
     setPreviousProduct(currentProduct);
@@ -97,6 +102,7 @@ const ProductPage = () => {
     } finally {
       setProductLoading(false);
       setPreviousProduct(null);
+      setSelectedVariantId(variant.id);
     }
   }, [activeProduct?.id, activeProduct?.category?.id, categoryId, urlCategoryId, variantExpanded, currentProduct]);
 
@@ -170,7 +176,7 @@ const ProductPage = () => {
               {/* Миниатюры вариантов — НЕ перезагружается, блокируется при загрузке */}
               <ProductVariants
                   variants={variants}
-                  currentProductId={activeProduct.id}
+                  currentProductId={selectedVariantId || activeProduct.id}
                   onVariantSelect={handleVariantSelect}
                   expanded={variantExpanded}
                   setExpanded={setVariantExpanded}

@@ -86,20 +86,23 @@
   width: fit-content;
 }
 
-.wishlistButton:hover {
-  background-color: var(--danger-bg);
-  border-color: var(--danger);
-  color: var(--danger);
+/* Ховер только на устройствах с мышью */
+@media (hover: hover) and (pointer: fine) {
+  .wishlistButton:hover {
+    background-color: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .wishlistButton.wishlistActive:hover {
+    background-color: var(--danger-bg);
+  }
 }
 
 .wishlistButton.wishlistActive {
   background-color: #fff5f5;
   border-color: var(--danger);
   color: var(--danger);
-}
-
-.wishlistButton.wishlistActive:hover {
-  background-color: var(--danger-bg);
 }
 
 .wishlistButton svg {
