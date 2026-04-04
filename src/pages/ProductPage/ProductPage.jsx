@@ -94,7 +94,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const { addToCart } = useCart();
+  const { addToCart, getItemQuantity } = useCart();
 
   const [categoryId, setCategoryId] = useState(null);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
@@ -163,11 +163,12 @@ const ProductPage = () => {
 
   const activeProduct = currentProduct || previousProduct || product;
 
-
-
   const inWishlist = activeProduct?.id
       ? isInWishlist(activeProduct.id)
       : false;
+
+  // Есть ли текущий товар уже в корзине
+  const isInCart = activeProduct?.id ? getItemQuantity(activeProduct.id) > 0 : false;
 
 
 
@@ -449,11 +450,17 @@ const ProductPage = () => {
                     <button
                         className={cx('buyNowButton')}
                         onClick={() => {
-                          addToCart(activeProduct.id, 1);
-                          navigate(paths.CART);
+                          if (isInCart) {
+                            // Товар уже в корзине — просто переходим
+                            navigate(paths.CART);
+                          } else {
+                            // Добавляем и переходим
+                            addToCart(activeProduct.id, 1);
+                            navigate(paths.CART);
+                          }
                         }}
                     >
-                      Купить в 1 клик
+                      {isInCart ? 'В корзину' : 'Купить в 1 клик'}
                     </button>
                   </div>
 
