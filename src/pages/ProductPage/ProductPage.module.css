@@ -21,7 +21,7 @@
    Container
 ====================== */
 .productContainer {
-  max-width: 1400px;
+  max-width: var(--max-width-content);
   margin: 0 auto;
   padding: var(--space-4) var(--space-5) 120px;
   box-sizing: border-box;
@@ -60,11 +60,10 @@
 ====================== */
 .productContent {
   display: grid;
-  grid-template-columns: 1fr minmax(0, 380px) 320px;
-  gap: var(--space-5);
+  grid-template-columns: 500px 1fr 320px;
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
   align-items: start;
-  max-width: var(--max-width-content);
   width: 100%;
 }
 
@@ -486,16 +485,11 @@
    MEDIA QUERIES — 768px – 1450px
 ====================== */
 
-/* 1200px – 1450px: галерея растягивается, правые колонки фиксированные */
+/* 1200px – 1450px: галерея 500, mainInfo растягивается, buyBox 320 */
 @media (max-width: 1450px) and (min-width: 1200px) {
   .productContent {
-    grid-template-columns: 1fr minmax(0, 380px) 320px;
-    gap: var(--space-5);
-    max-width: var(--max-width-content);
-  }
-
-  .gallery {
-    max-width: 100%;
+    grid-template-columns: 500px 1fr 320px;
+    gap: var(--space-4);
   }
 
   .priceStock .price {
@@ -514,29 +508,11 @@
   }
 }
 
-/* 1050px – 1199px: галерея ≤500px, компактные колонки */
+/* 1050px – 1199px: галерея 500, mainInfo растягивается, buyBox 300 */
 @media (max-width: 1199px) and (min-width: 1050px) {
   .productContent {
-    grid-template-columns: minmax(0, 500px) minmax(0, 300px) 270px;
+    grid-template-columns: 500px 1fr 300px;
     gap: var(--space-3);
-    justify-content: start;
-  }
-
-  .gallery {
-    max-width: 500px;
-    position: sticky;
-    top: 80px;
-    align-self: start;
-  }
-
-  .mainInfo {
-    min-width: 0;
-  }
-
-  .buyBlock {
-    position: sticky;
-    top: 80px;
-    align-self: start;
   }
 
   .title {
@@ -567,29 +543,11 @@
   }
 }
 
-/* 950px – 1049px: галерея ≤500px, две правые колонки уже */
+/* 950px – 1049px: галерея 500, mainInfo растягивается, buyBox 280 */
 @media (max-width: 1049px) and (min-width: 950px) {
   .productContent {
-    grid-template-columns: minmax(0, 500px) minmax(0, 280px) 250px;
+    grid-template-columns: 500px 1fr 280px;
     gap: var(--space-3);
-    justify-content: start;
-  }
-
-  .gallery {
-    max-width: 500px;
-    position: sticky;
-    top: 80px;
-    align-self: start;
-  }
-
-  .mainInfo {
-    min-width: 0;
-  }
-
-  .buyBlock {
-    position: sticky;
-    top: 80px;
-    align-self: start;
   }
 
   .title {
@@ -637,17 +595,11 @@
   }
 }
 
-/* 850px – 949px: две колонки, buyBlock внизу, галерея ≤500px */
+/* 850px – 949px: две колонки, галерея начинает уменьшаться, buyBlock внизу */
 @media (max-width: 949px) and (min-width: 850px) {
   .productContent {
-    grid-template-columns: minmax(0, 500px) 280px;
+    grid-template-columns: minmax(0, 500px) minmax(0, 280px);
     gap: var(--space-3);
-    justify-content: start;
-  }
-
-  .gallery {
-    max-width: 500px;
-    position: static;
   }
 
   .mainImageWrapper {

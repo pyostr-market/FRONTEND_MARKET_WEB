@@ -148,7 +148,7 @@
 @media (min-width: 768px) {
   .variantList {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     overflow: hidden;
     position: relative;
@@ -292,5 +292,12 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1250px) {
+  .variantList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 }
