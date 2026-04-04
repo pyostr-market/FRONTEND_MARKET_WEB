@@ -15,6 +15,7 @@ import RelatedProducts from '../../widgets/RelatedProducts/RelatedProducts';
 import paths from '../../app/router/paths';
 import styles from './ProductPage.module.css';
 import DOMPurify from "dompurify";
+import { getProductById } from '../../shared/api/catalogApi';
 
 const ProductPage = () => {
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -22,6 +23,10 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  
+  // Состояние для текущего товара (может меняться без перезагрузки)
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [productLoading, setProductLoading] = useState(false);
 
   const urlParams = new URLSearchParams(window.location.search);
   const urlCategoryId = urlParams.get('category');
@@ -43,24 +48,52 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
+  // Инициализируем currentProduct при загрузке основного товара
+  useEffect(() => {
+    if (product && !currentProduct) {
+      setCurrentProduct(product);
+    }
+  }, [product, currentProduct]);
+
   const [variantExpanded, setVariantExpanded] = useState(urlVariantsExpanded);
-  
-  const inWishlist = product?.id ? isInWishlist(product.id) : false;
+
+  // Используем currentProduct вместо product для отображения
+  const activeProduct = currentProduct || product;
+  const inWishlist = activeProduct?.id ? isInWishlist(activeProduct.id) : false;
 
   const handleWishlistToggle = useCallback(() => {
-    if (product?.id) {
-      toggleWishlist(product.id);
+    if (activeProduct?.id) {
+      toggleWishlist(activeProduct.id);
     }
-  }, [product?.id, toggleWishlist]);
+  }, [activeProduct?.id, toggleWishlist]);
 
-  const handleVariantSelect = useCallback((variant) => {
-    if (variant.id !== product?.id) {
-      const params = new URLSearchParams();
-      if (urlCategoryId) params.set('category', urlCategoryId);
-      if (variantExpanded) params.set('variants', 'expanded'); // сохраняем состояние
-      navigate(`/product/${variant.id}?${params.toString()}`, { replace: true });
+  /**
+   * Обработчик выбора варианта — загружает товар без перезагрузки страницы
+   */
+  const handleVariantSelect = useCallback(async (variant) => {
+    if (variant.id === activeProduct?.id) return;
+
+    setProductLoading(true);
+    try {
+      const result = await getProductById({ 
+        product_id: variant.id, 
+        category_id: activeProduct?.category?.id || categoryId 
+      });
+
+      if (result.success && result.data?.item) {
+        setCurrentProduct(result.data.item);
+        // Обновляем URL без перезагрузки
+        const params = new URLSearchParams();
+        if (urlCategoryId) params.set('category', urlCategoryId);
+        if (variantExpanded) params.set('variants', 'expanded');
+        window.history.replaceState({}, '', `/product/${variant.id}?${params.toString()}`);
+      }
+    } catch (err) {
+      console.error('Error loading variant:', err);
+    } finally {
+      setProductLoading(false);
     }
-  }, [product?.id, urlCategoryId, navigate, variantExpanded]);
+  }, [activeProduct?.id, activeProduct?.category?.id, categoryId, urlCategoryId, variantExpanded]);
 
   const formatPrice = useCallback((price) => {
     if (!price) return '0 ₽';
@@ -71,10 +104,12 @@ const ProductPage = () => {
     }).format(price);
   }, []);
 
-  if (loading) return <div className={styles.loading}>Загрузка...</div>;
-  
+  const isLoading = loading || productLoading;
+
+  if (isLoading) return <div className={styles.loading}>Загрузка...</div>;
+
   // Если товар не найден или ошибка — перенаправляем на 404
-  if (error || !product) {
+  if (error || !activeProduct) {
     return (
       <div className={styles.notFound}>
         <div className={styles.emptyState}>
@@ -102,18 +137,18 @@ const ProductPage = () => {
       <div className={styles.page}>
         <div className={styles.container}>
 
-          <div className={`${styles.productContent} productContent`}>
+          <div className={`${styles.productContent} productContent ${productLoading ? styles.fadeIn : ''}`}>
 
             {/* Галерея */}
             <div className={styles.gallery}>
-              <ProductSlider images={product.images || []} />
+              <ProductSlider images={activeProduct.images || []} key={`slider-${activeProduct.id}`} />
             </div>
 
             {/* Основная инфа */}
             <div className={styles.mainInfo}>
-              <div className={styles.price_mobile}>{formatPrice(product.price)}</div>
+              <div className={styles.price_mobile}>{formatPrice(activeProduct.price)}</div>
 
-              <h1 className={styles.title}>{product.name}</h1>
+              <h1 className={styles.title} key={`title-${activeProduct.id}`}>{activeProduct.name}</h1>
 
               <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>
 
@@ -131,26 +166,26 @@ const ProductPage = () => {
               {/* Миниатюры вариантов */}
               <ProductVariants
                   variants={variants}
-                  currentProductId={product.id}
+                  currentProductId={activeProduct.id}
                   onVariantSelect={handleVariantSelect}
                   expanded={variantExpanded}
                   setExpanded={setVariantExpanded}
               />
 
               {/* Краткие характеристики */}
-              <ProductShortSpecs attributes={product.attributes} />
+              <ProductShortSpecs attributes={activeProduct.attributes} key={`shortspecs-${activeProduct.id}`} />
             </div>
 
             {/* Блок покупки */}
             <div className={styles.buyBlock} data-section="buy">
               <div className={styles.buyBox}>
-                <div className={styles.price}>{formatPrice(product.price)}</div>
+                <div className={styles.price}>{formatPrice(activeProduct.price)}</div>
 
                 <div className={styles.stock}>В наличии</div>
 
                 <button className={styles.buyNow}>Купить сейчас</button>
 
-                <AddToCart productId={product.id} />
+                <AddToCart productId={activeProduct.id} />
 
                 <div className={styles.delivery}>Доставка: завтра</div>
 
@@ -163,21 +198,22 @@ const ProductPage = () => {
             </div>
 
           </div>
-          {/* Блок рекомендаций (похожие товары) */}
+          {/* Блок рекомендаций (похожие товары) — НЕ перезагружается */}
           <RecommendationsBlock
-              productId={product.id}
+              productId={activeProduct.id}
               relationType={RELATION_TYPES.ACCESSORY}
           />
-          {product.description && (
+          {activeProduct.description && (
               <div className={styles.descriptionSection} data-section="description">
                 <h2 className={styles.sectionTitle}>Описание</h2>
                 <div className={`${styles.descriptionWrapper} ${!descriptionExpanded ? styles.descriptionCollapsed : ''}`}>
                   <div
                       className={styles.description}
+                      key={`desc-${activeProduct.id}`}
                       dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(
                           (() => {
-                            let desc = product.description;
+                            let desc = activeProduct.description;
 
                             // Если объект, извлекаем HTML
                             if (typeof desc !== 'string') {
@@ -219,36 +255,22 @@ const ProductPage = () => {
                     </div>
                   )}
                 </div>
-                {/* Кнопка сворачивания под описанием (для развёрнутого состояния) */}
-                {/*{descriptionExpanded && (*/}
-                {/*  <button*/}
-                {/*    className={styles.descriptionCollapseButton}*/}
-                {/*    onClick={() => setDescriptionExpanded(false)}*/}
-                {/*    type="button"*/}
-                {/*  >*/}
-                {/*    Свернуть*/}
-                {/*  </button>*/}
-                {/*)}*/}
               </div>
           )}
 
           {/* Полные характеристики */}
-          <ProductFullSpecs attributes={product.attributes} />
+          <ProductFullSpecs attributes={activeProduct.attributes} key={`fullspecs-${activeProduct.id}`} />
 
-          {/* Блок "Возможно, будет интересно" */}
+          {/* Блок "Возможно, будет интересно" — НЕ перезагружается */}
           <RelatedProducts />
 
         </div>
 
         {/* Мобильная кнопка корзины */}
-        {product && (
-            <MobileCartButton productId={product.id} price={parseFloat(product.price) || 0} />
-        )}
+        <MobileCartButton productId={activeProduct.id} price={parseFloat(activeProduct.price) || 0} />
 
         {/* Плавающая менюшка */}
-        {product && (
-            <StickyProductBar product={product} />
-        )}
+        <StickyProductBar product={activeProduct} />
       </div>
   );
 };

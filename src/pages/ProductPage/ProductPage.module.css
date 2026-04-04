@@ -3,6 +3,20 @@
   background: var(--bg-secondary);
 }
 
+/* Анимация плавного появления при переключении товара */
+@keyframes fadeIn {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
 /* ======================
    Container
 ====================== */
