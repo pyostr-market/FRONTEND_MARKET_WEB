@@ -171,6 +171,32 @@ export const getCategoryProducts = async ({
 };
 
 /**
+ * Получить варианты для конкретного товара
+ * @param {Object} params
+ * @param {number} params.product_id - ID товара, для которого ищем варианты
+ * @param {boolean} [params.f5=false] - Принудительный сброс кэша
+ * @returns {Promise<{success: boolean, data: {total: number, items: Array}, error: any}>}
+ */
+export const getProductVariants = async ({
+  product_id,
+  f5 = false,
+} = {}) => {
+  if (!product_id) {
+    return {
+      success: false,
+      data: null,
+      error: 'Product ID is required',
+    };
+  }
+
+  return crmApi.request('/product/related/variants', {
+    params: { product_id },
+    f5,
+    useCache: false,
+  });
+};
+
+/**
  * Получить доступные фильтры для категории/типа товара
  * @param {Object} params
  * @param {number} [params.category_id] - ID категории

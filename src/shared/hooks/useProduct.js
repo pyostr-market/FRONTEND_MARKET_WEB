@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { getProductById, getCategoryProducts, getCatalogFilters } from '../api/catalogApi';
+import { getProductById, getProductVariants, getCatalogFilters } from '../api/catalogApi';
 
 /**
  * Хук для загрузки товара и его вариантов
@@ -43,15 +43,14 @@ const useProduct = ({ product_id, category_id }) => {
   }, []);
 
   /**
-   * Загрузка вариантов товара (товары той же категории)
+   * Загрузка вариантов товара (через endpoint /product/related/variants)
    */
-  const loadVariants = useCallback(async (categoryId, currentAttributes = {}) => {
-    if (!categoryId) return;
+  const loadVariants = useCallback(async (productId) => {
+    if (!productId) return;
 
     try {
-      const result = await getCategoryProducts({
-        category_id: categoryId,
-        attributes: Object.keys(currentAttributes).length > 0 ? currentAttributes : undefined,
+      const result = await getProductVariants({
+        product_id: productId,
       });
 
       if (result.success) {
@@ -125,11 +124,11 @@ const useProduct = ({ product_id, category_id }) => {
    * Загрузка вариантов и фильтров при загрузке товара
    */
   useEffect(() => {
-    if (!product?.category?.id) return;
+    if (!product?.id) return;
 
-    loadVariants(product.category.id);
-    loadFilters(product.category.id);
-  }, [product?.category?.id, loadVariants, loadFilters]);
+    loadVariants(product.id);
+    loadFilters(product.category?.id);
+  }, [product?.id, product?.category?.id, loadVariants, loadFilters]);
 
   return {
     product,
