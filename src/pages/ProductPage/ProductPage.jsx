@@ -1,44 +1,131 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FiHeart } from 'react-icons/fi';
+import DOMPurify from "dompurify";
+
 import { useWishlist } from '../../app/store/wishlistStore';
 import useProduct from '../../shared/hooks/useProduct';
+import { getProductById } from '../../shared/api/catalogApi';
+
 import { ProductSlider } from '../../shared/ui/ProductSlider';
 import { ProductVariants } from '../../widgets/ProductVariants';
 import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
 import { ProductFullSpecs } from '../../widgets/ProductFullSpecs';
 import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { StickyProductBar } from '../../widgets/StickyProductBar';
+
 import { AddToCart } from '../../features/add-to-cart';
-import RecommendationsBlock, { RELATION_TYPES } from '../../widgets/RecommendationsBlock/RecommendationsBlock';
+
+import RecommendationsBlock, {
+  RELATION_TYPES,
+} from '../../widgets/RecommendationsBlock/RecommendationsBlock';
+
 import RelatedProducts from '../../widgets/RelatedProducts/RelatedProducts';
+
 import paths from '../../app/router/paths';
-import styles from './ProductPage.module.css';
-import DOMPurify from "dompurify";
-import { getProductById } from '../../shared/api/catalogApi';
+
+import desktop from './ProductPage.desktop.module.css';
+import mobile from './ProductPage.mobile.module.css';
+
+
+
+/* =====================================================
+   Helper: объединение классов desktop + mobile
+===================================================== */
+
+function cx(className) {
+  return `${desktop[className] || ''} ${mobile[className] || ''}`.trim();
+}
+
+
+
+/* =====================================================
+   Formatter
+===================================================== */
+
+const priceFormatter = new Intl.NumberFormat('ru-RU', {
+  style: 'currency',
+  currency: 'RUB',
+  maximumFractionDigits: 0,
+});
+
+
+
+/* =====================================================
+   Description parser
+===================================================== */
+
+function parseDescription(desc) {
+
+  if (!desc) return '';
+
+  if (typeof desc !== 'string') {
+    return desc?.__html || String(desc);
+  }
+
+  if (desc.startsWith('{') || desc.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(desc);
+      return parsed.html || parsed.description || desc;
+    } catch {
+      return desc;
+    }
+  }
+
+  if (desc.includes('&lt;') || desc.includes('&gt;')) {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = desc;
+    return textarea.value;
+  }
+
+  return desc;
+}
+
+
+
+/* =====================================================
+   Component
+===================================================== */
 
 const ProductPage = () => {
-  const { isInWishlist, toggleWishlist } = useWishlist();
+
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
   const [categoryId, setCategoryId] = useState(null);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  
-  // Состояние для текущего товара (может меняться без перезагрузки)
+
   const [currentProduct, setCurrentProduct] = useState(null);
-  const [productLoading, setProductLoading] = useState(false);
   const [previousProduct, setPreviousProduct] = useState(null);
   const [selectedVariantId, setSelectedVariantId] = useState(null);
+
+  const [variantExpanded, setVariantExpanded] = useState(false);
+  const [productLoading, setProductLoading] = useState(false);
+
+  const requestRef = useRef(0);
+  const cacheRef = useRef({});
+
+
 
   const urlParams = new URLSearchParams(window.location.search);
   const urlCategoryId = urlParams.get('category');
   const urlVariantsExpanded = urlParams.get('variants') === 'expanded';
 
+
+
   useEffect(() => {
+
     if (urlCategoryId) {
       setCategoryId(parseInt(urlCategoryId, 10));
     }
-  }, [urlCategoryId]);
+
+    setVariantExpanded(urlVariantsExpanded);
+
+  }, [urlCategoryId, urlVariantsExpanded]);
+
+
 
   const {
     product,
@@ -50,130 +137,264 @@ const ProductPage = () => {
     category_id: categoryId,
   });
 
-  // Инициализируем currentProduct и selectedVariantId при загрузке основного товара
+
+
   useEffect(() => {
+
     if (product && !currentProduct) {
       setCurrentProduct(product);
       setSelectedVariantId(product.id);
     }
+
   }, [product, currentProduct]);
 
-  const [variantExpanded, setVariantExpanded] = useState(urlVariantsExpanded);
 
-  // Используем previousProduct во время загрузки чтобы показать старый контент
+
+  useEffect(() => {
+    setDescriptionExpanded(false);
+  }, [currentProduct?.id]);
+
+
+
   const activeProduct = currentProduct || previousProduct || product;
-  const inWishlist = activeProduct?.id ? isInWishlist(activeProduct.id) : false;
+
+
+
+  const inWishlist = activeProduct?.id
+      ? isInWishlist(activeProduct.id)
+      : false;
+
+
 
   const handleWishlistToggle = useCallback(() => {
-    if (activeProduct?.id) {
-      toggleWishlist(activeProduct.id);
-    }
+
+    if (!activeProduct?.id) return;
+
+    toggleWishlist(activeProduct.id);
+
   }, [activeProduct?.id, toggleWishlist]);
 
-  /**
-   * Обработчик выбора варианта — загружает товар без перезагрузки страницы
-   */
-  const handleVariantSelect = useCallback(async (variant) => {
-    if (variant.id === activeProduct?.id) return;
 
-    // Сразу обновляем выбранный ID для подсветки
+
+  const formatPrice = useCallback((price) => {
+
+    if (!price) return '0 ₽';
+
+    return priceFormatter.format(price);
+
+  }, []);
+
+
+
+  /* =====================================================
+     Variant select
+  ===================================================== */
+
+  const handleVariantSelect = useCallback(async (variant) => {
+
+    if (!variant?.id || variant.id === activeProduct?.id) return;
+
     setSelectedVariantId(variant.id);
 
-    // Сохраняем текущий товар как previous чтобы показать его во время загрузки
     setPreviousProduct(currentProduct);
     setProductLoading(true);
-    
+
+    const requestId = ++requestRef.current;
+
     try {
-      const result = await getProductById({ 
-        product_id: variant.id, 
-        category_id: activeProduct?.category?.id || categoryId 
+
+      let newProduct = cacheRef.current[variant.id];
+
+      if (!newProduct) {
+
+        const result = await getProductById({
+          product_id: variant.id,
+          category_id: activeProduct?.category?.id || categoryId,
+        });
+
+        if (requestId !== requestRef.current) return;
+
+        if (!result.success || !result.data?.item) {
+          throw new Error('Variant load failed');
+        }
+
+        newProduct = result.data.item;
+
+        cacheRef.current[variant.id] = newProduct;
+      }
+
+      setCurrentProduct(newProduct);
+
+      const params = new URLSearchParams();
+
+      if (urlCategoryId) params.set('category', urlCategoryId);
+      if (variantExpanded) params.set('variants', 'expanded');
+
+      window.history.replaceState(
+          {},
+          '',
+          `/product/${variant.id}?${params.toString()}`
+      );
+
+    } catch (err) {
+
+      console.error('Variant load error', err);
+
+    } finally {
+
+      if (requestId === requestRef.current) {
+        setProductLoading(false);
+        setPreviousProduct(null);
+      }
+
+    }
+
+  }, [
+    activeProduct?.id,
+    activeProduct?.category?.id,
+    categoryId,
+    currentProduct,
+    urlCategoryId,
+    variantExpanded
+  ]);
+
+
+
+  /* =====================================================
+     Prefetch variants
+  ===================================================== */
+
+  const prefetchVariant = useCallback(async (variantId) => {
+
+    if (cacheRef.current[variantId]) return;
+
+    try {
+
+      const result = await getProductById({
+        product_id: variantId,
+        category_id: activeProduct?.category?.id || categoryId,
       });
 
       if (result.success && result.data?.item) {
-        setCurrentProduct(result.data.item);
-        // Обновляем URL без перезагрузки
-        const params = new URLSearchParams();
-        if (urlCategoryId) params.set('category', urlCategoryId);
-        if (variantExpanded) params.set('variants', 'expanded');
-        window.history.replaceState({}, '', `/product/${variant.id}?${params.toString()}`);
+        cacheRef.current[variantId] = result.data.item;
       }
-    } catch (err) {
-      console.error('Error loading variant:', err);
-    } finally {
-      setProductLoading(false);
-      setPreviousProduct(null);
-      setSelectedVariantId(variant.id);
-    }
-  }, [activeProduct?.id, activeProduct?.category?.id, categoryId, urlCategoryId, variantExpanded, currentProduct]);
 
-  const formatPrice = useCallback((price) => {
-    if (!price) return '0 ₽';
-    return new Intl.NumberFormat('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      maximumFractionDigits: 0,
-    }).format(price);
-  }, []);
+    } catch {}
 
-  // Показываем "Загрузка..." только при самой первой загрузке страницы
-  if (loading && !product && !currentProduct) return <div className={styles.loading}>Загрузка...</div>;
+  }, [activeProduct?.category?.id, categoryId]);
 
-  // Если товар не найден или ошибка — перенаправляем на 404
+
+
+  useEffect(() => {
+
+    if (!variants?.length) return;
+
+    variants.forEach(v => prefetchVariant(v.id));
+
+  }, [variants, prefetchVariant]);
+
+
+
+  if (loading && !product && !currentProduct) {
+    return <div className={cx('loading')}>Загрузка...</div>;
+  }
+
+
+
   if (error || !activeProduct) {
+
     return (
-      <div className={styles.notFound}>
-        <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>
-            <span className={styles.errorCode}>404</span>
+        <div className={cx('notFound')}>
+
+          <div className={cx('emptyState')}>
+
+            <div className={cx('emptyIcon')}>
+              <span className={cx('errorCode')}>404</span>
+            </div>
+
+            <h1 className={cx('title')}>Товар не найден</h1>
+
+            <p className={cx('description')}>
+              К сожалению, товар не существует или был удалён.
+            </p>
+
+            <div className={cx('actions')}>
+
+              <button
+                  onClick={() => navigate(-1)}
+                  className={cx('actionButtonSecondary')}
+              >
+                Назад
+              </button>
+
+              <Link
+                  to={paths.CATALOG}
+                  className={cx('actionButton')}
+              >
+                В каталог
+              </Link>
+
+            </div>
+
           </div>
-          <h1 className={styles.title}>Товар не найден</h1>
-          <p className={styles.description}>
-            К сожалению, товар, который вы ищете, не существует или был удалён.
-          </p>
-          <div className={styles.actions}>
-            <button onClick={() => navigate(-1)} className={styles.actionButtonSecondary}>
-              Назад
-            </button>
-            <Link to={paths.CATALOG} className={styles.actionButton}>
-              В каталог
-            </Link>
-          </div>
+
         </div>
-      </div>
     );
   }
 
+
+
+  const safeDescription = DOMPurify.sanitize(
+      parseDescription(activeProduct.description)
+  );
+
+
+
   return (
-      <div className={styles.page}>
-        <div className={styles.container}>
 
-          <div className={`${styles.productContent} productContent`}>
+      <div className={cx('productPage')}>
 
-            {/* Галерея */}
-            <div className={styles.gallery}>
+        <div className={cx('container')}>
+
+          <div className={cx('productContent')}>
+
+            <div className={cx('gallery')}>
               <ProductSlider images={activeProduct.images || []} />
             </div>
 
-            {/* Основная инфа */}
-            <div className={styles.mainInfo}>
-              <div className={styles.price_mobile}>{formatPrice(activeProduct.price)}</div>
 
-              <h1 className={styles.title}>{activeProduct.name}</h1>
 
-              <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>
+            <div className={cx('mainInfo')}>
 
-              {/* Кнопка избранного */}
+              <div className={cx('price_mobile')}>
+                {formatPrice(activeProduct.price)}
+              </div>
+
+              <h1 className={cx('title')}>
+                {activeProduct.name}
+              </h1>
+
+              <div className={cx('rating')}>
+                ⭐ 4.8 (120 отзывов)
+              </div>
+
+
+
               <button
-                className={`${styles.wishlistButton} ${inWishlist ? styles.wishlistActive : ''}`}
-                onClick={handleWishlistToggle}
-                aria-label={inWishlist ? 'Удалить из избранного' : 'Добавить в избранное'}
-                type="button"
+                  className={`${cx('wishlistButton')} ${
+                      inWishlist ? desktop.wishlistActive : ''
+                  }`}
+                  onClick={handleWishlistToggle}
+                  type="button"
               >
                 <FiHeart size={20} />
-                <span>{inWishlist ? 'В избранном' : 'В избранное'}</span>
+                <span>
+                {inWishlist ? 'В избранном' : 'В избранное'}
+              </span>
               </button>
 
-              {/* Миниатюры вариантов — НЕ перезагружается, блокируется при загрузке */}
+
+
               <ProductVariants
                   variants={variants}
                   currentProductId={selectedVariantId || activeProduct.id}
@@ -183,107 +404,149 @@ const ProductPage = () => {
                   isLoading={productLoading}
               />
 
-              {/* Краткие характеристики */}
+
+
               <ProductShortSpecs attributes={activeProduct.attributes} />
+
             </div>
 
-            {/* Блок покупки */}
-            <div className={styles.buyBlock} data-section="buy">
-              <div className={styles.buyBox}>
-                <div className={styles.price}>{formatPrice(activeProduct.price)}</div>
 
-                <div className={styles.stock}>В наличии</div>
 
-                <button className={styles.buyNow}>Купить сейчас</button>
+            <div className={cx('buyBlock')}>
+              <div className={cx('buyBox')}>
 
-                <AddToCart productId={activeProduct.id} />
+                {/* =========================
+        Основные кнопки
+    ========================= */}
+                <div className={cx('mainButtons')}>
+                  {/* Кнопка "В корзину" с счетчиком */}
+                  <AddToCart
+                      productId={activeProduct.id}
+                      className={cx('addToCartButton')}
+                  />
 
-                <div className={styles.delivery}>Доставка: завтра</div>
+                  {/* Кнопка "Рассрочка" */}
+                  <button className={cx('installmentButton')} disabled>
+                    Рассрочка
+                  </button>
 
-                <ul className={styles.features}>
-                  <li>Оригинальный товар</li>
-                  <li>Гарантия 1 год</li>
-                  <li>Возврат 7 дней</li>
-                </ul>
+                  {/* Кнопка "Купить в 1 клик" */}
+                  <button
+                      className={cx('buyNowButton')}
+                      onClick={() => {
+                        // Добавляем товар в корзину и сразу редирект
+                        AddToCart(product.id);
+                        navigate(paths.CART);
+                      }}
+                  >
+                    Купить в 1 клик
+                  </button>
+                </div>
+
+
+                <div className={cx('priceStock')}>
+                  <div className={cx('price')}>
+                    {formatPrice(activeProduct.price)}
+                  </div>
+                  <div className={cx('stock')}>В наличии</div>
+                </div>
+
+                {/* =========================
+                    Под блоком: виджет рассрочки Plyte
+                    ========================= */}
+                <div className={cx('plyteWidget')}>
+                  <div className={cx('plyteHeader')}>
+                    <span className={cx('plyteLogo')}>Plyte</span>
+                    <span className={cx('plyteHelp')}>?</span>
+                  </div>
+                  <div className={cx('plyteText')}>
+                    Разбить на части без переплат
+                  </div>
+                  <div className={cx('plyteLine')}></div>
+                  <div className={cx('plyteFooter')}>
+                    <div className={cx('plyteToday')}>Сегодня</div>
+                    <div className={cx('plyteAmount')}>35 000 ₽</div>
+                    <div className={cx('plyteInstallments')}>5 платежей</div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
           </div>
-          {/* Блок рекомендаций (похожие товары) — НЕ перезагружается */}
+
+
+
           <RecommendationsBlock
               productId={activeProduct.id}
               relationType={RELATION_TYPES.ACCESSORY}
           />
+
+
+
           {activeProduct.description && (
-              <div className={styles.descriptionSection} data-section="description">
-                <h2 className={styles.sectionTitle}>Описание</h2>
-                <div className={`${styles.descriptionWrapper} ${!descriptionExpanded ? styles.descriptionCollapsed : ''}`}>
+
+              <div className={cx('descriptionSection')}>
+
+                <h2 className={cx('sectionTitle')}>
+                  Описание
+                </h2>
+
+                <div
+                    className={`${cx('descriptionWrapper')} ${
+                        !descriptionExpanded ? desktop.descriptionCollapsed : ''
+                    }`}
+                >
+
                   <div
-                      className={styles.description}
-                      key={`desc-${activeProduct.id}`}
+                      className={cx('description')}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(
-                          (() => {
-                            let desc = activeProduct.description;
-
-                            // Если объект, извлекаем HTML
-                            if (typeof desc !== 'string') {
-                              return desc?.__html || String(desc);
-                            }
-
-                            // Если JSON-строка, парсим
-                            if (desc.startsWith('{') || desc.startsWith('[')) {
-                              try {
-                                const parsed = JSON.parse(desc);
-                                desc = parsed.html || parsed.description || desc;
-                              } catch (e) {
-                                // Не JSON, оставляем как есть
-                              }
-                            }
-
-                            // Декодируем HTML-сущности если они есть
-                            if (desc.includes('&lt;') || desc.includes('&gt;')) {
-                              const textarea = document.createElement('textarea');
-                              textarea.innerHTML = desc;
-                              desc = textarea.value;
-                            }
-
-                            return desc;
-                          })()
-                        ),
+                        __html: safeDescription,
                       }}
                   />
-                  {/* Градиентный оверлей когда свёрнуто */}
+
                   {!descriptionExpanded && (
-                    <div className={styles.descriptionGradientOverlay}>
-                      <button
-                        className={styles.descriptionExpandButton}
-                        onClick={() => setDescriptionExpanded(true)}
-                        type="button"
-                      >
-                        Развернуть все
-                      </button>
-                    </div>
+
+                      <div className={cx('descriptionGradientOverlay')}>
+                        <button
+                            className={cx('descriptionExpandButton')}
+                            onClick={() => setDescriptionExpanded(true)}
+                            type="button"
+                        >
+                          Развернуть все
+                        </button>
+                      </div>
+
                   )}
+
                 </div>
               </div>
           )}
 
-          {/* Полные характеристики */}
+
+
           <ProductFullSpecs attributes={activeProduct.attributes} />
 
-          {/* Блок "Возможно, будет интересно" — НЕ перезагружается */}
           <RelatedProducts />
 
         </div>
 
-        {/* Мобильная кнопка корзины */}
-        <MobileCartButton productId={activeProduct.id} price={parseFloat(activeProduct.price) || 0} />
 
-        {/* Плавающая менюшка */}
+
+        <MobileCartButton
+            productId={activeProduct.id}
+            price={parseFloat(activeProduct.price) || 0}
+        />
+
+
+
         <StickyProductBar product={activeProduct} />
+
       </div>
+
   );
 };
+
+
 
 export default ProductPage;

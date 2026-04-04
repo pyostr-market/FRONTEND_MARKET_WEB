@@ -1,0 +1,267 @@
+/* ======================
+   LARGE LAPTOP (1001px - 1200px)
+====================== */
+@media (max-width: 1200px) and (min-width: 1001px) {
+    .productContent {
+        grid-template-columns: 1fr 340px 280px;
+        gap: var(--space-4);
+    }
+
+    .gallery {
+        max-width: 100%;
+        position: sticky;
+        top: 80px;
+        align-self: start;
+    }
+
+    .mainInfo {
+        min-width: 0;
+    }
+
+    .buyBlock {
+        position: sticky;
+        top: 80px;
+        align-self: start;
+    }
+
+    .title {
+        font-size: 19px;
+    }
+
+    .price {
+        font-size: 24px;
+    }
+
+    .buyBox {
+        padding: var(--space-3);
+    }
+}
+
+/* ======================
+   MEDIUM LAPTOP (≤1000px)
+====================== */
+@media (max-width: 1000px) {
+    .productContent {
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: var(--space-4);
+    }
+
+    .gallery {
+        max-width: 100%;
+        position: static;
+    }
+
+    .mainImageWrapper {
+        max-height: 420px;
+    }
+
+    .buyBlock {
+        grid-column: span 2;
+        position: static;
+    }
+
+    .buyBox {
+        position: static;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .price {
+        font-size: 24px;
+    }
+
+    .wishlistButton {
+        padding: 8px 14px;
+        font-size: 13px;
+        margin-bottom: var(--space-4);
+    }
+
+    .wishlistButton svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ======================
+   SMALL LAPTOP (≤900px)
+====================== */
+@media (max-width: 900px) {
+    .productContainer {
+        padding: var(--space-4) var(--space-4) 120px;
+    }
+
+    .productContent {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: var(--space-3);
+    }
+
+    .mainImageWrapper {
+        max-height: 380px;
+    }
+
+    .title {
+        font-size: 17px;
+    }
+
+    .price {
+        font-size: 22px;
+    }
+
+    .rating {
+        font-size: 12px;
+    }
+
+    .buyBox {
+        padding: var(--space-3);
+    }
+}
+
+/* ======================
+   TABLET PORTRAIT (≤768px)
+====================== */
+@media (max-width: 768px) {
+    .productPage {
+        padding-bottom: 60px;
+    }
+
+    .productContent {
+        grid-template-columns: 1fr;
+    }
+
+    .buyBlock {
+        grid-column: auto;
+    }
+
+    .buyBox {
+        position: static;
+        margin-top: 12px;
+    }
+
+    .gallery {
+        max-width: 100%;
+    }
+
+    .mainImageWrapper {
+        max-height: 340px;
+    }
+
+    .mainInfo {
+        padding: 0 var(--space-3);
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .price {
+        font-size: 22px;
+    }
+
+    .wishlistButton {
+        padding: 8px 12px;
+        font-size: 13px;
+        margin-bottom: var(--space-3);
+    }
+
+    .wishlistButton svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .productContainer {
+        padding: 0;
+    }
+
+    .gallery {
+        border-radius: 0;
+        border: none;
+        padding: 8px;
+    }
+
+    .mainInfo {
+        padding: 0 12px;
+    }
+
+    .breadcrumbs {
+        padding: 0 12px;
+    }
+
+    .descriptionSection,
+    .specsSection {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .buyBlock {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+        display: none;
+    }
+
+    .buyBox {
+        padding: 0;
+        border: none;
+    }
+
+    .price_mobile {
+        display: inline-block;
+        font-size: 27px;
+        font-weight: 700;
+        letter-spacing: 0;
+        color: white;
+        background: #10C44C;
+        padding: 1px 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+
+    .notFound {
+        min-height: calc(100vh - 150px);
+        padding: var(--space-4);
+    }
+
+    .errorCode {
+        font-size: 80px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .actionButton,
+    .actionButtonSecondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ======================
+   MOBILE (≤480px)
+====================== */
+@media (max-width: 480px) {
+    .errorCode {
+        font-size: 60px;
+    }
+
+    .emptyIcon {
+        width: 150px;
+        height: 150px;
+    }
+}

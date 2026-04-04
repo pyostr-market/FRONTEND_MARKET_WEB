@@ -249,11 +249,11 @@
   right: 0;
   height: 140px;
   background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 30%,
-    rgba(255, 255, 255, 0.6) 60%,
-    var(--surface) 100%
+          to bottom,
+          transparent 0%,
+          rgba(255, 255, 255, 0.2) 30%,
+          rgba(255, 255, 255, 0.6) 60%,
+          var(--surface) 100%
   );
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
