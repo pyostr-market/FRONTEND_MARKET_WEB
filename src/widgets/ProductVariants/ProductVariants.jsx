@@ -5,7 +5,7 @@ import styles from './ProductVariants.module.css';
  * Миниатюры вариантов товара с горизонтальным скроллом (моб.)
  * или сеткой с градиентом и кнопкой «Показать все» (десктоп)
  */
-const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, expanded, setExpanded }) => {
+const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, expanded, setExpanded, isLoading = false }) => {
 
     const getMainImage = (variant) => {
         if (!variant.images?.length) return null;
@@ -24,7 +24,7 @@ const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, exp
     if (variants.length <= 1) return null;
 
     return (
-        <div className={styles.variantsContainer}>
+        <div className={`${styles.variantsContainer} ${isLoading ? styles.variantsLoading : ''}`}>
             <h3 className={styles.variantsTitle}>Доступные варианты</h3>
 
             <div className={`${styles.variantList} ${expanded ? styles.expanded : styles.collapsed}`}>
@@ -36,9 +36,9 @@ const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, exp
                     return (
                         <button
                             key={variant.id}
-                            className={`${styles.variantCard} ${isCurrent ? styles.variantCardActive : ''}`}
-                            onClick={() => onVariantSelect(variant)}
-                            disabled={isCurrent}
+                            className={`${styles.variantCard} ${isCurrent ? styles.variantCardActive : ''} ${isLoading ? styles.variantCardDisabled : ''}`}
+                            onClick={() => !isLoading && onVariantSelect(variant)}
+                            disabled={isCurrent || isLoading}
                         >
                             <div className={styles.variantImage}>
                                 {mainImage ? (
@@ -46,7 +46,7 @@ const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, exp
                                 ) : (
                                     <div className={styles.noImage}>Нет фото</div>
                                 )}
-                                {isCurrent && <div className={styles.activeMarker}>✓</div>}
+                                {isCurrent && !isLoading && <div className={styles.activeMarker}>✓</div>}
                             </div>
 
                             {shortSpecs.length > 0 && (
@@ -64,17 +64,25 @@ const ProductVariants = ({ variants = [], currentProductId, onVariantSelect, exp
                     <>
                         <div
                             className={styles.gradientOverlay}
-                            onClick={() => setExpanded(true)}
+                            onClick={() => !isLoading && setExpanded(true)}
                         />
                         <button
                             className={styles.expandButton}
-                            onClick={() => setExpanded(true)}
+                            onClick={() => !isLoading && setExpanded(true)}
+                            disabled={isLoading}
                         >
                             Показать все
                         </button>
                     </>
                 )}
             </div>
+
+            {/* Overlay загрузки */}
+            {isLoading && (
+                <div className={styles.loadingOverlay}>
+                    <div className={styles.spinner} />
+                </div>
+            )}
         </div>
     );
 };

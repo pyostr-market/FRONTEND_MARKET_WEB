@@ -579,9 +579,9 @@
     letter-spacing: 0;
     color: white;
     background: #10C44C;
-    padding: 6px 12px;
+    padding: 1px 12px;
     border-radius: 12px;
-
+    margin-bottom: 10px;
   }
 }
 

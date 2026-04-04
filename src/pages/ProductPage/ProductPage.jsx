@@ -167,13 +167,14 @@ const ProductPage = () => {
                 <span>{inWishlist ? 'В избранном' : 'В избранное'}</span>
               </button>
 
-              {/* Миниатюры вариантов — НЕ перезагружается */}
+              {/* Миниатюры вариантов — НЕ перезагружается, блокируется при загрузке */}
               <ProductVariants
                   variants={variants}
                   currentProductId={activeProduct.id}
                   onVariantSelect={handleVariantSelect}
                   expanded={variantExpanded}
                   setExpanded={setVariantExpanded}
+                  isLoading={productLoading}
               />
 
               {/* Краткие характеристики */}
