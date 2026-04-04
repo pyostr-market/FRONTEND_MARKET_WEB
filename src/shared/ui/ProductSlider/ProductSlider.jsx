@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect, Fragment } from 'react';
+import { createPortal } from 'react-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LazyImage from '../LazyImage';
 import ProductImageLightbox from '../ProductImageLightbox/ProductImageLightbox';
@@ -201,14 +202,15 @@ const ProductSlider = ({ images = [], alt = '' }) => {
       )}
     </div>
 
-    {/* Полноэкранный лайтбокс */}
-    {isLightboxOpen && (
+    {/* Полноэкранный лайтбокс — рендерим через портал чтобы избежать stacking context */}
+    {isLightboxOpen && createPortal(
       <ProductImageLightbox
         images={displayImages}
         initialIndex={currentIndex}
         alt={alt}
         onClose={closeLightbox}
-      />
+      />,
+      document.body
     )}
     </Fragment>
   );
