@@ -4,6 +4,7 @@ import { FiHeart } from 'react-icons/fi';
 import DOMPurify from "dompurify";
 
 import { useWishlist } from '../../app/store/wishlistStore';
+import { useCart } from '../../app/store/cartStore';
 import useProduct from '../../shared/hooks/useProduct';
 import { getProductById } from '../../shared/api/catalogApi';
 
@@ -93,6 +94,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { addToCart } = useCart();
 
   const [categoryId, setCategoryId] = useState(null);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
@@ -443,6 +445,7 @@ const ProductPage = () => {
                     <button
                         className={cx('buyNowButton')}
                         onClick={() => {
+                          addToCart(activeProduct.id, 1);
                           navigate(paths.CART);
                         }}
                     >
