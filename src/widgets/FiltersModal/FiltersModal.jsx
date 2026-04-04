@@ -136,17 +136,16 @@ const FiltersModal = ({
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Фильтры</h2>
+          <h2 className={styles.modalTitle}>
+            Фильтры
+            {getSelectedCount() > 0 && (
+              <span className={styles.countBadge}>Выбранно: {getSelectedCount()}</span>
+            )}
+          </h2>
           <button className={styles.closeBtn} onClick={onClose}>
             <FiX size={24} />
           </button>
         </div>
-
-        {getSelectedCount() > 0 && (
-          <div className={styles.selectedBadge}>
-            Выбрано: {getSelectedCount()}
-          </div>
-        )}
 
         <div className={styles.filtersContent}>
           {!filters || filters.length === 0 ? (
