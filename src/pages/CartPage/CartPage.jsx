@@ -289,7 +289,9 @@ const CartPage = () => {
                   {/* Информация о товаре */}
                   <div className={styles.itemInfo}>
                     <div className={styles.itemPrice}>{formatPrice(item.price)}</div>
-                    <h3 className={styles.itemName}>{item.name}</h3>
+                    <Link to={`/product/${item.id}`} className={styles.itemName}>
+                      {item.name}
+                    </Link>
                     <div className={styles.itemArticle}>Арт. {item.id}</div>
                     <div className={styles.itemBadges}>
                       <span className={styles.badge}>

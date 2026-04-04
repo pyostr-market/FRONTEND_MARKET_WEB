@@ -226,6 +226,12 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.itemName:hover {
+  color: var(--primary);
 }
 
 .itemArticle {

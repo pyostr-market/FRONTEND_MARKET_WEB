@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LazyImage from '../LazyImage/index';
 import { DEFAULT_IMAGES } from '../../config/appConfig';
@@ -13,22 +13,25 @@ import styles from './ProductCardSlider.module.css';
 const ProductCardSlider = ({ images = [], alt = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Получаем главное изображение или первое
-  const mainImage = useMemo(() => {
-    if (!images || images.length === 0) return null;
-    const main = images.find((img) => img.is_main);
-    return main || images[0];
-  }, [images]);
-
-  const imageUrl = mainImage?.image_url || DEFAULT_IMAGES.NOT_FOUND;
-
   const hasMultipleImages = images.length > 1;
+
+  // При каждом рендере (когда images меняется) — сбрасываем на первое изображение
+  const displayImage = useMemo(() => {
+    if (!images || images.length === 0) return null;
+    if (!hasMultipleImages) {
+      const main = images.find((img) => img.is_main);
+      return main || images[0];
+    }
+    return images[currentIndex] || images[0];
+  }, [images, currentIndex, hasMultipleImages]);
+
+  const imageUrl = displayImage?.image_url || DEFAULT_IMAGES.NOT_FOUND;
 
   /**
    * Предыдущее изображение
    */
   const handlePrev = useCallback((e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setCurrentIndex((prev) => {
       return prev === 0 ? images.length - 1 : prev - 1;
     });
@@ -38,7 +41,7 @@ const ProductCardSlider = ({ images = [], alt = '' }) => {
    * Следующее изображение
    */
   const handleNext = useCallback((e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setCurrentIndex((prev) => {
       return prev === images.length - 1 ? 0 : prev + 1;
     });
@@ -48,9 +51,14 @@ const ProductCardSlider = ({ images = [], alt = '' }) => {
    * Клик по индикатору
    */
   const handleIndicatorClick = useCallback((e, index) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setCurrentIndex(index);
   }, []);
+
+  // Сбрасываем индекс при смене набора изображений
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [images]);
 
   // Если нет изображений или одно изображение
   if (!hasMultipleImages) {
@@ -67,7 +75,7 @@ const ProductCardSlider = ({ images = [], alt = '' }) => {
 
   return (
     <div className={styles.sliderContainer}>
-      {/*/!* Стрелки *!/*/}
+      {/* Стрелки */}
       {/*<button*/}
       {/*  className={`${styles.arrow} ${styles.arrowLeft}`}*/}
       {/*  onClick={handlePrev}*/}
