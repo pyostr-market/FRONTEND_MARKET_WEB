@@ -399,6 +399,7 @@ const ProductPage = () => {
 
               <ProductVariants
                   variants={variants}
+                  mainProductName={activeProduct.name}
                   currentProductId={selectedVariantId || activeProduct.id}
                   onVariantSelect={handleVariantSelect}
                   expanded={variantExpanded}
