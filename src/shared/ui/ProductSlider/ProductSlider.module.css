@@ -280,6 +280,8 @@
 @media (max-width: 768px) {
   .sliderContainer {
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
   }
 
   .navButton {
@@ -300,7 +302,9 @@
 
   .mainImageWrapper {
     max-height: 340px;
+    max-width: 100%;
     min-height: 180px;
+    width: 100%;
   }
 
   /* На мобильном: каждое изображение на всю ширину, соседнее видно только при свайпе */
@@ -311,10 +315,16 @@
   .mobileCarousel {
     overflow-x: auto;
     padding: 0;
+    width: 100%;
   }
 
   .carouselItem {
-    width: 100%; /* Мобильный: одно изображение на всю ширину */
+    width: 100%;
+    max-width: 100%;
     padding: 0;
+  }
+
+  .mainImage {
+    max-width: 100%;
   }
 }

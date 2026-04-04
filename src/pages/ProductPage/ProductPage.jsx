@@ -108,6 +108,7 @@ const ProductPage = () => {
 
   const requestRef = useRef(0);
   const cacheRef = useRef({});
+  const baseProductNameRef = useRef(null);
 
 
 
@@ -146,6 +147,8 @@ const ProductPage = () => {
     if (product && !currentProduct) {
       setCurrentProduct(product);
       setSelectedVariantId(product.id);
+      // Фиксируем базовое имя товара для сортировки вариантов
+      baseProductNameRef.current = product.name;
     }
 
   }, [product, currentProduct]);
@@ -399,7 +402,7 @@ const ProductPage = () => {
 
               <ProductVariants
                   variants={variants}
-                  mainProductName={activeProduct.name}
+                  mainProductName={baseProductNameRef.current || activeProduct.name}
                   currentProductId={selectedVariantId || activeProduct.id}
                   onVariantSelect={handleVariantSelect}
                   expanded={variantExpanded}

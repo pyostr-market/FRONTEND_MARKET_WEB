@@ -47,6 +47,7 @@
   box-sizing: border-box;
 }
 
+
 .variantCard:hover:not(:disabled) {
   border-color: #005bff;
   background-color: #f0f7ff;
@@ -125,8 +126,6 @@
 ====================== */
 @media (max-width: 1000px) and (min-width: 769px) {
   .variantCard {
-    width: 75px;
-    max-width: 75px;
     padding: 10px;
     gap: 6px;
   }
@@ -294,9 +293,10 @@
   }
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1200px) {
   .variantList {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 }
+
