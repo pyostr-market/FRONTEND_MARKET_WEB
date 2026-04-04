@@ -27,6 +27,7 @@ const ProductPage = () => {
   // Состояние для текущего товара (может меняться без перезагрузки)
   const [currentProduct, setCurrentProduct] = useState(null);
   const [productLoading, setProductLoading] = useState(false);
+  const [previousProduct, setPreviousProduct] = useState(null);
 
   const urlParams = new URLSearchParams(window.location.search);
   const urlCategoryId = urlParams.get('category');
@@ -57,8 +58,8 @@ const ProductPage = () => {
 
   const [variantExpanded, setVariantExpanded] = useState(urlVariantsExpanded);
 
-  // Используем currentProduct вместо product для отображения
-  const activeProduct = currentProduct || product;
+  // Используем previousProduct во время загрузки чтобы показать старый контент
+  const activeProduct = currentProduct || previousProduct || product;
   const inWishlist = activeProduct?.id ? isInWishlist(activeProduct.id) : false;
 
   const handleWishlistToggle = useCallback(() => {
@@ -73,7 +74,10 @@ const ProductPage = () => {
   const handleVariantSelect = useCallback(async (variant) => {
     if (variant.id === activeProduct?.id) return;
 
+    // Сохраняем текущий товар как previous чтобы показать его во время загрузки
+    setPreviousProduct(currentProduct);
     setProductLoading(true);
+    
     try {
       const result = await getProductById({ 
         product_id: variant.id, 
@@ -92,8 +96,9 @@ const ProductPage = () => {
       console.error('Error loading variant:', err);
     } finally {
       setProductLoading(false);
+      setPreviousProduct(null);
     }
-  }, [activeProduct?.id, activeProduct?.category?.id, categoryId, urlCategoryId, variantExpanded]);
+  }, [activeProduct?.id, activeProduct?.category?.id, categoryId, urlCategoryId, variantExpanded, currentProduct]);
 
   const formatPrice = useCallback((price) => {
     if (!price) return '0 ₽';
@@ -104,9 +109,8 @@ const ProductPage = () => {
     }).format(price);
   }, []);
 
-  const isLoading = loading || productLoading;
-
-  if (isLoading) return <div className={styles.loading}>Загрузка...</div>;
+  // Показываем "Загрузка..." только при самой первой загрузке страницы
+  if (loading && !product && !currentProduct) return <div className={styles.loading}>Загрузка...</div>;
 
   // Если товар не найден или ошибка — перенаправляем на 404
   if (error || !activeProduct) {
@@ -137,18 +141,18 @@ const ProductPage = () => {
       <div className={styles.page}>
         <div className={styles.container}>
 
-          <div className={`${styles.productContent} productContent ${productLoading ? styles.fadeIn : ''}`}>
+          <div className={`${styles.productContent} productContent`}>
 
             {/* Галерея */}
             <div className={styles.gallery}>
-              <ProductSlider images={activeProduct.images || []} key={`slider-${activeProduct.id}`} />
+              <ProductSlider images={activeProduct.images || []} />
             </div>
 
             {/* Основная инфа */}
             <div className={styles.mainInfo}>
               <div className={styles.price_mobile}>{formatPrice(activeProduct.price)}</div>
 
-              <h1 className={styles.title} key={`title-${activeProduct.id}`}>{activeProduct.name}</h1>
+              <h1 className={styles.title}>{activeProduct.name}</h1>
 
               <div className={styles.rating}>⭐ 4.8 (120 отзывов)</div>
 
@@ -163,7 +167,7 @@ const ProductPage = () => {
                 <span>{inWishlist ? 'В избранном' : 'В избранное'}</span>
               </button>
 
-              {/* Миниатюры вариантов */}
+              {/* Миниатюры вариантов — НЕ перезагружается */}
               <ProductVariants
                   variants={variants}
                   currentProductId={activeProduct.id}
@@ -173,7 +177,7 @@ const ProductPage = () => {
               />
 
               {/* Краткие характеристики */}
-              <ProductShortSpecs attributes={activeProduct.attributes} key={`shortspecs-${activeProduct.id}`} />
+              <ProductShortSpecs attributes={activeProduct.attributes} />
             </div>
 
             {/* Блок покупки */}
@@ -259,7 +263,7 @@ const ProductPage = () => {
           )}
 
           {/* Полные характеристики */}
-          <ProductFullSpecs attributes={activeProduct.attributes} key={`fullspecs-${activeProduct.id}`} />
+          <ProductFullSpecs attributes={activeProduct.attributes} />
 
           {/* Блок "Возможно, будет интересно" — НЕ перезагружается */}
           <RelatedProducts />

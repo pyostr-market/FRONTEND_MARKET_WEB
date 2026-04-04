@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LazyImage from '../LazyImage';
 import { DEFAULT_IMAGES } from '../../config/appConfig';
@@ -6,102 +6,141 @@ import styles from './ProductSlider.module.css';
 
 /**
  * Слайдер товара с главным изображением и миниатюрами
- * @param {Object} props
- * @param {Array} props.images - Массив изображений товара
- * @param {string} props.alt - Альтернативный текст
+ * На десктопе: одно изображение + миниатюры справа
+ * На мобильном: CSS Scroll Snap карусель с показом соседних изображений
  */
 const ProductSlider = ({ images = [], alt = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchOffset, setTouchOffset] = useState(0);
-  const touchStartXRef = useRef(0);
-  const sliderRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+  const isScrollingProgrammatically = useRef(false);
 
   // Получаем изображения для отображения
   const displayImages = images.length > 0 ? images : [
     { image_url: DEFAULT_IMAGES.NOT_FOUND, is_main: true }
   ];
 
-  const currentImage = displayImages[currentIndex] || displayImages[0];
-  const imageUrl = currentImage?.image_url || DEFAULT_IMAGES.NOT_FOUND;
   const hasMultipleImages = displayImages.length > 1;
+
+  /**
+   * Обновляем currentIndex при скролле (для мобильной версии)
+   */
+  const handleScroll = useCallback(() => {
+    if (isScrollingProgrammatically.current) return;
+    if (!scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    const scrollLeft = container.scrollLeft;
+    const itemWidth = container.offsetWidth * 0.85;
+    const newIndex = Math.round(scrollLeft / itemWidth);
+
+    if (newIndex >= 0 && newIndex < displayImages.length && newIndex !== currentIndex) {
+      setCurrentIndex(newIndex);
+    }
+  }, [currentIndex, displayImages.length]);
+
+  /**
+   * Переход к конкретному слайду
+   */
+  const goToSlide = useCallback((index) => {
+    if (!scrollContainerRef.current) return;
+    
+    isScrollingProgrammatically.current = true;
+    setCurrentIndex(index);
+    
+    const container = scrollContainerRef.current;
+    const itemWidth = container.offsetWidth * 0.85;
+    const targetScroll = index * itemWidth;
+    
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    });
+
+    // Сбрасываем флаг после завершения анимации
+    setTimeout(() => {
+      isScrollingProgrammatically.current = false;
+    }, 400);
+  }, []);
 
   /**
    * Предыдущее изображение
    */
   const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => {
-      return prev === 0 ? displayImages.length - 1 : prev - 1;
-    });
-  }, [displayImages.length]);
+    if (currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    } else {
+      goToSlide(displayImages.length - 1);
+    }
+  }, [currentIndex, displayImages.length, goToSlide]);
 
   /**
    * Следующее изображение
    */
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => {
-      return prev === displayImages.length - 1 ? 0 : prev + 1;
-    });
-  }, [displayImages.length]);
+    if (currentIndex < displayImages.length - 1) {
+      goToSlide(currentIndex + 1);
+    } else {
+      goToSlide(0);
+    }
+  }, [currentIndex, displayImages.length, goToSlide]);
 
   /**
    * Клик по миниатюре
    */
   const handleThumbnailClick = useCallback((index) => {
-    setCurrentIndex(index);
-  }, []);
-
-  /**
-   * Свайп для мобильных с плавной прокруткой
-   */
-  const handleTouchStart = useCallback((e) => {
-    touchStartXRef.current = e.touches[0].clientX;
-    setTouchOffset(0);
-  }, []);
-
-  const handleTouchMove = useCallback((e) => {
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - touchStartXRef.current;
-    setTouchOffset(diff);
-  }, []);
-
-  const handleTouchEnd = useCallback(() => {
-    const threshold = 100; // Порог срабатывания свайпа
-    
-    if (Math.abs(touchOffset) > threshold) {
-      if (touchOffset > 0) {
-        // Свайп вправо - предыдущее
-        handlePrev();
-      } else {
-        // Свайп влево - следующее
-        handleNext();
-      }
-    }
-    
-    setTouchOffset(0);
-  }, [touchOffset, handlePrev, handleNext]);
+    goToSlide(index);
+  }, [goToSlide]);
 
   return (
-    <div className={styles.sliderContainer} ref={sliderRef}>
+    <div className={styles.sliderContainer}>
       {/* Главное изображение */}
-      <div
-        className={styles.mainImageWrapper}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      <div className={styles.mainImageWrapper}>
+        {/* Карусель для мобильной версии с CSS Scroll Snap */}
         <div 
-          className={styles.imageTrack}
-          style={{
-            transform: `translateX(${touchOffset}px)`,
-            transition: touchOffset ? 'none' : 'transform 0.3s ease-out'
-          }}
+          ref={scrollContainerRef}
+          className={`${styles.mobileCarousel} ${!hasMultipleImages ? styles.carouselSingle : ''}`}
+          onScroll={handleScroll}
         >
-          <LazyImage
-            src={imageUrl}
-            alt={alt}
-            className={styles.mainImage}
-          />
+          {displayImages.map((img, index) => (
+            <div 
+              key={img.upload_id || index}
+              className={styles.carouselItem}
+            >
+              <LazyImage
+                src={img.image_url}
+                alt={`${alt} - изображение ${index + 1}`}
+                className={styles.mainImage}
+              />
+            </div>
+          ))}
         </div>
+
+        {/* Кнопки навигации (десктоп) */}
+        {hasMultipleImages && (
+          <>
+            <button
+              className={`${styles.navButton} ${styles.navButtonLeft}`}
+              onClick={handlePrev}
+              aria-label="Предыдущее изображение"
+            >
+              <FiChevronLeft size={20} />
+            </button>
+            <button
+              className={`${styles.navButton} ${styles.navButtonRight}`}
+              onClick={handleNext}
+              aria-label="Следующее изображение"
+            >
+              <FiChevronRight size={20} />
+            </button>
+          </>
+        )}
+
+        {/* Счётчик изображений (десктоп) */}
+        {hasMultipleImages && (
+          <div className={styles.imageCounter}>
+            {currentIndex + 1} / {displayImages.length}
+          </div>
+        )}
 
         {/* Точки-индикаторы (мобильные) */}
         {hasMultipleImages && (
@@ -112,7 +151,7 @@ const ProductSlider = ({ images = [], alt = '' }) => {
                 className={`${styles.mobileIndicator} ${
                   index === currentIndex ? styles.mobileIndicatorActive : ''
                 }`}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => handleThumbnailClick(index)}
                 aria-label={`Изображение ${index + 1}`}
               />
             ))}
