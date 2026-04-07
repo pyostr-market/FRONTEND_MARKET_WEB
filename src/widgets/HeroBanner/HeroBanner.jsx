@@ -135,6 +135,7 @@ const HeroBanner = () => {
                       src={banner.image}
                       alt={banner.title}
                       className={styles.slideImage}
+                      flush
                   />
 
                   {banner.title && (
