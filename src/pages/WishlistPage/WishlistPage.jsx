@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiArrowRight, FiSliders } from 'react-icons/fi';
 import { useWishlist } from '../../app/store/wishlistStore';
@@ -17,19 +17,11 @@ import styles from './WishlistPage.module.css';
 const WishlistPage = () => {
   const { wishlistItems, removeFromWishlist, clearWishlist, getTotalCount } = useWishlist();
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [sortType, setSortType] = useState('default');
 
   const totalCount = getTotalCount();
-
-  // Определяем мобильную версию
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   /**
    * Обработчик удаления из избранного
@@ -104,38 +96,36 @@ const WishlistPage = () => {
   return (
     <div className={styles.wishlistPage}>
       {/* Мобильная панель сверху — только фильтры + счётчик */}
-      {isMobile && (
-        <div className={styles.mobileTopBar}>
-          <button className={styles.mobileFiltersBtn} onClick={() => setIsFiltersModalOpen(true)}>
-            <FiSliders size={18} />
-            <span>Фильтры</span>
-            {hasChanges && <span className={styles.filtersBadge}>{Object.keys(selectedFilters).length}</span>}
-          </button>
-          <span className={styles.mobileCount}>{totalCount}</span>
-        </div>
-      )}
+      <div className={styles.mobileTopBar}>
+        <button className={styles.mobileFiltersBtn} onClick={() => setIsFiltersModalOpen(true)}>
+          <FiSliders size={18} />
+          <span>Фильтры</span>
+          {hasChanges && <span className={styles.filtersBadge}>{Object.keys(selectedFilters).length}</span>}
+        </button>
+        <span className={styles.mobileCount}>{totalCount} {totalCount === 1 ? 'товар' : totalCount < 5 ? 'товара' : 'товаров'}</span>
+      </div>
 
       <div className={styles.wishlistContainer}>
         <div className={styles.wishlistContent}>
           {/* Десктопная панель фильтров */}
-          {!isMobile && <WishlistFiltersSidebar selectedFilters={selectedFilters} onToggleFilter={toggleFilterValue} onApply={handleApplyFilters} onReset={handleResetFilters} hasChanges={hasChanges} />}
+          <div className={styles.desktopFilters}>
+            <WishlistFiltersSidebar selectedFilters={selectedFilters} onToggleFilter={toggleFilterValue} onApply={handleApplyFilters} onReset={handleResetFilters} hasChanges={hasChanges} />
+          </div>
 
           <div className={styles.wishlistMain}>
             {/* Заголовок только для десктопа */}
-            {!isMobile && (
-              <div className={styles.wishlistHeader}>
-                <h1 className={styles.wishlistTitle}>Избранное</h1>
-                <div className={styles.wishlistActions}>
-                  <span className={styles.wishlistCount}>
-                    {totalCount} {totalCount === 1 ? 'товар' : totalCount < 5 ? 'товара' : 'товаров'}
-                  </span>
-                  <SortDropdown sortBy={sortType} onSortChange={handleSortChange} />
-                  <button className={styles.clearWishlistButton} onClick={() => clearWishlist()}>
-                    Очистить всё
-                  </button>
-                </div>
+            <div className={styles.wishlistHeader}>
+              <h1 className={styles.wishlistTitle}>Избранное</h1>
+              <div className={styles.wishlistActions}>
+                <span className={styles.wishlistCount}>
+                  {totalCount} {totalCount === 1 ? 'товар' : totalCount < 5 ? 'товара' : 'товаров'}
+                </span>
+                <SortDropdown sortBy={sortType} onSortChange={handleSortChange} />
+                <button className={styles.clearWishlistButton} onClick={() => clearWishlist()}>
+                  Очистить всё
+                </button>
               </div>
-            )}
+            </div>
 
             <WishlistGrid
               wishlistItems={wishlistItems}
@@ -148,17 +138,15 @@ const WishlistPage = () => {
       </div>
 
       {/* Мобильное модальное окно фильтров */}
-      {isMobile && (
-        <WishlistFiltersModal
-          isOpen={isFiltersModalOpen}
-          onClose={() => setIsFiltersModalOpen(false)}
-          selectedFilters={selectedFilters}
-          onToggleFilter={toggleFilterValue}
-          onApply={handleApplyFilters}
-          onReset={handleResetFilters}
-          hasChanges={hasChanges}
-        />
-      )}
+      <WishlistFiltersModal
+        isOpen={isFiltersModalOpen}
+        onClose={() => setIsFiltersModalOpen(false)}
+        selectedFilters={selectedFilters}
+        onToggleFilter={toggleFilterValue}
+        onApply={handleApplyFilters}
+        onReset={handleResetFilters}
+        hasChanges={hasChanges}
+      />
     </div>
   );
 };
