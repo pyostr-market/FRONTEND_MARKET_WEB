@@ -140,20 +140,87 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     handleClose();
   }, []);
 
+  // Алгоритм релевантности: выбираем категорию, максимально подходящую запросу
+  const findMostRelevantCategory = useCallback((items, queryText) => {
+    if (!items || items.length === 0) return null;
+    if (!queryText || !queryText.trim()) return null;
+
+    const normalizedQuery = queryText.trim().toLowerCase();
+    const queryWords = normalizedQuery.split(/\s+/).filter(Boolean);
+
+    // Собираем уникальные категории
+    const categoryMap = new Map();
+    items.forEach((item) => {
+      if (item.category && !categoryMap.has(item.category.id)) {
+        categoryMap.set(item.category.id, item.category);
+      }
+    });
+
+    if (categoryMap.size === 0) return null;
+
+    let bestCategory = null;
+    let bestScore = -Infinity;
+
+    categoryMap.forEach((category) => {
+      const normalizedName = category.name.toLowerCase().trim();
+
+      // 1. Точное совпадение — максимальный приоритет
+      if (normalizedName === normalizedQuery) {
+        bestScore = Infinity;
+        bestCategory = category;
+        return;
+      }
+
+      // 2. Считаем сколько слов запроса найдено в категории
+      let wordsMatched = 0;
+      for (const word of queryWords) {
+        if (normalizedName.includes(word)) {
+          wordsMatched++;
+        }
+      }
+
+      // Не все слова найдены — пропускаем
+      if (wordsMatched < queryWords.length) return;
+
+      // 3. Все слова найдены — считаем score
+      // Чем короче лишняя часть категории, тем лучше
+      const lengthDiff = normalizedName.length - normalizedQuery.length;
+      // Бонус если категория начинается с запроса
+      const startsWithBonus = normalizedName.startsWith(normalizedQuery) ? 100 : 0;
+      // Бонус за полное совпадение отдельных слов
+      const exactWordBonus = queryWords.filter((w) => {
+        // Слово целиком присутствует в названии (по границам)
+        const regex = new RegExp(`\\b${w}\\b`, 'i');
+        return regex.test(category.name);
+      }).length * 50;
+
+      const score = 1000 - lengthDiff + startsWithBonus + exactWordBonus;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestCategory = category;
+      }
+    });
+
+    return bestCategory;
+  }, []);
+
   // Обработчик Enter — открывает страницу каталога
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Enter' && query.trim()) {
       e.preventDefault();
-      // Берём первую категорию из результатов
-      const firstCategory = searchResults.items.find(item => item.category)?.category;
-      if (firstCategory) {
-        navigate(`/catalog?category=${firstCategory.id}`);
+      const relevantCategory = findMostRelevantCategory(searchResults.items, query);
+      if (relevantCategory) {
+        navigate(`/catalog?category=${relevantCategory.id}`);
       } else {
-        navigate(`/catalog?search=${encodeURIComponent(query.trim())}`);
+        navigate(`/catalog?q=${encodeURIComponent(query.trim())}`);
       }
-      handleClose();
+      // Закрываем с небольшой задержкой, чтобы navigate успел
+      setTimeout(() => {
+        handleClose();
+      }, 50);
     }
-  }, [query, searchResults.items, navigate]);
+  }, [query, searchResults.items, navigate, findMostRelevantCategory]);
 
   /**
    * Кнопка "Отмена" — закрывает меню и сбрасывает query
