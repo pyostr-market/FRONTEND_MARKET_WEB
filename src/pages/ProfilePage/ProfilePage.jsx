@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FiLogOut, FiUser, FiShoppingBag, FiGift, FiHeart, FiMonitor, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiLogOut, FiUser, FiShoppingBag, FiHeart, FiMonitor, FiChevronLeft, FiChevronRight, FiRefreshCw, FiTool, FiMessageSquare, FiStar } from 'react-icons/fi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Tabs from '../../shared/ui/Tabs/Tabs';
 import Spinner from '../../shared/ui/Spinner/Spinner';
@@ -9,14 +9,18 @@ import CompanyProfile from '../../features/profile/CompanyProfile/CompanyProfile
 import SessionsList from '../../features/profile/SessionsList/SessionsList';
 import useProfile from '../../shared/hooks/useProfile';
 import styles from './ProfilePage.module.css';
+import logoImg from '../../logo.png';
 
 // Вкладки левого меню
 const SIDEBAR_TABS = [
-  { key: 'personal', label: 'Личные данные', icon: <FiUser size={18} />, accent: 'blue' },
-  { key: 'orders', label: 'Заказы', icon: <FiShoppingBag size={18} />, accent: 'purple' },
-  { key: 'sessions', label: 'Активные сессии', icon: <FiMonitor size={18} />, accent: 'orange' },
-  { key: 'referrals', label: 'Реферальная система', icon: <FiGift size={18} />, accent: 'green' },
-  { key: 'loyalty', label: 'Программа лояльности', icon: <FiHeart size={18} />, accent: 'blue' },
+  { key: 'personal', label: 'Личные данные', icon: <FiUser size={20} />, accent: 'blue' },
+  { key: 'orders', label: 'Заказы', icon: <FiShoppingBag size={20} />, accent: 'purple' },
+  { key: 'tradein', label: 'Trade-in', icon: <FiRefreshCw size={20} />, accent: 'cyan' },
+  { key: 'repair', label: 'Ремонт', icon: <FiTool size={20} />, accent: 'orange' },
+  { key: 'reviews', label: 'Отзывы', icon: <FiMessageSquare size={20} />, accent: 'yellow' },
+  { key: 'sessions', label: 'Активные сессии', icon: <FiMonitor size={20} />, accent: 'indigo' },
+  { key: 'referrals', label: 'Реферальная система', icon: <FiStar size={20} />, accent: 'green' },
+  { key: 'loyalty', label: 'Программа лояльности', icon: <FiHeart size={20} />, accent: 'pink' },
 ];
 
 // Вкладки личных данных
@@ -247,6 +251,15 @@ const ProfilePage = () => {
       case 'orders':
         return renderPlaceholder('Заказы', <FiShoppingBag size={32} />, 'purple');
 
+      case 'tradein':
+        return renderPlaceholder('Trade-in', <FiRefreshCw size={32} />, 'cyan');
+
+      case 'repair':
+        return renderPlaceholder('Ремонт', <FiTool size={32} />, 'orange');
+
+      case 'reviews':
+        return renderPlaceholder('Отзывы', <FiMessageSquare size={32} />, 'yellow');
+
       case 'sessions':
         return (
           <SessionsList
@@ -259,10 +272,10 @@ const ProfilePage = () => {
         );
 
       case 'referrals':
-        return renderPlaceholder('Реферальная система', <FiGift size={32} />, 'orange');
+        return renderPlaceholder('Реферальная система', <FiStar size={32} />, 'green');
 
       case 'loyalty':
-        return renderPlaceholder('Программа лояльности', <FiHeart size={32} />, 'green');
+        return renderPlaceholder('Программа лояльности', <FiHeart size={32} />, 'pink');
 
       default:
         return null;
@@ -300,7 +313,19 @@ const ProfilePage = () => {
 
         {/* Мобильный вид: выбор разделов (скрыт на десктопе) */}
         <div className={`${styles.mobileSections} ${!isMobileContentVisible ? styles.mobileSectionsActive : ''}`}>
-          <h1 className={styles.mobileSectionsTitle}>Профиль</h1>
+          {/* Шапка с логотипом и баллами */}
+          <div className={styles.mobileHeader}>
+            <div className={styles.mobileHeaderTop}>
+              <div className={styles.mobileLogo}>
+                <img src={logoImg} alt="Marker" className={styles.mobileLogoImg} />
+              </div>
+              <div className={styles.mobilePoints}>
+                <span className={styles.mobilePointsValue}>2 000</span>
+                <span className={styles.mobilePointsLabel}>баллов</span>
+              </div>
+            </div>
+          </div>
+          
           <div className={styles.mobileSectionsList}>
             {SIDEBAR_TABS.map((tab) => (
               <button
@@ -308,6 +333,9 @@ const ProfilePage = () => {
                 className={styles.mobileSectionRow}
                 onClick={() => handleSidebarTabChange(tab.key)}
               >
+                <div className={`${styles.mobileSectionRowIcon} ${styles[`mobileSectionRowIcon--${tab.accent}`]}`}>
+                  {tab.icon}
+                </div>
                 <span className={styles.mobileSectionRowLabel}>{tab.label}</span>
                 <FiChevronRight size={18} className={styles.mobileSectionRowArrow} />
               </button>

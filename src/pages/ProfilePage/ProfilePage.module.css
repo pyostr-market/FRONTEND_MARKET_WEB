@@ -195,83 +195,137 @@
 .mobileSections {
   display: none;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4) 0;
+  background-color: var(--bg);
 }
 
-.mobileSectionsTitle {
-  font-size: 22px;
+/* Шапка мобильного меню */
+.mobileHeader {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: var(--space-3) var(--space-4);
+}
+
+.mobileHeaderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobileLogo {
+  display: flex;
+  align-items: center;
+}
+
+.mobileLogoImg {
+  height: 32px;
+  width: auto;
+}
+
+/* Баллы пользователя */
+.mobilePoints {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.mobilePointsValue {
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text);
-  padding: 0 var(--space-4);
+  color: var(--primary);
+}
+
+.mobilePointsLabel {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 .mobileSectionsList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: 0 var(--space-4);
+  padding: var(--space-2) var(--space-4);
 }
 
 .mobileSectionRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space-3);
   background-color: var(--surface);
   border-radius: var(--radius-xl);
-  padding: 14px var(--space-3);
-  box-shadow: var(--shadow-xs);
+  padding: 12px var(--space-3);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  border: 1px solid var(--border);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .mobileSectionRow:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
   background-color: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
 .mobileSectionRow:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-xs);
   background-color: var(--surface-subtle);
 }
 
+/* Иконки разделов */
 .mobileSectionRowIcon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
   color: var(--surface);
   font-size: 18px;
-  margin-right: var(--space-3);
   flex-shrink: 0;
 }
 
+.mobileSectionRowIcon--blue {
+  background-color: var(--primary);
+}
+
+.mobileSectionRowIcon--purple {
+  background-color: #7c3aed;
+}
+
+.mobileSectionRowIcon--cyan {
+  background-color: #0891b2;
+}
+
+.mobileSectionRowIcon--orange {
+  background-color: #ea580c;
+}
+
+.mobileSectionRowIcon--yellow {
+  background-color: #ca8a04;
+}
+
+.mobileSectionRowIcon--indigo {
+  background-color: #4f46e5;
+}
+
+.mobileSectionRowIcon--green {
+  background-color: var(--success);
+}
+
+.mobileSectionRowIcon--pink {
+  background-color: #db2777;
+}
+
 .mobileSectionRowLabel {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text);
   flex: 1;
 }
 
 .mobileSectionRowArrow {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-muted);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
-}
-
-.mobileSectionRowArrow.open {
-  transform: rotate(90deg);
 }
 
 .mobileSectionsFooter {
-  margin-top: var(--space-5);
-  padding: 0 var(--space-4);
+  padding: var(--space-4);
 }
 
 /* Logout button modernized */
@@ -373,8 +427,7 @@
   .profileContainer {
     flex-direction: column;
     margin-top: 0;
-    padding: 0 var(--space-2) ;
-  }
+    }
 
   /* Скрываем десктопные элементы */
   .sidebar {
@@ -406,47 +459,43 @@
   }
 
   /* --- Mobile Sections --- */
-  .mobileSectionsTitle {
-    font-size: 22px;
-    margin-bottom: var(--space-3);
-  }
-
   .mobileSectionsList {
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
+    padding: var(--space-2) var(--space-3);
   }
 
   .mobileSectionRow {
-    padding: 16px 0;
-    background: transparent;
-    border-bottom: 1px solid var(--border);
+    padding: 12px var(--space-3);
+    margin-bottom: var(--space-2);
   }
 
   .mobileSectionRow:last-child {
-    border-bottom: none;
-  }
-
-  .mobileSectionRowLabel {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .mobileSectionRowArrow {
-    font-size: 18px;
-    color: var(--text-muted);
+    margin-bottom: 0;
   }
 
   .mobileSectionsFooter {
-    margin-top: var(--space-6);
-    padding: 0;
+    padding: var(--space-3);
   }
 
   .mobileSectionsFooter .logoutBtn {
-    padding: 8px var(--space-3);
-    font-size: 13px;
-    border-width: 1px;
+    padding: 10px var(--space-3);
+    font-size: 14px;
+  }
+  
+  /* Шапка на мобильных */
+  .mobileHeader {
+    padding: var(--space-3);
+  }
+  
+  .mobileLogoImg {
+    height: 28px;
+  }
+  
+  .mobilePointsValue {
+    font-size: 16px;
+  }
+  
+  .mobilePointsLabel {
+    font-size: 12px;
   }
 
   /* --- Mobile Content header --- */
