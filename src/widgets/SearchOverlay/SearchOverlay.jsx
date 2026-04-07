@@ -180,6 +180,13 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
               <FiX size={18} />
             </button>
           )}
+
+          {/* Кнопка "Отмена" для мобильной версии */}
+          {showMobile && isOpen && (
+            <button className={styles.mobileCancelBtn} onClick={handleCancel} type="button">
+              Отмена
+            </button>
+          )}
         </div>
       </div>
 
@@ -225,13 +232,6 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
 
       {showDropdown && showMobile && (
         <div className={styles.mobileDropdown}>
-          <div className={styles.mobileHeader}>
-            <span className={styles.mobileTitle}>Поиск</span>
-            <button className={styles.cancelBtn} onClick={handleCancel}>
-              Отмена
-            </button>
-          </div>
-
           <div className={styles.dropdownBody}>
             {isSearching ? (
               <div className={styles.searchLoading}>

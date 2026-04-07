@@ -18,9 +18,13 @@
   height: 45px;
   background-color: var(--primary);
   border-radius: var(--radius-xl);
-  padding: 3px;
+  padding: 3px 3px 3px 3px;
   gap: 6px;
   transition: background-color 0.2s;
+}
+
+.searchInputWrapper:has(.mobileCancelBtn) {
+  padding-right: 6px;
 }
 
 .searchInputWrapper:hover {
@@ -138,41 +142,31 @@
   to { transform: translateY(0); }
 }
 
-.mobileHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4);
-  padding-top: 0;
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--border);
-  background-color: var(--surface);
-  flex-shrink: 0;
-}
-
-.mobileTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.cancelBtn {
+/* Кнопка "Отмена" для мобильной версии */
+.mobileCancelBtn {
   background: none;
   border: none;
-  color: var(--primary);
-  padding: 8px 16px;
-  border-radius: var(--radius-lg);
+  color: white;
+  padding: 8px 12px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.mobileCancelBtn:hover {
+  opacity: 0.8;
 }
 
 .dropdownBody {
   flex: 1;
   overflow-y: auto;
+  padding: var(--space-4);
   padding-top: 0;
   padding-bottom: 80px;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 80px);
 }
 
 /* ======================
