@@ -1,0 +1,708 @@
+/* =====================================================
+   Checkout Page Skeleton
+===================================================== */
+
+.checkoutPage {
+  min-height: 100vh;
+  background-color: var(--bg);
+  padding: var(--space-3);
+  padding-bottom: calc(var(--space-3) + 100px);
+}
+
+.checkoutContainer {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+}
+
+/* ======================
+   Back Button Skeleton
+====================== */
+.skeletonBackButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  margin-bottom: var(--space-3);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.skeletonBackIcon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBackText {
+  width: 90px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Title Skeleton
+====================== */
+.checkoutTitle {
+  margin: 0 0 var(--space-4) 0;
+  min-height: 28px;
+}
+
+.skeletonTitleLine {
+  height: 28px;
+  width: 260px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Main Grid Layout
+====================== */
+.checkoutContent {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* ======================
+   Form (left column)
+====================== */
+.checkoutForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ======================
+   Section
+====================== */
+.section {
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+}
+
+.skeletonSectionTitle {
+  height: 18px;
+  width: 140px;
+  margin-bottom: var(--space-3);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Recipient Type Tabs
+====================== */
+.typeTabs {
+  display: flex;
+  gap: 4px;
+  background-color: var(--surface-subtle);
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+}
+
+.skeletonTypeTab {
+  flex: 1;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Form Inputs Skeleton
+====================== */
+.formGrid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .formGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.skeletonInput {
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Delivery Tabs Skeleton
+====================== */
+.deliveryTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.skeletonDeliveryTab {
+  height: 40px;
+  min-width: 120px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex: 0 0 auto;
+}
+
+/* ======================
+   Payment Tabs Skeleton
+====================== */
+.paymentTabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.skeletonPaymentTab {
+  height: 40px;
+  min-width: 120px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex: 0 0 auto;
+}
+
+/* ======================
+   Comment Skeleton
+====================== */
+.skeletonComment {
+  width: 100%;
+  height: 80px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Order Items Skeleton
+====================== */
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.orderItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 8px;
+  background-color: var(--surface-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.orderItemImage {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--surface);
+}
+
+.skeletonOrderImage {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.orderItemInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.skeletonOrderName {
+  height: 14px;
+  width: 80%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonOrderQty {
+  height: 12px;
+  width: 40px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonOrderPrice {
+  height: 16px;
+  width: 80px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+
+/* ======================
+   Summary (right column, desktop)
+====================== */
+.checkoutSummary {
+  position: sticky;
+  top: calc(var(--space-3) + 70px);
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonSummaryTitle {
+  height: 20px;
+  width: 80px;
+  margin-bottom: var(--space-3);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.skeletonSummaryLabel {
+  height: 16px;
+  width: 140px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSummaryValue {
+  height: 16px;
+  width: 100px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSummaryValueFree {
+  height: 16px;
+  width: 80px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-2);
+}
+
+.skeletonTotalLabel {
+  height: 18px;
+  width: 90px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonTotalValue {
+  height: 24px;
+  width: 120px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSubmitBtn {
+  height: 48px;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSummaryNote {
+  height: 14px;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Mobile Summary Skeleton
+====================== */
+.mobileSummary {
+  display: none;
+}
+
+.skeletonMobileTotalLabel {
+  height: 12px;
+  width: 60px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonMobileTotalValue {
+  height: 18px;
+  width: 110px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-top: 2px;
+}
+
+.skeletonMobileTotalItems {
+  height: 10px;
+  width: 70px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-top: 2px;
+}
+
+.skeletonMobileSubmitBtn {
+  height: 42px;
+  width: 130px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+
+/* ======================
+   Shimmer Animation
+====================== */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ======================
+   Responsive: Tablet & Mobile (≤992px)
+====================== */
+@media (max-width: 992px) {
+  .checkoutPage {
+    padding: 8px;
+    padding-bottom: 100px;
+  }
+
+  .checkoutContainer {
+    max-width: 100%;
+  }
+
+  .checkoutTitle {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+
+  .skeletonTitleLine {
+    height: 22px;
+    width: 200px;
+  }
+
+  .checkoutContent {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* Compact sections */
+  .section {
+    padding: 10px;
+    border-radius: var(--radius-lg);
+  }
+
+  .skeletonSectionTitle {
+    height: 16px;
+    width: 120px;
+    margin-bottom: 8px;
+  }
+
+  /* Type tabs */
+  .typeTabs {
+    margin-bottom: 8px;
+  }
+
+  .skeletonTypeTab {
+    height: 32px;
+  }
+
+  /* Form — single column */
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .skeletonInput {
+    height: 42px;
+  }
+
+  /* Delivery & Payment tabs — horizontal carousel */
+  .deliveryTabs,
+  .paymentTabs {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .skeletonDeliveryTab {
+    height: 32px;
+    min-width: 100px;
+  }
+
+  .skeletonPaymentTab {
+    height: 32px;
+    min-width: 100px;
+  }
+
+  /* Comment */
+  .skeletonComment {
+    height: 60px;
+  }
+
+  /* Order items */
+  .orderItems {
+    gap: 6px;
+    max-height: 200px;
+  }
+
+  .orderItem {
+    padding: 6px;
+    gap: 8px;
+  }
+
+  .orderItemImage {
+    width: 38px;
+    height: 38px;
+  }
+
+  .skeletonOrderImage {
+    border-radius: var(--radius-md);
+  }
+
+  .skeletonOrderName {
+    height: 12px;
+    width: 75%;
+  }
+
+  .skeletonOrderQty {
+    height: 10px;
+    width: 35px;
+  }
+
+  .skeletonOrderPrice {
+    height: 14px;
+    width: 65px;
+  }
+
+  /* Hide desktop summary */
+  .checkoutSummary {
+    display: none;
+  }
+
+  /* Mobile fixed bottom bar */
+  .mobileSummary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    padding-bottom: calc(8px + 40px);
+    background-color: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .mobileSummaryInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .skeletonMobileTotalLabel {
+    height: 10px;
+    width: 50px;
+  }
+
+  .skeletonMobileTotalValue {
+    height: 16px;
+    width: 90px;
+    margin-top: 0;
+  }
+
+  .skeletonMobileTotalItems {
+    height: 10px;
+    width: 60px;
+    margin-top: 0;
+  }
+
+  .skeletonMobileSubmitBtn {
+    height: 38px;
+    width: 120px;
+    min-width: 120px;
+  }
+}
+
+/* ======================
+   Small mobile (≤400px)
+====================== */
+@media (max-width: 400px) {
+  .checkoutPage {
+    padding: 6px;
+    padding-bottom: 90px;
+  }
+
+  .checkoutTitle {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .skeletonTitleLine {
+    height: 20px;
+    width: 170px;
+  }
+
+  .section {
+    padding: 8px;
+    border-radius: var(--radius-md);
+  }
+
+  .skeletonSectionTitle {
+    height: 14px;
+    width: 100px;
+    margin-bottom: 6px;
+  }
+
+  .skeletonTypeTab {
+    height: 28px;
+  }
+
+  .skeletonDeliveryTab {
+    height: 28px;
+    min-width: 85px;
+  }
+
+  .skeletonPaymentTab {
+    height: 28px;
+    min-width: 85px;
+  }
+
+  .formGrid {
+    gap: 6px;
+  }
+
+  .skeletonInput {
+    height: 38px;
+  }
+
+  .skeletonComment {
+    height: 50px;
+  }
+
+  .orderItemImage {
+    width: 34px;
+    height: 34px;
+  }
+
+  .skeletonOrderName {
+    height: 10px;
+    width: 70%;
+  }
+
+  .skeletonOrderQty {
+    height: 9px;
+    width: 30px;
+  }
+
+  .skeletonOrderPrice {
+    height: 12px;
+    width: 55px;
+  }
+
+  .mobileSummary {
+    padding: 6px;
+    padding-bottom: 40px;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .skeletonMobileTotalValue {
+    height: 14px;
+    width: 75px;
+  }
+
+  .skeletonMobileSubmitBtn {
+    height: 34px;
+    width: 110px;
+    min-width: 110px;
+  }
+}

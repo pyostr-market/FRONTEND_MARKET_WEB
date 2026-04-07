@@ -8,6 +8,7 @@ import Input from '../../shared/ui/Input/Input';
 import Button from '../../shared/ui/Button/Button';
 import paths from '../../app/router/paths';
 import styles from './CheckoutPage.module.css';
+import CheckoutPageSkeleton from './CheckoutPageSkeleton/CheckoutPageSkeleton';
 
 // Способы доставки
 const DELIVERY_METHODS = [
@@ -125,13 +126,7 @@ const CheckoutPage = () => {
   const needsAddress = deliveryMethod === 'courier' || deliveryMethod === 'cdek';
 
   if (productsLoading || profileLoading) {
-    return (
-      <div className={styles.checkoutPage}>
-        <div className={styles.checkoutContainer}>
-          <div className={styles.loadingState}>Загрузка...</div>
-        </div>
-      </div>
-    );
+    return <CheckoutPageSkeleton />;
   }
 
   if (totalItems === 0) {
