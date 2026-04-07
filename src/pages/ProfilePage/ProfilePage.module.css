@@ -201,11 +201,6 @@
 /* Шапка мобильного меню */
 .mobileHeader {
   background-color: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: var(--space-3) var(--space-4);
-}
-
-.mobileHeaderTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -217,7 +212,7 @@
 }
 
 .mobileLogoImg {
-  height: 32px;
+  height: 28px;
   width: auto;
 }
 
@@ -229,13 +224,13 @@
 }
 
 .mobilePointsValue {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .mobilePointsLabel {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -315,6 +310,7 @@
   border: 1px solid var(--danger);
   color: var(--danger);
   transition: all 0.2s ease;
+  max-width: 100px;
 }
 
 .mobileSectionsFooter .logoutBtn:hover {
@@ -448,7 +444,10 @@
   
   /* Шапка на мобильных */
   .mobileHeader {
-    padding: var(--space-3);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+    padding-right: var(--space-1);
+    padding-left: var(--space-1);
   }
   
   .mobileLogoImg {

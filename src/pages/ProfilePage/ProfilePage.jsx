@@ -315,14 +315,12 @@ const ProfilePage = () => {
         <div className={`${styles.mobileSections} ${!isMobileContentVisible ? styles.mobileSectionsActive : ''}`}>
           {/* Шапка с логотипом и баллами */}
           <div className={styles.mobileHeader}>
-            <div className={styles.mobileHeaderTop}>
-              <div className={styles.mobileLogo}>
-                <img src={logoImg} alt="Marker" className={styles.mobileLogoImg} />
-              </div>
-              <div className={styles.mobilePoints}>
-                <span className={styles.mobilePointsValue}>2 000</span>
-                <span className={styles.mobilePointsLabel}>баллов</span>
-              </div>
+            <div className={styles.mobileLogo}>
+              <img src={logoImg} alt="Marker" className={styles.mobileLogoImg} />
+            </div>
+            <div className={styles.mobilePoints}>
+              <span className={styles.mobilePointsValue}>2 000</span>
+              <span className={styles.mobilePointsLabel}>баллов</span>
             </div>
           </div>
           
