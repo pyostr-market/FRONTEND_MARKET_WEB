@@ -97,12 +97,12 @@ const WishlistPage = () => {
     <div className={styles.wishlistPage}>
       {/* Мобильная панель сверху — только фильтры + счётчик */}
       <div className={styles.mobileTopBar}>
+        <span className={styles.mobileCount}>{totalCount} {totalCount === 1 ? 'товар' : totalCount < 5 ? 'товара' : 'товаров'}</span>
         <button className={styles.mobileFiltersBtn} onClick={() => setIsFiltersModalOpen(true)}>
           <FiSliders size={18} />
           <span>Фильтры</span>
           {hasChanges && <span className={styles.filtersBadge}>{Object.keys(selectedFilters).length}</span>}
         </button>
-        <span className={styles.mobileCount}>{totalCount} {totalCount === 1 ? 'товар' : totalCount < 5 ? 'товара' : 'товаров'}</span>
       </div>
 
       <div className={styles.wishlistContainer}>
