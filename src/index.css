@@ -107,8 +107,12 @@
     --text: #1a1a1a;
     --text-muted: #737373;
     --text-secondary: #666666;
+
     --primary: #005bff;
     --primary-hover: #2c77fd;
+    /*--primary: #e80459;*/
+    /*--primary-hover: #e80459;*/
+
     --danger: #dc2626;
     --danger-hover: #b91c1c;
     --danger-bg: #fee2e2;

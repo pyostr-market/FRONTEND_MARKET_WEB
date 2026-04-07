@@ -6,164 +6,161 @@ import styles from './HeroBanner.module.css';
 const banners = [
   {
     id: 1,
-    image: 'https://cdn1.ozonusercontent.com/s3/sellerassets/ww1450_q80/262ac286-2e0d-11f1-adce-7a7515a0343e.jpeg',
+    image: 'https://tuneapp.ru/image/cache/catalog/banner/slajder/rassrochka-1440x320.png',
     link: '/catalog?product_type=1',
-    // title: 'Новинки 2026',
+    title: '',
   },
   {
     id: 2,
-    image: 'https://cdn1.ozonusercontent.com/s3/sellerassets/ww1450_q80/6f5abc18-2827-11f1-b262-1a38fcde72a6.jpeg',
+    image: 'https://tuneapp.ru/image/cache/catalog/banner/glavnaya/dostavka_1variant-1440x320.png',
     link: '/catalog?sale=true',
     // title: 'Скидки до 50%',
   },
   {
     id: 3,
-    image: 'https://cdn1.ozonusercontent.com/s3/sellerassets/ww1450_q80/aa5cd75e-278d-11f1-9ae4-1ec772ae998e.jpeg',
+    image: 'https://tuneapp.ru/image/cache/catalog/banner/slaidery_june_2024/glavnaja-slai%CC%86der1-1440x320.png',
+    link: '/catalog?delivery=free',
+    // title: 'Бесплатная доставка',
+  },
+  {
+    id: 4,
+    image: 'https://tuneapp.ru/image/cache/catalog/banner/slaidery_august_2024/banner2-1440x320.jpg',
     link: '/catalog?delivery=free',
     // title: 'Бесплатная доставка',
   },
 ];
 
+const AUTOPLAY_DELAY = 5000;
+const SWIPE_THRESHOLD = 50;
+
 const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchOffset, setTouchOffset] = useState(0);
+
   const autoplayRef = useRef(null);
 
-  /**
-   * Автоматическое переключение слайдов
-   */
-  useEffect(() => {
+  const startAutoplay = useCallback(() => {
+    stopAutoplay();
+
     autoplayRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
-
-    return () => {
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current);
-      }
-    };
+    }, AUTOPLAY_DELAY);
   }, []);
 
-  /**
-   * Переход к слайду
-   */
-  const goToSlide = useCallback((index) => {
-    setCurrentSlide(index);
-  }, []);
-
-  /**
-   * Прокрутка влево
-   */
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
-  }, []);
-
-  /**
-   * Прокрутка вправо
-   */
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % banners.length);
-  }, []);
-
-  /**
-   * Touch события для мобильных
-   */
-  const handleTouchStart = useCallback((e) => {
-    setTouchStartX(e.touches[0].clientX);
-    // Останавливаем autoplay при касании
+  const stopAutoplay = useCallback(() => {
     if (autoplayRef.current) {
       clearInterval(autoplayRef.current);
     }
   }, []);
 
-  const handleTouchMove = useCallback((e) => {
-    const currentX = e.touches[0].clientX;
-    setTouchOffset(currentX - touchStartX);
-  }, [touchStartX]);
+  useEffect(() => {
+    startAutoplay();
+    return stopAutoplay;
+  }, [startAutoplay, stopAutoplay]);
+
+  const goToSlide = useCallback((index) => {
+    setCurrentSlide(index);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % banners.length);
+  }, []);
+
+  const handleTouchStart = useCallback(
+      (e) => {
+        setTouchStartX(e.touches[0].clientX);
+        stopAutoplay();
+      },
+      [stopAutoplay]
+  );
+
+  const handleTouchMove = useCallback(
+      (e) => {
+        const currentX = e.touches[0].clientX;
+        setTouchOffset(currentX - touchStartX);
+      },
+      [touchStartX]
+  );
 
   const handleTouchEnd = useCallback(() => {
-    const threshold = 50;
-    
-    if (touchOffset > threshold) {
+    if (touchOffset > SWIPE_THRESHOLD) {
       prevSlide();
-    } else if (touchOffset < -threshold) {
+    } else if (touchOffset < -SWIPE_THRESHOLD) {
       nextSlide();
     }
-    
+
     setTouchOffset(0);
-    
-    // Возобновляем autoplay
-    autoplayRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
-  }, [touchOffset, prevSlide, nextSlide]);
+    startAutoplay();
+  }, [touchOffset, prevSlide, nextSlide, startAutoplay]);
 
   return (
-    <div className={styles.heroBanner}>
-      <div className={styles.sliderContainer}>
-        {/* Стрелки */}
-        <button
-          className={`${styles.arrow} ${styles.arrowLeft}`}
-          onClick={prevSlide}
-          aria-label="Предыдущий слайд"
-          type="button"
-        >
-          <FiChevronLeft size={24} />
-        </button>
-
-        <button
-          className={`${styles.arrow} ${styles.arrowRight}`}
-          onClick={nextSlide}
-          aria-label="Следующий слайд"
-          type="button"
-        >
-          <FiChevronRight size={24} />
-        </button>
-
-        {/* Слайды */}
-        <div
-          className={styles.slidesWrapper}
-          style={{
-            transform: `translateX(calc(-${currentSlide * 100}% + ${touchOffset}px))`,
-            transition: touchOffset ? 'none' : 'transform 0.5s ease-out',
-          }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {banners.map((banner) => (
-            <a
-              key={banner.id}
-              href={banner.link}
-              className={styles.slide}
-            >
-              <LazyImage
-                src={banner.image}
-                alt={banner.title}
-                className={styles.slideImage}
-              />
-              <div className={styles.slideOverlay}>
-                <h2 className={styles.slideTitle}>{banner.title}</h2>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        {/* Индикаторы */}
-        <div className={styles.indicators}>
-          {banners.map((_, index) => (
-            <button
-              key={index}
-              className={`${styles.indicator} ${index === currentSlide ? styles.indicatorActive : ''}`}
-              onClick={() => goToSlide(index)}
-              aria-label={`Слайд ${index + 1}`}
+      <div className={styles.heroBanner}>
+        <div className={styles.sliderContainer}>
+          <button
+              className={`${styles.arrow} ${styles.arrowLeft}`}
+              onClick={prevSlide}
+              aria-label="Предыдущий слайд"
               type="button"
-            />
-          ))}
+          >
+            <FiChevronLeft size={24} />
+          </button>
+
+          <button
+              className={`${styles.arrow} ${styles.arrowRight}`}
+              onClick={nextSlide}
+              aria-label="Следующий слайд"
+              type="button"
+          >
+            <FiChevronRight size={24} />
+          </button>
+
+          <div
+              className={styles.slidesWrapper}
+              style={{
+                transform: `translateX(-${currentSlide * 100}%) translateX(${touchOffset}px)`,
+                transition: touchOffset ? 'none' : 'transform 0.5s ease-out',
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+          >
+            {banners.map((banner) => (
+                <a key={banner.id} href={banner.link} className={styles.slide}>
+                  <LazyImage
+                      src={banner.image}
+                      alt={banner.title}
+                      className={styles.slideImage}
+                  />
+
+                  {banner.title && (
+                      <div className={styles.slideOverlay}>
+                        <h2 className={styles.slideTitle}>{banner.title}</h2>
+                      </div>
+                  )}
+                </a>
+            ))}
+          </div>
+
+          <div className={styles.indicators}>
+            {banners.map((_, index) => (
+                <button
+                    key={index}
+                    className={`${styles.indicator} ${
+                        index === currentSlide ? styles.indicatorActive : ''
+                    }`}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Слайд ${index + 1}`}
+                    type="button"
+                />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -91,7 +91,7 @@ const Header = ({ onProfileClick, isAuthorized = false }) => {
         <div className={styles.headerContainer}>
           <div className={styles.headerLeft}>
             <Link to={paths.HOME} className={styles.logo}>
-              <img src="/logo.png" alt="Marketplace" className={styles.logoImage} />
+              <img src="/logo.svg" alt="Marketplace" className={styles.logoImage} />
             </Link>
             <button
               className={`${styles.catalogBtn} ${isCatalogOpen ? styles.catalogBtnActive : ''}`}

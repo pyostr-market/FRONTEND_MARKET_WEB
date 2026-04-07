@@ -3,6 +3,10 @@
   margin-bottom: var(--space-6);
 }
 
+/* ======================
+   CONTAINER
+====================== */
+
 .sliderContainer {
   position: relative;
   width: 100%;
@@ -13,37 +17,37 @@
 
 .slidesWrapper {
   display: flex;
-  width: 100%;
   height: 100%;
-  transition: transform 0.5s ease-out;
+  will-change: transform;
 }
 
 .slide {
-  min-width: 100%;
+  flex: 0 0 100%;
   height: 100%;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
+  display: block;
 }
+
+/* ======================
+   IMAGE
+====================== */
 
 .slideImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  display: block;
 }
+
+/* ======================
+   OVERLAY
+====================== */
 
 .slideOverlay {
   position: absolute;
   inset: 0;
-  /*background: linear-gradient(*/
-  /*  to bottom,*/
-  /*  rgba(0, 0, 0, 0.3) 0%,*/
-  /*  rgba(0, 0, 0, 0) 50%,*/
-  /*  rgba(0, 0, 0, 0.5) 100%*/
-  /*);*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,9 +59,13 @@
   color: white;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   text-align: center;
+  padding: 0 16px;
 }
 
-/* Стрелки */
+/* ======================
+   ARROWS
+====================== */
+
 .arrow {
   position: absolute;
   top: 50%;
@@ -93,7 +101,10 @@
   right: 16px;
 }
 
-/* Индикаторы */
+/* ======================
+   INDICATORS
+====================== */
+
 .indicators {
   position: absolute;
   bottom: 16px;
@@ -126,10 +137,9 @@
 }
 
 /* ======================
-   MEDIA QUERIES
+   TABLETS
 ====================== */
 
-/* Планшеты */
 @media (max-width: 1024px) {
   .sliderContainer {
     height: 250px;
@@ -150,37 +160,18 @@
   }
 }
 
-/* Мобильные */
+/* ======================
+   MOBILE
+====================== */
+
 @media (max-width: 768px) {
   .heroBanner {
     margin-bottom: var(--space-4);
-    max-width: 100%;
-    overflow: hidden;
   }
 
   .sliderContainer {
-    height: auto;
-    aspect-ratio: 1450 / 500;
+    height: 200px;
     border-radius: var(--radius-lg);
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  .slidesWrapper {
-    height: 100%;
-  }
-
-  .slide {
-    min-width: 100%;
-    height: 100%;
-  }
-
-  .slideImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
   }
 
   .slideTitle {
@@ -206,7 +197,10 @@
   }
 }
 
-/* Маленькие мобильные */
+/* ======================
+   SMALL MOBILE
+====================== */
+
 @media (max-width: 480px) {
   .sliderContainer {
     height: 160px;
