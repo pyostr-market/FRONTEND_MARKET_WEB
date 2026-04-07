@@ -1,13 +1,27 @@
-export const searchProducts = async (query) => {
-  const popularProducts = [
-    'iPhone 15',
-    'Samsung Galaxy S24',
-    'MacBook Pro',
-    'Apple Watch',
-    'AirPods Pro',
-  ];
+import { crmApi } from './apiClient';
 
-  return popularProducts.filter((product) =>
-    product.toLowerCase().includes(query.toLowerCase())
-  );
+/**
+ * Поиск товаров с подсказками
+ * @param {string} query - Поисковый запрос
+ * @param {number} [limit=10] - Количество товаров
+ * @param {number} [offset=0] - Смещение
+ * @returns {Promise<{success: boolean, data: {total: number, items: Array, suggestions: Array}, error: any}>}
+ */
+export const searchProducts = async (query, limit = 10, offset = 0) => {
+  if (!query || !query.trim()) {
+    return {
+      success: true,
+      data: { total: 0, items: [], suggestions: [] },
+      error: null,
+    };
+  }
+
+  return crmApi.request('/product/search', {
+    params: {
+      query: query.trim(),
+      limit,
+      offset,
+    },
+    useCache: false,
+  });
 };

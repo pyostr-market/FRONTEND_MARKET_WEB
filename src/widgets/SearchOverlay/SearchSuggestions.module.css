@@ -1,0 +1,145 @@
+.searchSuggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ======================
+   Блок подсказок
+====================== */
+.suggestionsBlock {
+  background-color: var(--surface-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.suggestionsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.suggestionsIcon {
+  color: var(--text-muted);
+  width: 16px;
+  height: 16px;
+}
+
+.suggestionsTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.suggestionsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.suggestionItem:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--primary);
+}
+
+.suggestionWord {
+  font-weight: 500;
+}
+
+.suggestionCount {
+  font-size: 12px;
+  color: var(--text-muted);
+  background-color: var(--surface-muted);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+/* ======================
+   Блок товаров
+====================== */
+.productsBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.productsTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+/* Компактные карточки в поиске */
+.productsGrid :global(.productCard) {
+  transform: scale(0.95);
+}
+
+/* ======================
+   Мобильная версия
+====================== */
+@media (max-width: 767px) {
+  .searchSuggestions {
+    gap: 12px;
+  }
+
+  .suggestionsBlock {
+    padding: 10px;
+  }
+
+  .suggestionsList {
+    gap: 6px;
+  }
+
+  .suggestionItem {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .productsTitle {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .suggestionsList {
+    gap: 4px;
+  }
+  
+  .suggestionItem {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
