@@ -148,6 +148,11 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
 
   return (
     <div className={styles.searchContainer} ref={containerRef}>
+      {/* Затемнённый фон для десктопа */}
+      {showDropdown && showDesktop && (
+        <div className={styles.overlay} onClick={handleClose} />
+      )}
+
       <div className={styles.searchBar}>
         <div className={styles.searchInputWrapper}>
           <FiSearch className={styles.searchIcon} strokeWidth={3} />
@@ -162,23 +167,24 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
               Поиск
             </button>
           ) : (
-            // Поле ввода (для десктопа или для мобильной версии после открытия)
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
-              className={styles.searchInput}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onClick={handleInputClick}
-              onFocus={() => showDesktop && setIsOpen(true)}
-            />
-          )}
-
-          {query && (
-            <button className={styles.clearBtn} onClick={handleClear}>
-              <FiX size={18} />
-            </button>
+            // Поле ввода с крестиком внутри (для десктопа или для мобильной версии после открытия)
+            <div className={styles.inputWithClear}>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
+                className={styles.searchInput}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onClick={handleInputClick}
+                onFocus={() => showDesktop && setIsOpen(true)}
+              />
+              {query && (
+                <button className={styles.clearBtn} onClick={handleClear}>
+                  <FiX size={18} />
+                </button>
+              )}
+            </div>
           )}
 
           {/* Кнопка "Отмена" для мобильной версии */}

@@ -3,11 +3,21 @@
   position: relative;
 }
 
+/* Затемнённый фон */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(3, 8, 13, 0.32);
+  z-index: 999;
+}
+
 /* Линия поиска */
 .searchBar {
   width: 100%;
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1001;
 }
 
 /* Главный контейнер */
@@ -41,9 +51,18 @@
 }
 
 /* Input */
+.inputWithClear {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .searchInput {
   flex: 1;
   height: 100%;
+  padding: 0 40px 0 12px;
   border: none;
   border-radius: var(--radius-lg);
   font-size: 13px;
@@ -79,21 +98,24 @@
 
 /* Кнопка очистки */
 .clearBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
-  color: white;
+  color: var(--text-muted);
   cursor: pointer;
-  height: 100%;
-  padding: 0 10px;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: 50%;
   transition: all 0.2s;
 }
 
 .clearBtn:hover {
-  background-color: var(--surface-subtle);
+  background-color: var(--surface-muted);
   color: var(--text);
 }
 
@@ -102,15 +124,16 @@
 ====================== */
 .desktopDropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   right: 0;
   background-color: var(--surface);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: var(--space-2);
   z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
   max-height: 70vh;
   overflow-y: auto;
 }
@@ -163,7 +186,6 @@
 .dropdownBody {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-4);
   padding-top: 0;
   padding-bottom: 80px;
   max-height: calc(100vh - 80px);

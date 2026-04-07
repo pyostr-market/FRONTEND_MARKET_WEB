@@ -63,6 +63,7 @@
 }
 
 .suggestionCount {
+  display: none;
   font-size: 12px;
   color: var(--text-muted);
   background-color: var(--surface-muted);
