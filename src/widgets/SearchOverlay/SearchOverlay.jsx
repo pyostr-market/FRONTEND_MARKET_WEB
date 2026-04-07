@@ -136,6 +136,25 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
     handleClose();
   }, []);
 
+  const handleCategoryClose = useCallback(() => {
+    handleClose();
+  }, []);
+
+  // Обработчик Enter — открывает страницу каталога
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter' && query.trim()) {
+      e.preventDefault();
+      // Берём первую категорию из результатов
+      const firstCategory = searchResults.items.find(item => item.category)?.category;
+      if (firstCategory) {
+        navigate(`/catalog?category=${firstCategory.id}`);
+      } else {
+        navigate(`/catalog?search=${encodeURIComponent(query.trim())}`);
+      }
+      handleClose();
+    }
+  }, [query, searchResults.items, navigate]);
+
   /**
    * Кнопка "Отмена" — закрывает меню и сбрасывает query
    */
@@ -178,6 +197,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                 onChange={(e) => setQuery(e.target.value)}
                 onClick={handleInputClick}
                 onFocus={() => showDesktop && setIsOpen(true)}
+                onKeyDown={handleKeyDown}
               />
               {query && (
                 <button className={styles.clearBtn} onClick={handleClear}>
@@ -211,6 +231,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                 query={query}
                 onSuggestionClick={handleSuggestionClick}
                 onProductClick={handleProductClick}
+                onClose={handleCategoryClose}
               />
             </div>
           ) : query && query.trim() ? (
@@ -251,6 +272,7 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
                 query={query}
                 onSuggestionClick={handleSuggestionClick}
                 onProductClick={handleProductClick}
+                onClose={handleCategoryClose}
               />
             ) : query && query.trim() ? (
               <div className={styles.searchEmpty}>

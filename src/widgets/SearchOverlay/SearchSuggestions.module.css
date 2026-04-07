@@ -8,15 +8,14 @@
    Блок подсказок
 ====================== */
 .suggestionsBlock {
-  background-color: var(--surface-subtle);
-  border-radius: var(--radius-lg);
+  padding-bottom: 4px;
 }
 
 .suggestionsHeader {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .suggestionsIcon {
@@ -40,13 +39,13 @@
 }
 
 .suggestionItem {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 12px;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  background-color: #f0f2f5;
+  border: none;
+  border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s;
   font-size: 14px;
@@ -54,8 +53,8 @@
 }
 
 .suggestionItem:hover {
-  background-color: var(--surface-hover);
-  border-color: var(--primary);
+  background-color: #e4e7ec;
+  transform: translateY(-1px);
 }
 
 .suggestionWord {
@@ -63,12 +62,51 @@
 }
 
 .suggestionCount {
-  display: none;
   font-size: 12px;
-  color: var(--text-muted);
-  background-color: var(--surface-muted);
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
+  color: #8b95a2;
+  background-color: transparent;
+}
+
+/* ======================
+   Блок категорий
+====================== */
+.categoriesBlock {
+}
+
+.categoriesTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 10px 0;
+}
+
+.categoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categoryItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: #f0f2f5;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.categoryItem:hover {
+  background-color: #e4e7ec;
+  transform: translateY(-1px);
+}
+
+.categoryName {
+  font-weight: 500;
 }
 
 /* ======================
@@ -105,17 +143,27 @@
     gap: 12px;
   }
 
-  .suggestionsBlock {
-    padding: 10px;
-  }
-
   .suggestionsList {
     gap: 6px;
   }
 
   .suggestionItem {
-    padding: 6px 10px;
+    padding: 5px 12px;
     font-size: 13px;
+  }
+
+  .categoriesList {
+    gap: 6px;
+  }
+
+  .categoryItem {
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  .categoriesTitle {
+    font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .productsGrid {
@@ -134,13 +182,22 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
-  
+
   .suggestionsList {
     gap: 4px;
   }
-  
+
   .suggestionItem {
-    padding: 5px 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .categoriesList {
+    gap: 4px;
+  }
+
+  .categoryItem {
+    padding: 4px 10px;
     font-size: 12px;
   }
 }

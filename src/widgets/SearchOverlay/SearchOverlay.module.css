@@ -343,6 +343,9 @@
 
 /* Адаптив */
 @media (max-width: 576px) {
+  .dropdownBody {
+    padding: var(--space-2);
+  }
   .popularItem {
     flex: 1 1 48%;
     font-size: 13px;
