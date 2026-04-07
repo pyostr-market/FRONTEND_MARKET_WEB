@@ -8,6 +8,7 @@ import { ProductCardSlider } from '../../shared/ui/ProductCardSlider';
 import paths from '../../app/router/paths';
 import styles from './CartPage.module.css';
 import {AddToCart} from "../../features/add-to-cart";
+import CartPageSkeleton from './CartPageSkeleton/CartPageSkeleton';
 
 /**
  * Страница корзины
@@ -215,14 +216,7 @@ const CartPage = () => {
    * Загрузка товаров
    */
   if (loading) {
-    return (
-      <div className={styles.cartPage}>
-        <div className={styles.cartContainer}>
-          <h1 className={styles.cartTitle}>Корзина</h1>
-          <div className={styles.loading}>Загрузка товаров...</div>
-        </div>
-      </div>
-    );
+    return <CartPageSkeleton />;
   }
 
   /**
