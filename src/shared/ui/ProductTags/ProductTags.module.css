@@ -1,0 +1,65 @@
+/* ======================
+   Tags Container (bottom-left)
+====================== */
+.tagsContainer {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+/* ======================
+   Tags Container (bottom-right)
+====================== */
+.tagsContainerRight {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+/* ======================
+   Single Tag
+====================== */
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  background-color: rgba(173, 216, 230, 0.75); /* Лёгкий голубоватый полупрозрачный фон по умолчанию */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  white-space: nowrap;
+  line-height: 1.3;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease;
+}
+
+.tag:hover {
+  transform: scale(1.05);
+}
+
+/* ======================
+   Mobile
+====================== */
+@media (max-width: 768px) {
+  .tagsContainer,
+  .tagsContainerRight {
+    bottom: 6px;
+  }
+
+  .tag {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}

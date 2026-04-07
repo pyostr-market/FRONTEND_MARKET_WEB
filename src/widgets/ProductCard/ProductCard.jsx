@@ -4,6 +4,7 @@ import { FiHeart } from 'react-icons/fi';
 import { useWishlist } from '../../app/store/wishlistStore';
 import { AddToCart } from '../../features/add-to-cart';
 import LazyImage from '../../shared/ui/LazyImage';
+import ProductTags from '../../shared/ui/ProductTags/ProductTags';
 import paths from '../../app/router/paths';
 import styles from './ProductCard.module.css';
 import { DEFAULT_IMAGES } from '../../shared/config';
@@ -108,6 +109,9 @@ const ProductCard = ({ product, onImageChange, hideWishlistButton }) => {
              onTouchStart={handleTouchStart}
              onTouchMove={handleTouchMove}
              onTouchEnd={handleTouchEnd}>
+          {/* Теги */}
+          <ProductTags tags={product?.tags} position="bottom-left" />
+          
           <div className={styles.imageWrapper}>
             <div className={styles.carouselTrack}
                  style={{

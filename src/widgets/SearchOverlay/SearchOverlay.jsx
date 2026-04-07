@@ -233,168 +233,168 @@ const SearchOverlay = ({ variant = 'desktop' }) => {
   const showDropdown = showDesktop ? (isOpen || (query && query.trim())) : isOpen;
 
   return (
-    <div className={styles.searchContainer} ref={containerRef}>
-      {/* Затемнённый фон для десктопа */}
-      {showDropdown && showDesktop && (
-        <div className={styles.overlay} onClick={handleClose} />
-      )}
+      <div className={styles.searchContainer} ref={containerRef}>
+        {/* Затемнённый фон для десктопа */}
+        {showDropdown && showDesktop && (
+            <div className={styles.overlay} onClick={handleClose} />
+        )}
 
-      <div className={styles.searchBar}>
-        <div className={styles.searchInputWrapper}>
-          <FiSearch className={styles.searchIcon} strokeWidth={3} />
+        <div className={styles.searchBar}>
+          <div className={styles.searchInputWrapper}>
+            <FiSearch className={styles.searchIcon} strokeWidth={3} />
 
-          {showMobile && !isOpen ? (
-            // Кнопка для мобильной версии (пока не открыта)
-            <button
-              className={styles.searchButton}
-              onClick={handleOpen}
-              type="button"
-            >
-              Поиск
-            </button>
-          ) : (
-            // Поле ввода с крестиком внутри (для десктопа или для мобильной версии после открытия)
-            <div className={styles.inputWithClear}>
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
-                className={styles.searchInput}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onClick={handleInputClick}
-                onFocus={() => showDesktop && setIsOpen(true)}
-                onKeyDown={handleKeyDown}
-              />
-              {query && (
-                <button className={styles.clearBtn} onClick={handleClear}>
-                  <FiX size={18} />
+            {showMobile && !isOpen ? (
+                // Кнопка для мобильной версии (пока не открыта)
+                <button
+                    className={styles.searchButton}
+                    onClick={handleOpen}
+                    type="button"
+                >
+                  Поиск
                 </button>
-              )}
-            </div>
-          )}
-
-          {/* Кнопка "Отмена" для мобильной версии */}
-          {showMobile && isOpen && (
-            <button className={styles.mobileCancelBtn} onClick={handleCancel} type="button">
-              Отмена
-            </button>
-          )}
-        </div>
-      </div>
-
-      {showDropdown && showDesktop && (
-        <div className={styles.desktopDropdown}>
-          {isSearching ? (
-            <div className={styles.searchLoading}>
-              <div className={styles.spinner} />
-              <span>Поиск...</span>
-            </div>
-          ) : searchResults.items.length > 0 || searchResults.suggestions.length > 0 ? (
-            <div className={styles.searchResults}>
-              <SearchSuggestions
-                suggestions={searchResults.suggestions}
-                items={searchResults.items}
-                query={query}
-                onSuggestionClick={handleSuggestionClick}
-                onProductClick={handleProductClick}
-                onClose={handleCategoryClose}
-              />
-            </div>
-          ) : query && query.trim() ? (
-            <div className={styles.searchEmpty}>
-              <p>Ничего не найдено по запросу "{query}"</p>
-            </div>
-          ) : (
-            <div className={styles.popularProducts}>
-              <h3 className={styles.popularTitle}>Популярные товары</h3>
-              <div className={styles.popularList}>
-                {popularProducts.map((product, index) => (
-                  <button
-                    key={index}
-                    className={styles.popularItem}
-                    onClick={() => handlePopularClick(product)}
-                  >
-                    {product}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {showDropdown && showMobile && (
-        <div className={styles.mobileDropdown}>
-          <div className={styles.dropdownBody}>
-            {isSearching ? (
-              <div className={styles.searchLoading}>
-                <div className={styles.spinner} />
-                <span>Поиск...</span>
-              </div>
-            ) : searchResults.items.length > 0 || searchResults.suggestions.length > 0 ? (
-              <SearchSuggestions
-                suggestions={searchResults.suggestions}
-                items={searchResults.items}
-                query={query}
-                onSuggestionClick={handleSuggestionClick}
-                onProductClick={handleProductClick}
-                onClose={handleCategoryClose}
-              />
-            ) : query && query.trim() ? (
-              <div className={styles.searchEmpty}>
-                <p>Ничего не найдено по запросу "{query}"</p>
-              </div>
             ) : (
-              <>
-                {/* Популярные товары */}
-                <div className={styles.popularProducts}>
-                  <h3 className={styles.popularTitle}>Популярные товары</h3>
-                  <div className={styles.popularList}>
-                    {popularProducts.map((product, index) => (
-                      <button
-                        key={index}
-                        className={styles.popularItem}
-                        onClick={() => handlePopularClick(product)}
-                      >
-                        {product}
+                // Поле ввода с крестиком внутри (для десктопа или для мобильной версии после открытия)
+                <div className={styles.inputWithClear}>
+                  <input
+                      ref={inputRef}
+                      type="text"
+                      placeholder={showDesktop ? "Поиск товаров" : "Поиск"}
+                      className={styles.searchInput}
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      onClick={handleInputClick}
+                      onFocus={() => showDesktop && setIsOpen(true)}
+                      onKeyDown={handleKeyDown}
+                  />
+                  {query && (
+                      <button className={styles.clearBtn} onClick={handleClear}>
+                        <FiX size={18} />
                       </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Типы товаров */}
-                <div className={styles.productTypesSection}>
-                  <h3 className={styles.productTypesTitle}>Категории</h3>
-                  {typesLoading ? (
-                    <div className={styles.typesLoading}>Загрузка...</div>
-                  ) : (
-                    <div className={styles.productTypesGrid}>
-                      {productTypes.map((type) => (
-                        <button
-                          key={type.id}
-                          className={styles.productTypeCard}
-                          onClick={() => handleProductTypeClick(type.id)}
-                        >
-                          <div className={styles.typeImage}>
-                            <LazyImage
-                              src={type.image?.image_url || null}
-                              alt={type.name}
-                              className={styles.typeImage}
-                            />
-                          </div>
-                          <span className={styles.typeName}>{type.name}</span>
-                        </button>
-                      ))}
-                    </div>
                   )}
                 </div>
-              </>
+            )}
+
+            {/* Кнопка "Отмена" для мобильной версии */}
+            {showMobile && isOpen && (
+                <button className={styles.mobileCancelBtn} onClick={handleCancel} type="button">
+                  Отмена
+                </button>
             )}
           </div>
         </div>
-      )}
-    </div>
+
+        {showDropdown && showDesktop && (
+            <div className={styles.desktopDropdown}>
+              {isSearching ? (
+                  <div className={styles.searchLoading}>
+                    <div className={styles.spinner} />
+                    <span>Поиск...</span>
+                  </div>
+              ) : searchResults.items.length > 0 || searchResults.suggestions.length > 0 ? (
+                  <div className={styles.searchResults}>
+                    <SearchSuggestions
+                        suggestions={searchResults.suggestions}
+                        items={searchResults.items}
+                        query={query}
+                        onSuggestionClick={handleSuggestionClick}
+                        onProductClick={handleProductClick}
+                        onClose={handleCategoryClose}
+                    />
+                  </div>
+              ) : query && query.trim() ? (
+                  <div className={styles.searchEmpty}>
+                    <p>Ничего не найдено по запросу "{query}"</p>
+                  </div>
+              ) : (
+                  <div className={styles.popularProducts}>
+                    <h3 className={styles.popularTitle}>Популярные товары</h3>
+                    <div className={styles.popularList}>
+                      {popularProducts.map((product, index) => (
+                          <button
+                              key={index}
+                              className={styles.popularItem}
+                              onClick={() => handlePopularClick(product)}
+                          >
+                            {product}
+                          </button>
+                      ))}
+                    </div>
+                  </div>
+              )}
+            </div>
+        )}
+
+        {showDropdown && showMobile && (
+            <div className={styles.mobileDropdown}>
+              <div className={styles.dropdownBody}>
+                {isSearching ? (
+                    <div className={styles.searchLoading}>
+                      <div className={styles.spinner} />
+                      <span>Поиск...</span>
+                    </div>
+                ) : searchResults.items.length > 0 || searchResults.suggestions.length > 0 ? (
+                    <SearchSuggestions
+                        suggestions={searchResults.suggestions}
+                        items={searchResults.items}
+                        query={query}
+                        onSuggestionClick={handleSuggestionClick}
+                        onProductClick={handleProductClick}
+                        onClose={handleCategoryClose}
+                    />
+                ) : query && query.trim() ? (
+                    <div className={styles.searchEmpty}>
+                      <p>Ничего не найдено по запросу "{query}"</p>
+                    </div>
+                ) : (
+                    <>
+                      {/* Популярные товары */}
+                      <div className={styles.popularProducts}>
+                        <h3 className={styles.popularTitle}>Популярные товары</h3>
+                        <div className={styles.popularList}>
+                          {popularProducts.map((product, index) => (
+                              <button
+                                  key={index}
+                                  className={styles.popularItem}
+                                  onClick={() => handlePopularClick(product)}
+                              >
+                                {product}
+                              </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Типы товаров */}
+                      <div className={styles.productTypesSection}>
+                        <h3 className={styles.productTypesTitle}>Категории</h3>
+                        {typesLoading ? (
+                            <div className={styles.typesLoading}>Загрузка...</div>
+                        ) : (
+                            <div className={styles.productTypesGrid}>
+                              {productTypes.map((type) => (
+                                  <button
+                                      key={type.id}
+                                      className={styles.productTypeCard}
+                                      onClick={() => handleProductTypeClick(type.id)}
+                                  >
+                                    <div className={styles.typeImage}>
+                                      <LazyImage
+                                          src={type.image?.image_url || null}
+                                          alt={type.name}
+                                          className={styles.typeImage}
+                                      />
+                                    </div>
+                                    <span className={styles.typeName}>{type.name}</span>
+                                  </button>
+                              ))}
+                            </div>
+                        )}
+                      </div>
+                    </>
+                )}
+              </div>
+            </div>
+        )}
+      </div>
   );
 };
 

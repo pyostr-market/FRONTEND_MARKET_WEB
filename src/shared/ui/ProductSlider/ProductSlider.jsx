@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LazyImage from '../LazyImage';
 import ProductImageLightbox from '../ProductImageLightbox/ProductImageLightbox';
+import ProductTags from '../ProductTags/ProductTags';
 import { DEFAULT_IMAGES } from '../../config/appConfig';
 import styles from './ProductSlider.module.css';
 
@@ -12,7 +13,7 @@ import styles from './ProductSlider.module.css';
  * На мобильном: CSS Scroll Snap карусель
  * При клике: открывается полноэкранный лайтбокс
  */
-const ProductSlider = ({ images = [], alt = '' }) => {
+const ProductSlider = ({ images = [], alt = '', tags = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const scrollContainerRef = useRef(null);
@@ -114,6 +115,9 @@ const ProductSlider = ({ images = [], alt = '' }) => {
       <div className={styles.sliderContainer}>
       {/* Главное изображение */}
       <div className={styles.mainImageWrapper}>
+        {/* Теги */}
+        <ProductTags tags={tags} position="bottom-left" />
+        
         {/* Карусель для мобильной версии с CSS Scroll Snap */}
         <div 
           ref={scrollContainerRef}

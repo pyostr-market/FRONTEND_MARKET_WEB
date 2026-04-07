@@ -32,6 +32,7 @@ const CatalogPage = () => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get('category');
   const productType = searchParams.get('product_type');
+  const searchQuery = searchParams.get('q');
 
   // Очистка legacy кэша при загрузке
   useEffect(() => {
@@ -48,7 +49,13 @@ const CatalogPage = () => {
   const categoryIdNum = categoryId ? parseInt(categoryId, 10) : null;
   const productTypeIdNum = productType ? parseInt(productType, 10) : null;
 
-  const catalogParamsBase = { category_id: categoryIdNum, product_type_id: productTypeIdNum, limit: 12, enableCache: true };
+  const catalogParamsBase = { 
+    category_id: categoryIdNum, 
+    product_type_id: productTypeIdNum, 
+    limit: 12, 
+    enableCache: true,
+    name: searchQuery || undefined, // Передаем поисковый запрос в API
+  };
 
   // Мобильное определение
   useEffect(() => {
@@ -72,18 +79,18 @@ const CatalogPage = () => {
 
   const { sort_type: urlSortType, filters: urlFilters, updateUrl } = useFilterUrl(filters);
   const [appliedFilters, setAppliedFilters] = useState(urlFilters);
-  const prevCategoryKey = useRef(`${categoryId}-${productType}`);
+  const prevCategoryKey = useRef(`${categoryId}-${productType}-${searchQuery}`);
 
-  // Сброс фильтров и ВСЕГО кэша при изменении категории или типа товара
+  // Сброс фильтров и ВСЕГО кэша при изменении категории, типа товара или поискового запроса
   useEffect(() => {
-    const currentKey = `${categoryId}-${productType}`;
+    const currentKey = `${categoryId}-${productType}-${searchQuery}`;
     if (prevCategoryKey.current !== currentKey) {
-      console.log('[CatalogPage] Category/type changed, resetting filters and clearing all cache');
+      console.log('[CatalogPage] Category/type/search query changed, resetting filters and clearing all cache');
       setAppliedFilters({});
       clearAllCatalogCache();
       prevCategoryKey.current = currentKey;
     }
-  }, [categoryId, productType]);
+  }, [categoryId, productType, searchQuery]);
 
   const { products, total, loading, loadingMore, error, hasMore, applyFilters: applySortedFilters, resetFilters: sortedResetFilters, loadMore } = useCatalog({
     ...catalogParamsBase,
@@ -119,10 +126,10 @@ const CatalogPage = () => {
     };
   }, [saveScrollPosition, clearScrollState]);
 
-  // Сброс флага восстановления при изменении категории
+  // Сброс флага восстановления при изменении категории или поискового запроса
   useEffect(() => {
     resetRestoreFlag();
-  }, [categoryId, productType, resetRestoreFlag]);
+  }, [categoryId, productType, searchQuery, resetRestoreFlag]);
 
   const hasChanges = Object.keys(selectedFilters).length > 0;
   const toggleFilterValue = useCallback((name, value) => {
@@ -178,10 +185,11 @@ const CatalogPage = () => {
   }, [updateUrl, clearScrollState]);
 
   const getPageTitle = useCallback(() => {
+    if (searchQuery) return `Поиск: "${searchQuery}"`;
     if (categoryName) return categoryName;
     if (productTypeName) return productTypeName;
     return 'Все товары';
-  }, [categoryName, productTypeName]);
+  }, [searchQuery, categoryName, productTypeName]);
 
   const handleImageChange = useCallback((productId, imageIndex) => {
     console.log(`Image changed for product ${productId} to index ${imageIndex}`);

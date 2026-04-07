@@ -162,7 +162,7 @@
 
 .filterOption {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   padding: 10px 12px;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -186,7 +186,7 @@
   height: 20px;
   border: 2px solid #d0d4db;
   border-radius: 5px;
-  margin: 2px 12px 0 0;
+  margin: 0 12px 0 0;
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.2s ease;
@@ -221,12 +221,12 @@
 }
 
 .optionValue {
-  font-size: 12.5px;
+  font-size: 14px;
   color: #222;
 
-  white-space: normal;      /* разрешает перенос */
-  word-break: break-word;   /* перенос длинных слов */
-  overflow-wrap: anywhere;  /* перенос даже без пробелов */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 
   line-height: 1.25;
 }

@@ -9,6 +9,7 @@ import useProduct from '../../shared/hooks/useProduct';
 import { getProductById } from '../../shared/api/catalogApi';
 
 import { ProductSlider } from '../../shared/ui/ProductSlider';
+import ProductTagsList from '../../shared/ui/ProductTags/ProductTagsList';
 import { ProductVariants } from '../../widgets/ProductVariants';
 import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
 import { ProductFullSpecs } from '../../widgets/ProductFullSpecs';
@@ -366,7 +367,7 @@ const ProductPage = () => {
           <div className={cx('productContent')}>
 
             <div className={cx('gallery')}>
-              <ProductSlider images={activeProduct.images || []} />
+              <ProductSlider images={activeProduct.images || []} tags={activeProduct.tags || []} />
             </div>
 
 
@@ -391,6 +392,8 @@ const ProductPage = () => {
                   <span>Оригинальный товар</span>
                 </div>
               </div>
+
+              <ProductTagsList tags={activeProduct.tags || []} />
 
               <button
                   className={`${cx('wishlistButton')} ${inWishlist ? desktop.wishlistActive : ''}`}
