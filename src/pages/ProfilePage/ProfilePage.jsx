@@ -346,13 +346,13 @@ const ProfilePage = () => {
 
         {/* Мобильный вид: содержимое раздела (скрыт на десктопе) */}
         <div className={`${styles.mobileContent} ${isMobileContentVisible ? styles.mobileContentActive : ''}`}>
-          <div className={styles.mobileContentHeader}>
-            <button className={styles.mobileContentBack} onClick={handleMobileBack}>
-              <FiChevronLeft size={20} />
-              <span>Назад</span>
-            </button>
-            <span className={styles.mobileContentTitle}>{activeTabData?.label}</span>
-          </div>
+          {/*<div className={styles.mobileContentHeader}>*/}
+          {/*  <button className={styles.mobileContentBack} onClick={handleMobileBack}>*/}
+          {/*    <FiChevronLeft size={20} />*/}
+          {/*    <span>Назад</span>*/}
+          {/*  </button>*/}
+          {/*  <span className={styles.mobileContentTitle}>{activeTabData?.label}</span>*/}
+          {/*</div>*/}
           <div className={styles.mobileContentBody}>
             {renderContent()}
           </div>

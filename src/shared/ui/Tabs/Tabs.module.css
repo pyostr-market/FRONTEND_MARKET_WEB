@@ -17,6 +17,8 @@
   background-color: var(--surface-subtle);
   padding: 4px;
   border-radius: var(--radius-lg);
+  max-width: 400px;
+  margin-top: 3px;
 }
 
 .horizontal .tabList {

@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
-import Input from '../../../shared/ui/Input/Input';
-import Button from '../../../shared/ui/Button/Button';
 import styles from './CompanyProfile.module.css';
 
-/**
- * Компонент профиля юридического лица
- * @param {Object} props
- * @param {Object} props.profileData - Данные профиля из API
- * @param {boolean} props.disabled - Отключен ли компонент
- * @param {boolean} props.saving - Сохранение в процессе
- * @param {function} props.onSave - Callback при сохранении
- */
 const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
   const [formData, setFormData] = useState({
     company_name: '',
@@ -18,9 +8,10 @@ const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
     legal_address: '',
     actual_address: '',
   });
-  const [errors, setErrors] = useState({});
 
-  // Заполняем форму данными из профиля
+  const [errors, setErrors] = useState({});
+  const [isSaved, setIsSaved] = useState(false);
+
   useEffect(() => {
     if (profileData?.company_profile) {
       setFormData({
@@ -35,45 +26,53 @@ const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.company_name?.trim()) {
+    if (!formData.company_name.trim()) {
       newErrors.company_name = 'Введите название компании';
-    } else if (formData.company_name.length > 255) {
-      newErrors.company_name = 'Название не должно превышать 255 символов';
     }
 
-    if (!formData.tax_id?.trim()) {
+    if (formData.company_name.length > 255) {
+      newErrors.company_name = 'Максимум 255 символов';
+    }
+
+    if (!formData.tax_id.trim()) {
       newErrors.tax_id = 'Введите ИНН';
     } else if (!/^\d{10,12}$/.test(formData.tax_id.replace(/\s/g, ''))) {
       newErrors.tax_id = 'ИНН должен содержать 10 или 12 цифр';
     }
 
-    if (formData.legal_address && formData.legal_address.length > 500) {
-      newErrors.legal_address = 'Адрес не должен превышать 500 символов';
+    if (formData.legal_address.length > 500) {
+      newErrors.legal_address = 'Максимум 500 символов';
     }
 
-    if (formData.actual_address && formData.actual_address.length > 500) {
-      newErrors.actual_address = 'Адрес не должен превышать 500 символов';
+    if (formData.actual_address.length > 500) {
+      newErrors.actual_address = 'Максимум 500 символов';
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    // Очищаем ошибку при изменении
+
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({
+        ...prev,
+        [field]: '',
+      }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     const payload = {
       company_profile: {
@@ -84,79 +83,112 @@ const CompanyProfile = ({ profileData, disabled, saving, onSave }) => {
       },
     };
 
-    await onSave(payload);
+    const result = await onSave(payload);
+
+    if (result?.success) {
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 2000);
+    }
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Юридическое лицо</h2>
-        <p className={styles.subtitle}>
-          Реквизиты организации для выставления счетов и документов
-        </p>
+      <div className={styles.profileCard}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Юридическое лицо</h2>
+
+          <p className={styles.subtitle}>
+            Реквизиты компании для выставления счетов и документов
+          </p>
+
+          {isSaved && (
+              <div className={styles.saved}>Сохранено</div>
+          )}
+        </div>
+
+        <div className={styles.formWrapper}>
+          <form className={styles.form} onSubmit={handleSubmit}>
+
+            <div className={styles.grid}>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Название компании</label>
+
+                <input
+                    value={formData.company_name}
+                    onChange={handleChange('company_name')}
+                    className={`${styles.input} ${errors.company_name ? styles.error : ''}`}
+                    placeholder="ООО «Рога и Копыта»"
+                    disabled={disabled || saving}
+                    autoComplete="organization"
+                />
+
+                {errors.company_name && (
+                    <div className={styles.errorText}>{errors.company_name}</div>
+                )}
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>ИНН</label>
+
+                <input
+                    value={formData.tax_id}
+                    onChange={handleChange('tax_id')}
+                    className={`${styles.input} ${errors.tax_id ? styles.error : ''}`}
+                    placeholder="1234567890"
+                    disabled={disabled || saving}
+                    maxLength={15}
+                />
+
+                {errors.tax_id && (
+                    <div className={styles.errorText}>{errors.tax_id}</div>
+                )}
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Юридический адрес</label>
+
+                <input
+                    value={formData.legal_address}
+                    onChange={handleChange('legal_address')}
+                    className={`${styles.input} ${errors.legal_address ? styles.error : ''}`}
+                    placeholder="г. Москва, ул. Ленина, д. 1"
+                    disabled={disabled || saving}
+                />
+
+                {errors.legal_address && (
+                    <div className={styles.errorText}>{errors.legal_address}</div>
+                )}
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Фактический адрес</label>
+
+                <input
+                    value={formData.actual_address}
+                    onChange={handleChange('actual_address')}
+                    className={`${styles.input} ${errors.actual_address ? styles.error : ''}`}
+                    placeholder="г. Москва, ул. Ленина, д. 1"
+                    disabled={disabled || saving}
+                />
+
+                {errors.actual_address && (
+                    <div className={styles.errorText}>{errors.actual_address}</div>
+                )}
+              </div>
+
+            </div>
+
+            <button
+                type="submit"
+                className={styles.saveButton}
+                disabled={disabled || saving}
+            >
+              {saving ? 'Сохранение...' : 'Сохранить'}
+            </button>
+
+          </form>
+        </div>
       </div>
-
-      <div className={styles.fields}>
-        <Input
-          label="Название компании"
-          value={formData.company_name}
-          onChange={handleChange('company_name')}
-          placeholder="ООО «Рога и Копыта»"
-          disabled={disabled || saving}
-          error={!!errors.company_name}
-          errorText={errors.company_name}
-          required
-          autoComplete="organization"
-        />
-
-        <Input
-          label="ИНН"
-          value={formData.tax_id}
-          onChange={handleChange('tax_id')}
-          placeholder="1234567890"
-          disabled={disabled || saving}
-          error={!!errors.tax_id}
-          errorText={errors.tax_id}
-          required
-          autoComplete="off"
-          maxLength={15}
-        />
-
-        <Input
-          label="Юридический адрес"
-          value={formData.legal_address}
-          onChange={handleChange('legal_address')}
-          placeholder="г. Москва, ул. Ленина, д. 1"
-          disabled={disabled || saving}
-          error={!!errors.legal_address}
-          errorText={errors.legal_address}
-          autoComplete="street-address"
-        />
-
-        <Input
-          label="Фактический адрес"
-          value={formData.actual_address}
-          onChange={handleChange('actual_address')}
-          placeholder="г. Москва, ул. Ленина, д. 1"
-          disabled={disabled || saving}
-          error={!!errors.actual_address}
-          errorText={errors.actual_address}
-          autoComplete="off"
-        />
-      </div>
-
-      <div className={styles.actions}>
-        <Button
-          type="submit"
-          variant="primary"
-          size="medium"
-          loading={saving}
-          disabled={disabled}
-        >
-          Сохранить
-        </Button>
-      </div>
-    </form>
   );
 };
 

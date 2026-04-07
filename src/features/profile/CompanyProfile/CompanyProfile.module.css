@@ -1,92 +1,173 @@
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-5);
-  background-color: var(--surface);
-  border-radius: var(--radius-2xl);
+.profileCard {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px;
   box-shadow: var(--shadow-sm);
 }
+
+/* HEADER */
 
 .header {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border);
+  gap: 6px;
+  margin-bottom: 24px;
 }
 
 .title {
   margin: 0;
   font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 600;
 }
 
 .subtitle {
   margin: 0;
   font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.4;
 }
 
-.fields {
+.saved {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--success);
+}
+
+/* FORM */
+
+.formWrapper {
+  max-width: 640px;
+}
+
+.form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 20px;
 }
 
-.actions {
+/* GRID */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
   display: flex;
-  justify-content: flex-end;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border);
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* Состояние загрузки */
-.form[aria-disabled='true'] {
+.field:nth-child(3),
+.field:nth-child(4) {
+  grid-column: span 2;
+}
+
+/* LABEL */
+
+.label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* INPUT */
+
+.input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  transition: all 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:hover:not(:focus) {
+  border-color: var(--border-strong);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--focus-ring-blue);
+}
+
+.error {
+  border-color: var(--danger);
+}
+
+.errorText {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+/* BUTTON */
+
+.saveButton {
+  align-self: flex-start;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 160px;
+  transition: all 0.15s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.saveButton:disabled {
   opacity: 0.6;
-  pointer-events: none;
+  cursor: not-allowed;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .form {
-    padding: var(--space-4);
-    gap: var(--space-3);
-    border-radius: var(--radius-xl);
+/* TABLET */
+
+@media (max-width: 900px) {
+
+  .profileCard {
+    padding: 22px;
   }
 
-  .header {
-    padding-bottom: var(--space-2);
-    gap: 2px;
+  .grid {
+    grid-template-columns: 1fr;
   }
 
-  .title {
-    font-size: 15px;
+  .field:nth-child(3),
+  .field:nth-child(4) {
+    grid-column: auto;
   }
 
-  .subtitle {
-    font-size: 12px;
+  .formWrapper {
+    max-width: 100%;
   }
 
-  .fields {
-    gap: var(--space-2);
-  }
-
-  .actions {
-    padding-top: var(--space-2);
-    justify-content: stretch;
-  }
-
-  .actions > button,
-  .actions > a {
+  .saveButton {
     width: 100%;
   }
 }
 
+/* MOBILE */
+
 @media (max-width: 480px) {
-  .form {
-    padding: 14px;
+
+  .profileCard {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+
+  .input {
+    font-size: 16px;
   }
 }
