@@ -1,0 +1,507 @@
+/* =====================================================
+   Product Page Skeleton — Desktop
+===================================================== */
+
+.skeletonPage {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5) 120px;
+  box-sizing: border-box;
+}
+
+/* ======================
+   Main Grid Layout
+====================== */
+.skeletonContent {
+  display: grid;
+  grid-template-columns: 600px 1fr 320px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  align-items: start;
+  width: 100%;
+}
+
+/* ======================
+   Gallery Skeleton
+====================== */
+.gallery {
+  border-radius: var(--radius-xl);
+  border: 1px solid #eef0f2;
+  position: sticky;
+  top: var(--top-8);
+  align-self: start;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.skeletonImage {
+  width: 100%;
+  padding-top: 100%;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Main Info Skeleton
+====================== */
+.mainInfo {
+  min-width: 0;
+}
+
+.price_mobile {
+  display: none;
+}
+
+.skeletonPriceMobile {
+  height: 27px;
+  width: 120px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonTitle {
+  height: 28px;
+  width: 80%;
+  margin-bottom: var(--space-2);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.ratingAndBadge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--space-4);
+}
+
+.skeletonRating {
+  height: 20px;
+  width: 120px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBadge {
+  height: 24px;
+  width: 140px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonWishlist {
+  height: 40px;
+  width: 160px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: var(--space-5);
+}
+
+/* ======================
+   Variants Section Skeleton
+====================== */
+.variantsSection {
+  margin-bottom: var(--space-4);
+}
+
+.skeletonVariantsTitle {
+  height: 20px;
+  width: 180px;
+  margin-bottom: var(--space-3);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonVariantsList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+
+.skeletonVariantCard {
+  background-color: #ffffff;
+  border: 1px solid #eef0f2;
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeletonVariantImage {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonVariantSpecs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeletonSpec {
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSpec:last-child {
+  width: 70%;
+}
+
+/* ======================
+   Short Specs Skeleton
+====================== */
+.skeletonShortSpecs {
+  margin-top: var(--space-4);
+}
+
+.skeletonShortSpecsTitle {
+  height: 22px;
+  width: 100px;
+  margin-bottom: var(--space-3);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonShortSpecRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  gap: var(--space-3);
+}
+
+.skeletonSpecName {
+  height: 14px;
+  width: 40%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSpecValue {
+  height: 14px;
+  width: 50%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Buy Block Skeleton
+====================== */
+.buyBlock {
+  position: sticky;
+  top: var(--top-8);
+  align-self: start;
+}
+
+.skeletonBuyBox {
+  background-color: var(--surface);
+  border: 1px solid #e6e8eb;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonBuyPrice {
+  height: 34px;
+  width: 60%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBuyStock {
+  height: 16px;
+  width: 80px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: var(--space-2);
+}
+
+.skeletonBuyButton {
+  height: 56px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBuyButtonSecondary {
+  height: 46px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBuyButtonTertiary {
+  height: 50px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Plyte Widget Skeleton
+====================== */
+.skeletonPlyte {
+  background-color: #f8f5ff;
+  border: 1px solid #d6cfff;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeletonPlyteHeader {
+  height: 20px;
+  width: 60px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonPlyteText {
+  height: 16px;
+  width: 80%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonPlyteLine {
+  height: 2px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin: var(--space-2) 0;
+}
+
+.skeletonPlyteFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.skeletonPlyteItem {
+  height: 16px;
+  flex: 1;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Description Section Skeleton
+====================== */
+.skeletonDescription {
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-5);
+  border: 1px solid #eef0f2;
+  padding: var(--space-5);
+  background-color: #ffffff;
+}
+
+.skeletonSectionTitle {
+  height: 28px;
+  width: 140px;
+  margin-bottom: var(--space-4);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonDescriptionLines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonDescriptionLine {
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Full Specs Skeleton
+====================== */
+.skeletonFullSpecs {
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-5);
+  border: 1px solid #eef0f2;
+  padding: var(--space-5);
+  background-color: #ffffff;
+}
+
+.skeletonSpecsTable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonSpecRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.skeletonSpecLabel {
+  height: 14px;
+  width: 40%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonSpecData {
+  height: 14px;
+  width: 50%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ======================
+   Shimmer Animation
+====================== */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ======================
+   Responsive: Large Laptop (1200px - 1400px)
+====================== */
+@media (max-width: 1400px) and (min-width: 1200px) {
+  .skeletonContent {
+    grid-template-columns: 1fr 360px 300px;
+    gap: var(--space-4);
+  }
+
+  .gallery {
+    max-width: 100%;
+  }
+}
+
+/* ======================
+   Responsive: Large Laptop (1050px - 1199px)
+====================== */
+@media (max-width: 1199px) and (min-width: 1050px) {
+  .skeletonContent {
+    grid-template-columns: 1fr 320px 280px;
+    gap: var(--space-4);
+  }
+
+  .gallery {
+    max-width: 100%;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
+
+  .skeletonSectionTitle {
+    height: 24px;
+    width: 120px;
+  }
+}
+
+/* ======================
+   Responsive: Medium Laptop (950px - 1049px)
+====================== */
+@media (max-width: 1049px) and (min-width: 950px) {
+  .skeletonContent {
+    grid-template-columns: 1.3fr 300px 280px;
+    gap: var(--space-3);
+  }
+
+  .gallery {
+    max-width: 100%;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
+}
+
+/* ======================
+   Responsive: Small Laptop (850px - 949px)
+====================== */
+@media (max-width: 949px) and (min-width: 850px) {
+  .skeletonContent {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--space-3);
+  }
+
+  .gallery {
+    max-width: 100%;
+    position: static;
+  }
+
+  .buyBlock {
+    grid-column: span 2;
+    position: static;
+  }
+}
+
+/* ======================
+   Responsive: Compact (769px - 849px)
+====================== */
+@media (max-width: 849px) and (min-width: 769px) {
+  .container {
+    padding: var(--space-4) var(--space-4) 120px;
+  }
+
+  .skeletonContent {
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-3);
+  }
+}

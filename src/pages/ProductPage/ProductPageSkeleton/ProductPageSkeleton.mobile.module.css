@@ -1,0 +1,202 @@
+/* =====================================================
+   Product Page Skeleton — Mobile
+===================================================== */
+
+/* ======================
+   TABLET PORTRAIT (≤768px)
+====================== */
+@media (max-width: 768px) {
+  .skeletonPage {
+    padding-bottom: 60px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  /* ======================
+     Main Grid — Single Column
+  ====================== */
+  .skeletonContent {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* ======================
+     Gallery Skeleton
+  ====================== */
+  .gallery {
+    border-radius: 0;
+    border: none;
+    position: static;
+    background-color: transparent;
+  }
+
+  .skeletonImage {
+    padding-top: 75%;
+    border-radius: 0;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* ======================
+     Main Info Skeleton
+  ====================== */
+  .mainInfo {
+    padding: 0 var(--space-3);
+  }
+
+  .price_mobile {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .skeletonPriceMobile {
+    height: 27px;
+    width: 120px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e4e7eb 50%, #f0f2f5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeletonTitle {
+    height: 22px;
+    width: 90%;
+  }
+
+  .skeletonRating {
+    height: 16px;
+    width: 100px;
+  }
+
+  .skeletonBadge {
+    height: 20px;
+    width: 120px;
+  }
+
+  .skeletonWishlist {
+    height: 36px;
+    width: 140px;
+    margin-bottom: var(--space-3);
+  }
+
+  /* ======================
+     Variants Section — Horizontal Scroll
+  ====================== */
+  .skeletonVariantsList {
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+
+  .skeletonVariantCard {
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  /* ======================
+     Buy Block Skeleton
+  ====================== */
+  .buyBlock {
+    position: static;
+  }
+
+  .skeletonBuyBox {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: var(--space-3);
+  }
+
+  .skeletonBuyPrice {
+    height: 28px;
+    width: 50%;
+  }
+
+  .skeletonBuyButton {
+    height: 50px;
+  }
+
+  .skeletonBuyButtonSecondary {
+    height: 42px;
+  }
+
+  .skeletonBuyButtonTertiary {
+    height: 46px;
+  }
+
+  /* ======================
+     Plyte Widget Skeleton
+  ====================== */
+  .skeletonPlyte {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: var(--space-3);
+  }
+
+  /* ======================
+     Description Section Skeleton
+  ====================== */
+  .skeletonDescription {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .skeletonSectionTitle {
+    height: 24px;
+    width: 120px;
+  }
+
+  /* ======================
+     Full Specs Skeleton
+  ====================== */
+  .skeletonFullSpecs {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .skeletonSpecLabel {
+    width: 45%;
+  }
+
+  .skeletonSpecData {
+    width: 45%;
+  }
+}
+
+/* ======================
+   MOBILE (≤480px)
+====================== */
+@media (max-width: 480px) {
+  .skeletonTitle {
+    height: 20px;
+    width: 95%;
+  }
+
+  .skeletonRating {
+    height: 14px;
+    width: 90px;
+  }
+
+  .skeletonBadge {
+    height: 18px;
+    width: 110px;
+  }
+
+  .skeletonVariantCard {
+    min-width: 120px;
+  }
+
+  .skeletonBuyPrice {
+    height: 24px;
+    width: 45%;
+  }
+}

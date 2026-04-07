@@ -14,6 +14,7 @@ import { ProductShortSpecs } from '../../widgets/ProductShortSpecs';
 import { ProductFullSpecs } from '../../widgets/ProductFullSpecs';
 import { MobileCartButton } from '../../widgets/MobileCartButton';
 import { StickyProductBar } from '../../widgets/StickyProductBar';
+import ProductPageSkeleton from './ProductPageSkeleton/ProductPageSkeleton';
 
 import { AddToCart } from '../../features/add-to-cart';
 
@@ -302,7 +303,7 @@ const ProductPage = () => {
 
 
   if (loading && !product && !currentProduct) {
-    return <div className={cx('loading')}>Загрузка...</div>;
+    return <ProductPageSkeleton />;
   }
 
 
