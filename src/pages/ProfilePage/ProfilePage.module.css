@@ -242,86 +242,60 @@
 .mobileSectionsList {
   display: flex;
   flex-direction: column;
-  padding: var(--space-2) var(--space-4);
+  padding: 0;
 }
 
 .mobileSectionRow {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  background-color: var(--surface);
-  border-radius: var(--radius-xl);
-  padding: 12px var(--space-3);
+  justify-content: space-between;
+  padding: 14px var(--space-4);
+  background-color: transparent;
   cursor: pointer;
-  border: 1px solid var(--border);
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s ease;
+}
+
+.mobileSectionRow:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.mobileSectionRow:last-child {
+  border-bottom: none;
 }
 
 .mobileSectionRow:hover {
-  background-color: var(--surface-hover);
-  border-color: var(--border-strong);
+  background-color: var(--surface);
 }
 
 .mobileSectionRow:active {
   background-color: var(--surface-subtle);
 }
 
-/* Иконки разделов */
-.mobileSectionRowIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-lg);
-  color: var(--surface);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.mobileSectionRowIcon--blue {
-  background-color: var(--primary);
-}
-
-.mobileSectionRowIcon--purple {
-  background-color: #7c3aed;
-}
-
-.mobileSectionRowIcon--cyan {
-  background-color: #0891b2;
-}
-
-.mobileSectionRowIcon--orange {
-  background-color: #ea580c;
-}
-
-.mobileSectionRowIcon--yellow {
-  background-color: #ca8a04;
-}
-
-.mobileSectionRowIcon--indigo {
-  background-color: #4f46e5;
-}
-
-.mobileSectionRowIcon--green {
-  background-color: var(--success);
-}
-
-.mobileSectionRowIcon--pink {
-  background-color: #db2777;
-}
-
 .mobileSectionRowLabel {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--text);
-  flex: 1;
 }
 
 .mobileSectionRowArrow {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-muted);
   flex-shrink: 0;
+}
+
+/* Убираем старые стили иконок */
+.mobileSectionRowIcon,
+.mobileSectionRowIcon--blue,
+.mobileSectionRowIcon--purple,
+.mobileSectionRowIcon--cyan,
+.mobileSectionRowIcon--orange,
+.mobileSectionRowIcon--yellow,
+.mobileSectionRowIcon--indigo,
+.mobileSectionRowIcon--green,
+.mobileSectionRowIcon--pink {
+  display: none;
 }
 
 .mobileSectionsFooter {
@@ -459,17 +433,8 @@
   }
 
   /* --- Mobile Sections --- */
-  .mobileSectionsList {
-    padding: var(--space-2) var(--space-3);
-  }
-
   .mobileSectionRow {
-    padding: 12px var(--space-3);
-    margin-bottom: var(--space-2);
-  }
-
-  .mobileSectionRow:last-child {
-    margin-bottom: 0;
+    padding: 14px var(--space-3);
   }
 
   .mobileSectionsFooter {
@@ -542,13 +507,11 @@
 
 /* ==================== Small mobile ==================== */
 @media (max-width: 380px) {
-  .mobileSectionsTitle {
-  }
-
-  .mobileSectionRow {
-  }
-
   .mobileSectionRowLabel {
+    font-size: 14px;
+  }
+
+  .mobileSectionRowArrow {
     font-size: 16px;
   }
 }

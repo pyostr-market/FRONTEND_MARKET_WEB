@@ -333,9 +333,6 @@ const ProfilePage = () => {
                 className={styles.mobileSectionRow}
                 onClick={() => handleSidebarTabChange(tab.key)}
               >
-                <div className={`${styles.mobileSectionRowIcon} ${styles[`mobileSectionRowIcon--${tab.accent}`]}`}>
-                  {tab.icon}
-                </div>
                 <span className={styles.mobileSectionRowLabel}>{tab.label}</span>
                 <FiChevronRight size={18} className={styles.mobileSectionRowArrow} />
               </button>
