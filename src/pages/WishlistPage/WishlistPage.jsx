@@ -7,7 +7,7 @@ import useWishlistFilters from '../../shared/hooks/useWishlistFilters';
 import { FiltersPanel } from '../../widgets/FiltersPanel';
 import { FiltersModal } from '../../widgets/FiltersModal';
 import { SortDropdown } from '../../widgets/SortDropdown';
-import ProductCard from '../../widgets/ProductCard/ProductCard';
+import WishlistItem from '../../widgets/WishlistItem/WishlistItem';
 import paths from '../../app/router/paths';
 import styles from './WishlistPage.module.css';
 
@@ -264,9 +264,7 @@ const WishlistGrid = ({ wishlistItems, selectedFilters, sortType, onRemove }) =>
   return (
     <div className={styles.wishlistGrid}>
       {sortedProducts.map((product) => (
-        <div key={product.id} className={styles.wishlistItemWrapper}>
-          <ProductCard product={product} />
-        </div>
+        <WishlistItem key={product.id} productId={product.id} />
       ))}
     </div>
   );

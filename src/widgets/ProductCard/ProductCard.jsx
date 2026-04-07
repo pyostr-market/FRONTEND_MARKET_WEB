@@ -16,7 +16,7 @@ const getRating = () => {
 
 const SCROLL_KEY = 'catalogScroll_v1';
 
-const ProductCard = ({ product, onImageChange }) => {
+const ProductCard = ({ product, onImageChange, hideWishlistButton }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -92,7 +92,7 @@ const ProductCard = ({ product, onImageChange }) => {
   return (
       <div className={styles.productCard}>
         {/* Кнопка избранного */}
-        {product?.id && (
+        {product?.id && !hideWishlistButton && (
           <button
             className={`${styles.wishlistButton} ${inWishlist ? styles.wishlistActive : ''}`}
             onClick={handleWishlistToggle}
