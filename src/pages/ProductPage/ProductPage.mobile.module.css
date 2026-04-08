@@ -273,6 +273,13 @@
   .description img {
     max-width: min(100%, 1000px);
   }
+
+  /* ReviewsBlock на мобильных — без бордеров, на полную ширину */
+  .reviewsBlock {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
   .buyBlock {
     position: fixed;
     bottom: 0;

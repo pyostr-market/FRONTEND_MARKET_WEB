@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FiThumbsUp, FiThumbsDown, FiUser } from 'react-icons/fi';
 import StarRating from '../../shared/ui/StarRating/StarRating';
 import Button from '../../shared/ui/Button/Button';
@@ -138,8 +138,9 @@ function ReviewCard({ review }) {
  * @param {Object} props
  * @param {number} props.productId - ID товара
  * @param {Object} [props.productRating] - Рейтинг товара из API { value, count }
+ * @param {string} [props.className] - Дополнительный CSS класс
  */
-const ReviewsBlock = ({ productId, productRating }) => {
+const ReviewsBlock = ({ productId, productRating, className = '' }) => {
   const [reviews, setReviews] = useState([]);
   const [total, setTotal] = useState(0);
   const [averageRating, setAverageRating] = useState(null);
@@ -148,7 +149,6 @@ const ReviewsBlock = ({ productId, productRating }) => {
   const [offset, setOffset] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const loadedRef = useRef(false);
 
   const loadReviews = useCallback(async (reset = false) => {
     if (!productId) return;
@@ -175,14 +175,44 @@ const ReviewsBlock = ({ productId, productRating }) => {
       }
     }
     setLoading(false);
-    loadedRef.current = true;
   }, [productId, offset]);
 
+  // Загрузка отзывов при монтировании и при смене товара
   useEffect(() => {
-    if (productId && !loadedRef.current) {
-      loadReviews(true);
-    }
-  }, [productId, loadReviews]);
+    if (!productId) return;
+
+    let cancelled = false;
+
+    const load = async () => {
+      setLoading(true);
+      setReviews([]);
+      setTotal(0);
+      setAverageRating(null);
+      setOffset(0);
+      setSort('useful');
+
+      const result = await getProductReviews({
+        product_id: productId,
+        limit: REVIEWS_PER_PAGE,
+        offset: 0,
+      });
+
+      if (!cancelled && result.success && result.data) {
+        setTotal(result.data.total);
+        setAverageRating(result.data.average_rating);
+        setReviews(result.data.items || []);
+      }
+      if (!cancelled) {
+        setLoading(false);
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [productId]);
 
   const handleLoadMore = useCallback(() => {
     setOffset((prev) => prev + REVIEWS_PER_PAGE);
@@ -199,9 +229,25 @@ const ReviewsBlock = ({ productId, productRating }) => {
 
   const handleReviewSubmitted = useCallback(() => {
     // Перезагружаем отзывы после отправки
-    loadedRef.current = false;
-    loadReviews(true);
-  }, [loadReviews]);
+    setReviews([]);
+    setTotal(0);
+    setAverageRating(null);
+    setOffset(0);
+    setLoading(true);
+
+    getProductReviews({
+      product_id: productId,
+      limit: REVIEWS_PER_PAGE,
+      offset: 0,
+    }).then((result) => {
+      if (result.success && result.data) {
+        setTotal(result.data.total);
+        setAverageRating(result.data.average_rating);
+        setReviews(result.data.items || []);
+      }
+      setLoading(false);
+    });
+  }, [productId]);
 
   const hasMore = offset + REVIEWS_PER_PAGE < total;
 
@@ -213,7 +259,7 @@ const ReviewsBlock = ({ productId, productRating }) => {
   const countDisplay = total > 0 ? total : (productRating?.count || 0);
 
   return (
-    <div className={styles.reviewsBlock}>
+    <div className={`${styles.reviewsBlock} ${className}`.trim()}>
       {/* Сводка рейтинга */}
       <div className={styles.ratingSummary}>
         <div className={styles.ratingSummaryLeft}>

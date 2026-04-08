@@ -1,6 +1,5 @@
 .reviewsBlock {
   max-width: 800px;
-  /*margin: 0 auto;*/
   padding: var(--space-6) 0;
 }
 
@@ -118,6 +117,7 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .sortBtn:hover {
@@ -167,6 +167,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .reviewAvatar {
@@ -178,18 +179,23 @@
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .reviewUsername {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reviewMeta {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  flex-shrink: 0;
 }
 
 .reviewDate {
@@ -232,6 +238,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
 .reviewHelpfulText {
@@ -282,6 +289,7 @@
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
 }
 
 .skeletonLine {
@@ -360,38 +368,95 @@
 }
 
 /* ======================
-   Responsive
+   Responsive: Tablet (≤768px)
 ====================== */
 @media (max-width: 768px) {
+  .reviewsBlock {
+    padding: var(--space-5) var(--space-4);
+  }
+
   .ratingSummary {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
   }
 
   .ratingSummaryLeft {
     flex-direction: row;
-    justify-content: center;
-    gap: var(--space-4);
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: unset;
+  }
+
+  .ratingBigNumber {
+    font-size: 36px;
+  }
+
+  .ratingBigStars {
+    margin-top: 0;
+  }
+
+  .ratingCount {
+    text-align: left;
   }
 
   .ratingDist {
-    padding: var(--space-3) 0;
+    padding: var(--space-2) 0;
+  }
+
+  .reviewCard {
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .reviewCard:hover {
+    box-shadow: none;
   }
 
   .reviewHeader {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
   }
 
   .reviewMeta {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: var(--space-2);
+  }
+
+  .reviewUsername {
+    font-size: 13px;
+  }
+
+  .reviewDate {
+    font-size: 12px;
+  }
+
+  .reviewText {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .reviewAvatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .reviewAvatar svg {
+    width: 16px;
+    height: 16px;
   }
 
   .sortBar {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .sortOptions {
@@ -399,5 +464,142 @@
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sortBtn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .reviewHelpful {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .reviewHelpfulBtn {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .reviewHelpfulText {
+    font-size: 12px;
+    width: 100%;
+  }
+
+  .emptyState {
+    padding: var(--space-6) var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .emptyIcon {
+    font-size: 36px;
+    margin-bottom: var(--space-2);
+  }
+
+  .emptyTitle {
+    font-size: 17px;
+  }
+
+  .emptyText {
+    font-size: 13px;
+  }
+}
+
+/* ======================
+   Responsive: Small mobile (≤480px)
+====================== */
+@media (max-width: 480px) {
+  .reviewsBlock {
+    padding: var(--space-4) 0;
+  }
+
+  .ratingSummary {
+    padding: var(--space-3);
+    gap: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .ratingSummaryLeft {
+    gap: var(--space-2);
+  }
+
+  .ratingBigNumber {
+    font-size: 28px;
+  }
+
+  .ratingBigStars svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .ratingCount {
+    font-size: 12px;
+  }
+
+  .ratingDistStar {
+    font-size: 12px;
+    min-width: 26px;
+  }
+
+  .ratingDistBar {
+    height: 6px;
+  }
+
+  .ratingDistCount {
+    font-size: 12px;
+    min-width: 20px;
+  }
+
+  .reviewCard {
+    padding: var(--space-3) var(--space-2);
+    border-radius: var(--radius-md);
+    gap: var(--space-2);
+  }
+
+  .reviewAvatar {
+    width: 24px;
+    height: 24px;
+  }
+
+  .reviewAvatar svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .reviewUsername {
+    font-size: 12px;
+  }
+
+  .reviewDate {
+    font-size: 11px;
+  }
+
+  .reviewText {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .reviewExpand {
+    font-size: 12px;
+  }
+
+  .sortOptions {
+    gap: var(--space-1);
+  }
+
+  .sortBtn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .reviewHelpfulText {
+    font-size: 11px;
+  }
+
+  .reviewHelpfulBtn {
+    padding: 3px 7px;
+    font-size: 11px;
   }
 }

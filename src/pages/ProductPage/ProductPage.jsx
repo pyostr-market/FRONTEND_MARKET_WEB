@@ -557,6 +557,7 @@ const ProductPage = () => {
           <ReviewsBlock
             productId={activeProduct.id}
             productRating={activeProduct.rating}
+            className={cx('reviewsBlock')}
           />
 
           <RelatedProducts />
