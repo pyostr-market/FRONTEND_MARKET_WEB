@@ -1,0 +1,67 @@
+.starRating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.starsWrapper {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.starsWrapper.interactive {
+  cursor: pointer;
+}
+
+.starContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.starsWrapper.interactive .starContainer:hover {
+  transform: scale(1.15);
+}
+
+.starSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+.star_Empty {
+  fill: none;
+  stroke: #d1d5db;
+  stroke-width: 1.5;
+}
+
+.star_Filled {
+  fill: #f59e0b;
+  stroke: #f59e0b;
+  stroke-width: 1.5;
+}
+
+.starsWrapper.interactive .star_Empty {
+  stroke: #d1d5db;
+}
+
+.starsWrapper.interactive .star_Filled {
+  fill: #f59e0b;
+  stroke: #f59e0b;
+}
+
+.ratingLabel {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.ratingValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}

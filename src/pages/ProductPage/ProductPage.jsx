@@ -24,6 +24,7 @@ import RecommendationsBlock, {
 } from '../../widgets/RecommendationsBlock/RecommendationsBlock';
 
 import RelatedProducts from '../../widgets/RelatedProducts/RelatedProducts';
+import ReviewsBlock from '../../widgets/ReviewsBlock/ReviewsBlock';
 
 import paths from '../../app/router/paths';
 
@@ -383,7 +384,13 @@ const ProductPage = () => {
               </h1>
 
               <div className={cx('ratingAndBadge')}>
-                <div className={cx('rating')}>⭐ 4.8 (120 отзывов)</div>
+                <div className={cx('rating')}>
+                  {activeProduct.rating?.value ? (
+                    <>⭐ {activeProduct.rating.value.toFixed(1)} ({activeProduct.rating.count} отзывов)</>
+                  ) : (
+                    <>Нет отзывов</>
+                  )}
+                </div>
                 <div className={cx('originalBadge')}>
                   <svg className={cx('originalCheck')} width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <circle cx="9" cy="9" r="9" fill="#10C44C"/>
@@ -546,6 +553,11 @@ const ProductPage = () => {
 
 
           <ProductFullSpecs attributes={activeProduct.attributes} />
+
+          <ReviewsBlock
+            productId={activeProduct.id}
+            productRating={activeProduct.rating}
+          />
 
           <RelatedProducts />
 

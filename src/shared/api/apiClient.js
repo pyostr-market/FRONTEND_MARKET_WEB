@@ -228,16 +228,18 @@ export async function request(
     // Получаем токен авторизации из localStorage
     const token = localStorage.getItem('access_token');
     const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
-    
+
+    // Для FormData не задаём Content-Type — axios сам выставит multipart/form-data с boundary
+    const isFormData = data instanceof FormData;
+
     const requestPromise = axios({
         url: `${baseUrl}${endpoint}`,
         method,
         params,
         data,
-        headers: { 
-            "Content-Type": "application/json",
-            ...authHeaders
-        },
+        headers: isFormData
+            ? { ...authHeaders }
+            : { "Content-Type": "application/json", ...authHeaders },
     })
         .then((response) => {
             const result = {
